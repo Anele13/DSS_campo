@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body_base %}
+    <body id="page-top">
+        <div id="wrapper">
+            {% block sidebar %}
+                {% include 'sidebar.html' %}
+            {% endblock %}
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+                <!-- Main Content -->
+                <div id="content">
+
+                    {% block topbar %}
+                        {% include 'topbar.html' %}
+                    {% endblock %}
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+                        {% block site_content %}
+                        {% endblock %}
+                    </div>
+                </div>
+                {% block footer %}
+                    {% include 'footer.html' %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
+{% endblock %}
