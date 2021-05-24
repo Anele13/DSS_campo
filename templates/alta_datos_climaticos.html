@@ -3,87 +3,95 @@
 
 <!-- Escribir en este bloque todo lo que haga falta-->
 {% block site_content %}
-
-    <style>
-        #map { 
-            height: 400px; 
-        }
-
-        #mapa { 
-            height: 400px; 
-        }
-    </style>
-    
-    <!--Modal-->
-    <div id="modal_confirmacion" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h6 class="modal-title">
-                  <b>Confirmar datos de la estacion</b>
-                  </h6>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+   
+    {% if messages %}
+        {% for message in messages %}
+            <div class="container-fluid p-0">
+            <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert" >
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
-              </button>
+                </button>
+                {{ message }}
             </div>
-            <div class="modal-body">
-              <p id="contenido_modal"></p>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary">Confirmar</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-          </div>
-        </div>
-      </div>
+        {% endfor %}
+    {% endif %}
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Carga de Datos</h1>
+        <h1 class="h3 mb-0 text-gray-800">Carga de datos climaticos</h1>
     </div>
 
-      <div class="card text-center">
-        <div class="card-header">
-          <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-                <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Desde archivo local</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Sondas meteorologicas INTA</a>
-            </li>
-          </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade  " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                    <!--Carga de archivo-->
+    <div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+        <li class="nav-item">
+            <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Desde archivo local</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Sondas meteorologicas INTA</a>
+        </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade  " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <!--Carga de archivo-->
+                <div class="card-header py-3" style="text-align: left;">
+                    <h6 class="m-0 font-weight-bold text-primary">Ingrese un archivo en formato <b>csv</b> con los datos historicos de su campo.</h6>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-2 px-sm-3 mt-2 mb-3" style="width: 25rem;" src="{% static 'img/undraw_Weather_re_qsmd.svg' %}" alt="...">
+                    </div>
+                    <form id="form_subir_archivo_climatico" action="{% url 'carga_datos_climaticos' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="file" name="archivo_csv" id="archivo_csv" required>
+                        <button type="button" class="btn btn-primary" onclick="openModal()" >Cargar</button>                    
+                    </form>                  
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                <!--Seleccion de Mapa-->
                     <div class="card-header py-3" style="text-align: left;">
-                        <h6 class="m-0 font-weight-bold text-primary">Ingrese un archivo en formato <b>csv</b> con los datos historicos de su campo.</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="text-center">
-                            <img class="img-fluid px-2 px-sm-3 mt-2 mb-3" style="width: 25rem;" src="{% static 'img/undraw_Add_files_re_v09g.svg' %}" alt="...">
-                        </div>
-                        <input type="file" name="archivo_csv" id="archivo_csv">
-                        <button class="btn btn-primary">Cargar</button>                    
-                    </div>
+                    <h6 class="m-0 font-weight-bold text-primary">Seleccione una de las sondas marcadas en el mapa para utilizar sus datos historicos.</h6>
                 </div>
-                <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <!--Seleccion de Mapa-->
-                     <div class="card-header py-3" style="text-align: left;">
-                        <h6 class="m-0 font-weight-bold text-primary">Seleccione una de las sondas marcadas en el mapa para utilizar sus datos historicos.</h6>
-                    </div>
-                    <div class="card-body">
-                        <div id="map"></div>
-                    </div>                
-                </div>
-              </div>
+                <div class="card-body">
+                    <div id="map" style="height: 400px;"></div>
+                </div>                
+            </div>
         </div>
-      </div>    
+    </div>
+    </div>
+    <form id="form_subir_latitud_longitud" action="{% url 'carga_datos_climaticos' %}" method="POST">
+        {% csrf_token %}
+        <input type="text" name="latitud_longitud" id="input_form_latitud_longitud" hidden>
+    </form>    
 
+    <!--Modal-->
+    <div id="modal_confirmacion" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    <b>Confirma</b>
+                    </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="contenido_modal"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_confirmar_modal" type="button" class="btn btn-primary">Confirmar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+            </div>
+        </div>
+        </div>
     <!--Mapas-->
     <script>
-
         var sondas = []
         if ('{{sondas|safe}}'){
             sondas = JSON.parse('{{sondas|safe}}')
@@ -111,6 +119,11 @@
                 marker.on('click',function(){
                     //Util para cuando el usuario elija la ubicacion, asociamos sus datos a la sonda por lat y long
                     //alert(this.getLatLng())
+                    $("#input_form_latitud_longitud").val(this.getLatLng())
+                    $('#btn_confirmar_modal').off()
+                    $('#btn_confirmar_modal').on('click',function(){
+                        $('#form_subir_latitud_longitud').submit();
+                    })
                     $('#contenido_modal').html(this.getPopup()._content)
                     $('#modal_confirmacion').modal('show')
                 })
@@ -121,7 +134,16 @@
                                     +'</div>')
         });
 
-        
+        function openModal(){
+            $('#btn_confirmar_modal').off()
+            $('#btn_confirmar_modal').on('click',function(){
+                if($("#form_subir_archivo_climatico")[0].reportValidity()){
+                    $('#form_subir_archivo_climatico').submit();
+                }
+            })
+            $('#contenido_modal').html("Confirma los datos ingresados?")
+            $('#modal_confirmacion').modal('show');
+        }   
     </script>
 {% endblock %}
 
