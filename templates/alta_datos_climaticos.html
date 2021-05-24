@@ -1,0 +1,57 @@
+{% extends 'site_content.html' %}
+{% load static %}
+
+<!-- Escribir en este bloque todo lo que haga falta-->
+{% block site_content %}
+
+    <style>
+        #map { 
+            height: 400px; 
+            width: 400px;
+        }
+    </style>
+    
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Carga de Datos</h1>
+    </div>
+
+
+
+
+    <!--Mapas-->
+    <div class='row'>
+        <h6>Mapas</h6>
+        <div class="col-md-12">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!--Mapas-->
+    <script>
+        var map = L.map('map').setView([-45.86413, -67.49656], 6);
+        
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        marker = L.marker([-45.86413, -67.49656],{riseOnHover:true})
+        marker.on('click',function(ev){
+            alert(this.getLatLng())
+        })
+        marker.addTo(map)
+            .bindPopup('Un punto donde hay una sonda del INTA.')
+            .openPopup();
+
+        marker2 = L.marker([-46.86413, -68.49656],{riseOnHover:true})
+        marker2.addTo(map)
+            .bindPopup('Un punto donde hay una sonda del INTA.')
+            .openPopup();
+        
+    </script>
+    <!-- Demo de charts-->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js'' %}"></script>
+
+
+{% endblock %}
