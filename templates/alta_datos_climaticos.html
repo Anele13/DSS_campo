@@ -8,6 +8,10 @@
         #map { 
             height: 400px; 
         }
+
+        #mapa { 
+            height: 400px; 
+        }
     </style>
     
     <!-- Page Heading -->
@@ -15,16 +19,53 @@
         <h1 class="h3 mb-0 text-gray-800">Carga de Datos</h1>
     </div>
 
-
-
-
-    <!--Mapas-->
-    <div class='row'>
-        <h6>Mapas</h6>
-        <div class="col-md-12">
-            <div id="map"></div>
+      <div class="card text-center">
+        <div class="card-header">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Desde archivo local</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Sondas meteorologicas INTA</a>
+            </li>
+          </ul>
         </div>
-    </div>
+        <div class="card-body">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade  " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <!--Carga de archivo-->
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Ingrese un archivo en formato <b>csv</b> con los datos historicos de su campo.</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img class="img-fluid px-2 px-sm-3 mt-2 mb-3" style="width: 25rem;" src="{% static 'img/undraw_Add_files_re_v09g.svg' %}" alt="...">
+                        </div>
+                        <h6></h6>
+                            <input type="file" name="archivo_csv" id="archivo_csv">
+                    </div>
+                </div>
+                <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <!--Seleccion de Mapa-->
+                     <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Seleccione una de las sondas marcadas en el mapa para utilizar sus datos historicos.</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <div id="map"></div>
+                        </div>
+                    </div>
+
+
+                 
+                
+
+
+
+                </div>
+              </div>
+        </div>
+      </div>    
 
     <!--Mapas-->
     <script>
@@ -40,26 +81,31 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
+
         //Agrego al mapa todos los marcadores de sondas del INTA
         $.each(sondas, function(key,valueObj){
-                console.log(valueObj.nombre)
                 marker = L.marker([valueObj.latitud, valueObj.longitud])
                 marker.on('mouseover',function(ev){
                     this.openPopup();
                     //marker.setIcon(bigIcon);
                 })
+                marker.on('mouseout',function(ev){
+                    this.closePopup();
+                    //marker.setIcon(bigIcon);
+                })
+
                 marker.on('click',function(){
+                    //Util para cuando el usuario elija la ubicacion, asociamos sus datos a la sonda por lat y long
                     alert(this.getLatLng())
                 })
                 marker.addTo(map)
-                        .bindPopup(valueObj.nombre)
+                        .bindPopup('<div> Nombre: <b>'+valueObj.nombre+'</b>'
+                                        +'<br> Latitud: <b>'+valueObj.latitud+'</b>'
+                                       +'<br> Longitud: <b>'+valueObj.longitud+'</b>'
+                                    +'</div>')
         });
 
         
     </script>
-    <!-- Demo de charts-->
-    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-    <script src="{% static 'js/demo/chart-pie-demo.js'' %}"></script>
-
-
 {% endblock %}
+
