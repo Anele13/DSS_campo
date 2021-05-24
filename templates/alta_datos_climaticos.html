@@ -7,7 +7,6 @@
     <style>
         #map { 
             height: 400px; 
-            width: 400px;
         }
     </style>
     
@@ -29,24 +28,33 @@
 
     <!--Mapas-->
     <script>
-        var map = L.map('map').setView([-45.86413, -67.49656], 6);
-        
+
+        var sondas = []
+        if ('{{sondas|safe}}'){
+            sondas = JSON.parse('{{sondas|safe}}')
+        }
+
+        //Creo un mapa
+        var map = L.map('map').setView([-43.36, -68.58], 6);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        marker = L.marker([-45.86413, -67.49656],{riseOnHover:true})
-        marker.on('click',function(ev){
-            alert(this.getLatLng())
-        })
-        marker.addTo(map)
-            .bindPopup('Un punto donde hay una sonda del INTA.')
-            .openPopup();
+        //Agrego al mapa todos los marcadores de sondas del INTA
+        $.each(sondas, function(key,valueObj){
+                console.log(valueObj.nombre)
+                marker = L.marker([valueObj.latitud, valueObj.longitud])
+                marker.on('mouseover',function(ev){
+                    this.openPopup();
+                    //marker.setIcon(bigIcon);
+                })
+                marker.on('click',function(){
+                    alert(this.getLatLng())
+                })
+                marker.addTo(map)
+                        .bindPopup(valueObj.nombre)
+        });
 
-        marker2 = L.marker([-46.86413, -68.49656],{riseOnHover:true})
-        marker2.addTo(map)
-            .bindPopup('Un punto donde hay una sonda del INTA.')
-            .openPopup();
         
     </script>
     <!-- Demo de charts-->
