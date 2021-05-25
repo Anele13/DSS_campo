@@ -24,9 +24,12 @@
         <div id="collapseNovedades" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Ver:</h6>
-                <a class="collapse-item" href="{% url 'carga_datos' %}">
+                <a class="collapse-item" href="{% url 'carga_datos_climaticos' %}">
                     <i class="fas fa-fw fa-cloud-upload-alt"></i>
-                    Alta de Novedades</a>
+                    Alta datos climaticos</a>
+                <a class="collapse-item" href="{% url 'carga_datos_produccion' %}">
+                    <i class="fas fa-fw fa-cloud-upload-alt"></i>
+                    Alta datos de produccion</a>
             </div>
         </div>
     </li>

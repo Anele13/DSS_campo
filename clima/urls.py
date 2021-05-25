@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import cargar_datos_climaticos
+from .views import cargar_datos_climaticos,cargar_datos_produccion
 
 urlpatterns = [
-    path('carga_datos', cargar_datos_climaticos, name="carga_datos"),
+    path('carga_datos_climaticos', cargar_datos_climaticos, name="carga_datos_climaticos"),
+    path('carga_datos_produccion', cargar_datos_produccion, name="carga_datos_produccion"),
 ]
