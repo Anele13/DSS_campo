@@ -1,0 +1,171 @@
+{% extends 'site_content.html' %}
+{% load static %}
+
+<!-- Escribir en este bloque todo lo que haga falta-->
+{% block site_content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="container-fluid p-0">
+    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">¿Cómo está mi campo?</h1>
+</div>
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <button class="nav-link active" type=" button">
+                    Mejor Rinde
+                </button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link active" type="button">
+                    Peor Rinde
+                </button>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                    <i class="fas fa-search fa-sm"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" type=" button">
+                        Mejor Finura
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link active" type="button">
+                        Peor Finura
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                        <i class="fas fa-search fa-sm"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" type=" button">
+                        Mejor Cantidad de Lana
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link active" type="button">
+                        Peor Cantidad de Lana
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                        <i class="fas fa-search fa-sm"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" type=" button">
+                        Mejor Cantidad de corderos
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link active" type="button">
+                        Peor Cantidad de corderos
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                        <i class="fas fa-search fa-sm"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" type=" button">
+                        Mejor Cantidad de Hacienda
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link active" type="button">
+                        Peor Cantidad de Hacienda
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                        <i class="fas fa-search fa-sm"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" type=" button">
+                        Mejor Cantidad de Pariciones
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link active" type="button">
+                        Peor Cantidad de Pariciones
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                        <i class="fas fa-search fa-sm"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" type=" button">
+                        Mejor Mortandad
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link active" type="button">
+                        Peor Mortandad
+                    </button>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                        <i class="fas fa-search fa-sm"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
