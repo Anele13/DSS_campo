@@ -23,6 +23,42 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
+    documento =  forms.IntegerField(label='Ingresar el documento',
+                                widget=forms.TextInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Documento",
+                                                            "required":'required'
+                                                            }
+                                                        )
+                                )
+
+    nombre = forms.CharField(label='Ingresar el nombre',
+                                min_length=4,
+                                max_length=150,
+                                widget=forms.TextInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Nombre",
+                                                            "required":'required'
+                                                            }
+                                                        )
+                                )
+    apellido = forms.CharField(label='Ingresar el apellido',
+                                min_length=4,
+                                max_length=150,
+                                widget=forms.TextInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Apellido",
+                                                            "required":'required'
+                                                            }
+                                                        )
+                                )
+    fecha_nacimiento = forms.DateField(label='Ingresar fecha nacimiento',
+                                widget=forms.TextInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Fecha Nacimiento"
+                                                            }
+                                                        )
+                                )
     username = forms.CharField(label='Ingresar el nombre de usuario',
                                 min_length=4,
                                 max_length=150,
