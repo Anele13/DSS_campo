@@ -44,7 +44,7 @@
                     <div class="text-center">
                         <img class="img-fluid px-2 px-sm-3 mt-2 mb-3" style="width: 25rem;" src="{% static 'img/undraw_Weather_re_qsmd.svg' %}" alt="...">
                     </div>
-                    <form id="form_subir_archivo_climatico" action="{% url 'carga_datos_climaticos' %}" method="POST">
+                    <form id="form_subir_archivo_climatico" action="{% url 'carga_datos_climaticos' %}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         <input type="file" name="archivo_csv" id="archivo_csv" required>
                         <button type="button" class="btn btn-primary" onclick="openModal()" >Cargar</button>                    

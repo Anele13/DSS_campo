@@ -12,9 +12,12 @@ class Sonda(models.Model):
     longitud = models.FloatField(blank=True, null=True)
     altura = models.FloatField(blank=True, null=True)
     pertenencia = models.CharField(max_length=15, choices=PERTENENCIA_CHOICES, default='1')
-    inicio_actividad = models.DateField(blank=True, null=True)
+    inicio_actividad = models.CharField(max_length=30, blank=True, null=True)
     localidad = models.CharField(max_length=30, blank=True, null=True)
     id_inta = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return self.nombre
 
 
 class DatosClimaticos(models.Model):
