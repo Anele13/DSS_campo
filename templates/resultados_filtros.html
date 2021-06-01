@@ -17,6 +17,7 @@
 {% endfor %}
 {% endif %}
 
+
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">¿Cómo está mi campo?</h1>
@@ -40,17 +41,18 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 14.5rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Enero</h6>
                                 </div>
                                 <div class="card-body">
-                                    <img class="img-thumbnail mx-auto border-0" style="width: 10rem;"
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
                                         src="{% static 'img/soleado.svg' %}" alt="...">
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    {{enero.dia1.tmpmax}}°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
@@ -60,18 +62,19 @@
                                         </div>
                                     </div>
 
-                                    <a href="#" class="card-link">Ver mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseEnero">Ver
+                                        mes</a>
 
                                 </div>
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 14.5rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Febrero</h6>
                                 </div>
                                 <div class="card-body">
-                                    <img class="img-thumbnail mx-auto border-0" style="width: 10rem;"
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
                                         src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
                                     <div class="container">
                                         <div class="row">
@@ -86,18 +89,19 @@
                                         </div>
                                     </div>
 
-                                    <a href="#" class="card-link">Ver mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseFebrero">Ver
+                                        mes</a>
 
                                 </div>
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 14.5rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Marzo</h6>
                                 </div>
                                 <div class="card-body">
-                                    <img class="img-thumbnail mx-auto border-0" style="width: 10rem;"
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
                                         src="{% static 'img/lluvia.svg' %}" alt="...">
                                     <div class="container">
                                         <div class="row">
@@ -118,12 +122,12 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 14.5rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Abril</h6>
                                 </div>
                                 <div class="card-body">
-                                    <img class="img-thumbnail mx-auto border-0" style="width: 10rem;"
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
                                         src="{% static 'img/nube.svg' %}" alt="...">
                                     <div class="container">
                                         <div class="row">
@@ -143,13 +147,56 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="collapse" id="collapseEnero">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center col-">
+                                <h6 class="m-0 font-weight-bold text-primary">Ganancias</h6>
+                                <div class="dropdown no-arrow">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
+                                        aria-labelledby="dropdownMenuLink">
+                                        <div class="dropdown-header">Dropdown Header:</div>
+                                        <a class="dropdown-item" href="#">Action</a>
+                                        <a class="dropdown-item" href="#">Another action</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Algo mas..</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="chart-area">
+                                    <div class="chartjs-size-monitor">
+                                        <div class="chartjs-size-monitor-expand">
+                                            <div class=""></div>
+                                        </div>
+                                        <div class="chartjs-size-monitor-shrink">
+                                            <div class=""></div>
+                                        </div>
+                                    </div>
+                                    <canvas id="myAreaChart" style="display: block; width: 996px; height: 320px;"
+                                        width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="collapse" id="collapseFebrero">
+                            <div class="card card-body">
+                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
+                                richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
+                                anderson cred nesciunt sapiente ea proident.febreroooooo
+                            </div>
+                        </div>
                         <div class="col-">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 14.5rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Mayo</h6>
                                 </div>
                                 <div class="card-body">
-                                    <img class="img-thumbnail mx-auto border-0" style="width: 10rem;"
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
                                         src="{% static 'img/relampago.svg' %}" alt="...">
                                     <div class="container">
                                         <div class="row">
@@ -170,12 +217,168 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 18rem;">
+                            <div class="card" style="width: 14.5rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Junio</h6>
                                 </div>
                                 <div class="card-body">
-                                    <img class="img-thumbnail mx-auto border-0" style="width: 10rem;"
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
+                                        src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-link">Ver mes</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-">
+                            <div class="card" style="width: 14.5rem;">
+                                <div class="card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">Julio</h6>
+                                </div>
+                                <div class="card-body">
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
+                                        src="{% static 'img/soleado.svg' %}" alt="...">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-link">Ver mes</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-">
+                            <div class="card" style="width: 14.5rem;">
+                                <div class="card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">Agosto</h6>
+                                </div>
+                                <div class="card-body">
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
+                                        src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{febrero.dia1.tmpmax}}°
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{febrero.dia1.tmpmin}}°
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-link">Ver mes</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-">
+                            <div class="card" style="width: 14.5rem;">
+                                <div class="card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">Septiembre</h6>
+                                </div>
+                                <div class="card-body">
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
+                                        src="{% static 'img/lluvia.svg' %}" alt="...">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-link">Ver mes</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-">
+                            <div class="card" style="width: 14.5rem;">
+                                <div class="card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">Octubre</h6>
+                                </div>
+                                <div class="card-body">
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
+                                        src="{% static 'img/nube.svg' %}" alt="...">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-link">Ver mes</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-">
+                            <div class="card" style="width: 14.5rem;">
+                                <div class="card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">Noviembre</h6>
+                                </div>
+                                <div class="card-body">
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
+                                        src="{% static 'img/relampago.svg' %}" alt="...">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                </h6>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="card-link">Ver mes</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-">
+                            <div class="card" style="width: 14.5rem;">
+                                <div class="card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">Diciembre</h6>
+                                </div>
+                                <div class="card-body">
+                                    <img class="img-thumbnail mx-auto border-0" style="width: 5rem;"
                                         src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
                                     <div class="container">
                                         <div class="row">
@@ -215,4 +418,20 @@
 <div>Iconos diseñados por <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
         href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div>
 
+<script type="text/javascript">
+    var endpoint = "{% url 'buscador' %}"
+    var customer = "{{data.mes}}"
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function (data) {
+            console.log(customer)
+        }
+    })
+
+</script>
+
+<!-- Demo de charts-->
+<script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+<script src="{% static 'js/demo/chart-pie-demo.js'' %}"></script>
 {% endblock %}

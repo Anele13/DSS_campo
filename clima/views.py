@@ -6,18 +6,20 @@ from sqlalchemy import create_engine
 import pandas as pd
 from .models import DatosClimaticos, Sonda
 from sistema_campo.settings import BASE_DIR
+
+
 @login_required(login_url='login')
 def cargar_datos_climaticos(request):
-    contexto={}
-    #Deben ser mas sondas pero luego sacamos mas..
+    contexto = {}
+    # Deben ser mas sondas pero luego sacamos mas..
     c = Sonda.objects.all()
     sondas = {}
     for a in c:
         if a.latitud and a.longitud:
-            sondas[str(a.id)] = {'nombre':a.nombre,
-                            'latitud':a.latitud,
-                            'longitud':a.longitud,
-                            'altura': 0}
+            sondas[str(a.id)] = {'nombre': a.nombre,
+                                 'latitud': a.latitud,
+                                 'longitud': a.longitud,
+                                 'altura': 0}
     contexto['sondas'] = json.dumps(sondas)
     if request.method == 'POST':
         messages.success(request, 'Alta de datos correcta!')
@@ -26,5 +28,5 @@ def cargar_datos_climaticos(request):
         if archivo:
             df = pd.read_csv(archivo)
             #df.to_sql('clima_datosclimaticos', con=engine, if_exists='append')
-          
-    return render(request, "alta_datos_climaticos.html",contexto)
+
+    return render(request, "alta_datos_climaticos.html", contexto)
