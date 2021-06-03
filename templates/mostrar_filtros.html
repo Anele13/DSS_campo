@@ -22,150 +22,55 @@
     <h1 class="h3 mb-0 text-gray-800">¿Cómo está mi campo?</h1>
 </div>
 <div class="card text-center">
-    <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-            <li class="nav-item">
-                <button class="nav-link active" type=" button">
-                    Mejor Rinde
-                </button>
-            </li>
-            <li class="nav-item">
-                <button class="nav-link active" type="button">
-                    Peor Rinde
-                </button>
-            </li>
-            <li class="nav-item">
-                <a class="btn btn-primary" href="{% url 'buscador' %}">
-                    <i class="fas fa-search fa-sm"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <button class="nav-link active" type=" button">
-                        Mejor Finura
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link active" type="button">
-                        Peor Finura
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
-                        <i class="fas fa-search fa-sm"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <button class="nav-link active" type=" button">
-                        Mejor Cantidad de Lana
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link active" type="button">
-                        Peor Cantidad de Lana
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
-                        <i class="fas fa-search fa-sm"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <button class="nav-link active" type=" button">
-                        Mejor Cantidad de corderos
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link active" type="button">
-                        Peor Cantidad de corderos
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
-                        <i class="fas fa-search fa-sm"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <button class="nav-link active" type=" button">
-                        Mejor Cantidad de Hacienda
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link active" type="button">
-                        Peor Cantidad de Hacienda
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
-                        <i class="fas fa-search fa-sm"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <button class="nav-link active" type=" button">
-                        Mejor Cantidad de Pariciones
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link active" type="button">
-                        Peor Cantidad de Pariciones
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
-                        <i class="fas fa-search fa-sm"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <button class="nav-link active" type=" button">
-                        Mejor Mortandad
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link active" type="button">
-                        Peor Mortandad
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary" href=" {% url 'buscador' %}">
-                        <i class="fas fa-search fa-sm"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            Rinde
+            <a class="btn btn-primary" href="{% url 'buscador' %}">
+                <i class="fas fa-search fa-sm"></i>
+            </a>
+        </li>
+        <li class="list-group-item">
+            Mejor Finura Peor Finura
+            <a class="btn btn-primary" href="{% url 'buscador' %}">
+                <i class="fas fa-search fa-sm"></i>
+            </a>
+        </li>
+        <li class="list-group-item">
+            Filtrar Cantidad de lana
+            <a class="btn btn-primary" href="{% url 'buscador' %}">
+                <i class="fas fa-search fa-sm"></i>
+            </a>
+        </li>
+        <li class="list-group-item">
+            <button class="btn" type=" button">
+                Mejor Mortandad
+            </button>
+            <button class="btn" type="button">
+                Peor Mortandad
+            </button>
+            <a class="btn btn-primary" href=" {% url 'buscador' %}">
+                <i class="fas fa-search fa-sm"></i>
+            </a>
+        </li>
+        <li class="list-group-item">
+            Cantidad de corderos
+            <a class="btn btn-primary" href="{% url 'buscador' %}">
+                <i class="fas fa-search fa-sm"></i>
+            </a>
+        </li>
+        <li class="list-group-item">
+            Cantidad de Hacienda
+            <a class="btn btn-primary" href="{% url 'buscador' %}">
+                <i class="fas fa-search fa-sm"></i>
+            </a>
+        </li>
+        <li class="list-group-item">
+            Cantidad de Pariciones
+            <a class="btn btn-primary" href="{% url 'buscador' %}">
+                <i class="fas fa-search fa-sm"></i>
+            </a>
+        </li>
+    </ul>
+
 </div>
 {% endblock %}
