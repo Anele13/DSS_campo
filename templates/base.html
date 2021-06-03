@@ -21,7 +21,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
-    
+
     <!--Mapa-->
     <link href="{% static 'css/leaflet.css' %}" rel="stylesheet">
 
@@ -32,29 +32,31 @@
 </head>
 
 
-  
-    
-    <!-- Bootstrap core JavaScript-->
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
-    <!--Chart js-->
-    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
-    <script src="{% static 'vendor/chart.js/Chart.bundle.min.js' %}"></script>
-    
-    <!--Mapa-->
-    <script src="{% static 'js/leaflet.js' %}"></script>
+<!-- Core plugin JavaScript-->
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
-    {% block scripts_adicionales %}
-    {% endblock %}
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
 
-    {% block body_base%}
-    {% endblock %}
+<!--Chart js-->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'vendor/chart.js/Chart.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/chart.js/Chart.js' %}"></script>
+<script src="{% static 'vendor/chart.js/Chart.bundle.js' %}"></script>
+
+<!--Mapa-->
+<script src="{% static 'js/leaflet.js' %}"></script>
+
+{% block scripts_adicionales %}
+{% endblock %}
+
+{% block body_base%}
+{% endblock %}
 
 </html>

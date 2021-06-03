@@ -26,22 +26,26 @@
     <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
             <li class="nav-item">
-                <a class="nav-link active" id="mejor-rinde-tab" data-toggle="pill" href="#pills-home" role="tab"
-                    aria-controls="pills-home" aria-selected="true">Mejor Rinde</a>
+                <a class="nav-link active" id="pill-mejor-rinde-tab" data-toggle="pill" href="#mejor-rinde-tab"
+                    role="tab" aria-controls="pill-mejor-rinde-tab" aria-selected="true">Mejor Rinde</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="peor-rinde-tab" data-toggle="pill" href="#pills-profile" role="tab"
-                    aria-controls="pills-profile" aria-selected="false">Peor Rinde</a>
+                <a class="nav-link" id="pill-peor-rinde-tab" data-toggle="pill" href="#peor-rinde-tab" role="tab"
+                    aria-controls="pill-peor-rinde-tab" aria-selected="false">Peor Rinde</a>
             </li>
         </ul>
     </div>
     <div class="card-body">
         <div class="tab-content" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="mejor-rinde" role="tabpanel" aria-labelledby="mejor-rinde-tab">
+            <div class="tab-pane fade show active" id="mejor-rinde-tab" role="tabpanel"
+                aria-labelledby="mejor-rinde-tab">
                 <div class="container">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">El mejor año en cuanto a rinde fue en el {{anio}}</h1>
+                    </div>
                     <div class="row">
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Enero</h6>
                                 </div>
@@ -52,11 +56,11 @@
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
                                                 <h6 class="card-subtitle mb-2 text-muted">Max
-                                                    {{enero.dia1.tmpmax}}°
+                                                    {{enero.promtemmax}}°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.promtemmin}}°
                                                 </h6>
                                             </div>
                                         </div>
@@ -69,7 +73,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Febrero</h6>
                                 </div>
@@ -79,11 +83,11 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{febrero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{febrero.promtemmax}}°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{febrero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{febrero.promtemmin}}°
                                                 </h6>
                                             </div>
                                         </div>
@@ -96,7 +100,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Marzo</h6>
                                 </div>
@@ -106,23 +110,24 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{marzo.promtemmax}}°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{marzo.promtemmin}}°
                                                 </h6>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <a href="#" class="card-link">Ver mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseMarzo">Ver
+                                        mes</a>
 
                                 </div>
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Abril</h6>
                                 </div>
@@ -132,66 +137,240 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max {{abril.promtemmax}}°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min {{abril.promtemmin}}°
                                                 </h6>
                                             </div>
                                         </div>
                                     </div>
 
-                                    <a href="#" class="card-link">Ver mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseAbril">Ver
+                                        mes</a>
 
                                 </div>
                             </div>
                         </div>
-                        <div class="collapse" id="collapseEnero">
-                            <!-- Card Header - Dropdown -->
-                            <div class="card-header py-3 d-flex flex-row align-items-center col-">
-                                <h6 class="m-0 font-weight-bold text-primary">Ganancias</h6>
-                                <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                        aria-labelledby="dropdownMenuLink">
-                                        <div class="dropdown-header">Dropdown Header:</div>
-                                        <a class="dropdown-item" href="#">Action</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Algo mas..</a>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="collapse col-md-12 col-sm-12" id="collapseEnero">
                             <!-- Card Body -->
                             <div class="card-body">
-                                <div class="chart-area">
-                                    <div class="chartjs-size-monitor">
-                                        <div class="chartjs-size-monitor-expand">
-                                            <div class=""></div>
-                                        </div>
-                                        <div class="chartjs-size-monitor-shrink">
-                                            <div class=""></div>
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pill-tab-temperatura-enero"
+                                                data-toggle="pill" href="#tab-temperatura-enero" role="tab"
+                                                aria-controls="pill-tab-temperatura-enero"
+                                                aria-selected="true">Temperatura</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pill-tab-lluvia-enero" data-toggle="pill"
+                                                href="#tab-lluvia-enero" role="tab"
+                                                aria-controls="pill-tab-lluvia-enero"
+                                                aria-selected="false">Precipitaciones</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content" id="pills-tabContent-graficos">
+                                    <div class="tab-pane fade show active" id="tab-temperatura-enero" role="tabpanel"
+                                        aria-labelledby="tab-temperatura-enero">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart1" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
                                         </div>
                                     </div>
-                                    <canvas id="myAreaChart" style="display: block; width: 996px; height: 320px;"
-                                        width="996" height="320" class="chartjs-render-monitor"></canvas>
+
+                                    <div class="tab-pane fade" id="tab-lluvia-enero" role="tabpanel"
+                                        aria-labelledby="tab-lluvia-enero">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart5" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                        <div class="collapse" id="collapseFebrero">
-                            <div class="card card-body">
-                                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-                                richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes
-                                anderson cred nesciunt sapiente ea proident.febreroooooo
+                        <div class="collapse col-md-12 col-sm-12" id="collapseFebrero">
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pill-tab-temperatura-febrero"
+                                                data-toggle="pill" href="#tab-temperatura-febrero" role="tab"
+                                                aria-controls="pill-tab-temperatura-febrero"
+                                                aria-selected="true">Temperatura</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pill-tab-lluvia-febrero" data-toggle="pill"
+                                                href="#tab-lluvia-febrero" role="tab"
+                                                aria-controls="pill-tab-lluvia-febrero"
+                                                aria-selected="false">Precipitaciones</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content" id="pills-tabContent-graficos">
+                                    <div class="tab-pane fade show active" id="tab-temperatura-febrero" role="tabpanel"
+                                        aria-labelledby="tab-temperatura-febrero">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart2" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="tab-lluvia-febrero" role="tabpanel"
+                                        aria-labelledby="tab-lluvia-febrero">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart6" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse col-md-12 col-sm-12" id="collapseMarzo">
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pill-tab-temperatura-marzo"
+                                                data-toggle="pill" href="#tab-temperatura-marzo" role="tab"
+                                                aria-controls="pill-tab-temperatura-marzo"
+                                                aria-selected="true">Temperatura</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pill-tab-lluvia-marzo" data-toggle="pill"
+                                                href="#tab-lluvia-marzo" role="tab"
+                                                aria-controls="pill-tab-lluvia-marzo"
+                                                aria-selected="false">Precipitaciones</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content" id="pills-tabContent-graficos">
+                                    <div class="tab-pane fade show active" id="tab-temperatura-marzo" role="tabpanel"
+                                        aria-labelledby="tab-temperatura-marzo">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart3" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="tab-lluvia-marzo" role="tabpanel"
+                                        aria-labelledby="tab-lluvia-marzo">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart7" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collapse col-md-12 col-sm-12" id="collapseAbril">
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="card-header">
+                                    <ul class="nav nav-tabs card-header-tabs">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="pill-tab-temperatura-abril"
+                                                data-toggle="pill" href="#tab-temperatura-abril" role="tab"
+                                                aria-controls="pill-tab-temperatura-abril"
+                                                aria-selected="true">Temperatura</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="pill-tab-lluvia-abril" data-toggle="pill"
+                                                href="#tab-lluvia-abril" role="tab"
+                                                aria-controls="pill-tab-lluvia-abril"
+                                                aria-selected="false">Precipitaciones</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="tab-content" id="pills-tabContent-graficos">
+                                    <div class="tab-pane fade show active" id="tab-temperatura-abril" role="tabpanel"
+                                        aria-labelledby="tab-temperatura-abril">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart4" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade" id="tab-lluvia-abril" role="tabpanel"
+                                        aria-labelledby="tab-lluvia-abril">
+                                        <div class="chart-area">
+                                            <div class="chartjs-size-monitor">
+                                                <div class="chartjs-size-monitor-expand">
+                                                    <div class=""></div>
+                                                </div>
+                                                <div class="chartjs-size-monitor-shrink">
+                                                    <div class=""></div>
+                                                </div>
+                                            </div>
+                                            <canvas id="myChart8" style="display: block; width: 996px; height: 320px;"
+                                                width="996" height="320" class="chartjs-render-monitor"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Mayo</h6>
                                 </div>
@@ -201,11 +380,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -217,7 +398,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Junio</h6>
                                 </div>
@@ -227,11 +408,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -243,7 +426,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Julio</h6>
                                 </div>
@@ -253,11 +436,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -269,7 +454,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Agosto</h6>
                                 </div>
@@ -279,11 +464,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{febrero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{febrero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -295,7 +482,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Septiembre</h6>
                                 </div>
@@ -305,11 +492,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -321,7 +510,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Octubre</h6>
                                 </div>
@@ -331,11 +520,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -347,7 +538,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Noviembre</h6>
                                 </div>
@@ -357,11 +548,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -373,7 +566,7 @@
                             </div>
                         </div>
                         <div class="col-">
-                            <div class="card" style="width: 14.5rem;">
+                            <div class="card" style="width: 14rem;">
                                 <div class="card-header">
                                     <h6 class="m-0 font-weight-bold text-primary">Diciembre</h6>
                                 </div>
@@ -383,11 +576,13 @@
                                     <div class="container">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Max {{enero.dia1.tmpmax}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Max
+                                                    00°
                                                 </h6>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
-                                                <h6 class="card-subtitle mb-2 text-muted">Min {{enero.dia1.tmpmin}}°
+                                                <h6 class="card-subtitle mb-2 text-muted">Min
+                                                    00°
                                                 </h6>
                                             </div>
                                         </div>
@@ -401,11 +596,12 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                <!--Seleccion de Mapa-->
+            <div class="tab-pane fade" id="peor-rinde-tab" role="tabpanel" aria-labelledby="peor-rinde-tab">
+
                 <div class="card-header py-3" style="text-align: left;">
-                    <h6 class="m-0 font-weight-bold text-primary">Seleccione una de las sondas marcadas en el mapa para
-                        utilizar sus datos historicos.</h6>
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        Vale la pena que en una consulta te triga mejor y peor?
+                    </h6>
                 </div>
                 <div class="card-body">
                     <div id="map" style="height: 400px;"></div>
@@ -415,20 +611,557 @@
     </div>
 </div>
 
-<div>Iconos diseñados por <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a
-        href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a></div>
+<div>
+    Iconos diseñados por
+    <a href="https://www.freepik.com" title="Freepik">Freepik</a> from
+    <a href="https://www.flaticon.es/" title="Flaticon">www.flaticon.es</a>
+</div>
 
 <script type="text/javascript">
-    var endpoint = "{% url 'buscador' %}"
-    var customer = "{{data.mes}}"
-    $.ajax({
-        method: "GET",
-        url: endpoint,
-        success: function (data) {
-            console.log(customer)
-        }
-    })
 
+    var datos = []
+    if ('{{data|safe}}') {
+        datos = JSON.parse('{{data|safe}}');
+    }
+    console.log(datos);
+    console.log(datos[1])
+
+    var labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    const data = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Maxima',
+                data: [
+                    "{{enero.dia1.tmpmax}}",
+                    "{{enero.dia2.tmpmax}}",
+                    "{{enero.dia3.tmpmax}}",
+                    "{{enero.dia4.tmpmax}}",
+                    "{{enero.dia5.tmpmax}}",
+                    "{{enero.dia6.tmpmax}}",
+                    "{{enero.dia7.tmpmax}}",
+                    "{{enero.dia8.tmpmax}}",
+                    "{{enero.dia9.tmpmax}}",
+                    "{{enero.dia10.tmpmax}}",
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+                //backgroundColor: 'rgb(255, 99, 132,0.5)',
+            },
+            {
+                label: 'Minima',
+                data: [
+                    "{{enero.dia1.tmpmin}}",
+                    "{{enero.dia2.tmpmin}}",
+                    "{{enero.dia3.tmpmin}}",
+                    "{{enero.dia4.tmpmin}}",
+                    "{{enero.dia5.tmpmin}}",
+                    "{{enero.dia6.tmpmin}}",
+                    "{{enero.dia7.tmpmin}}",
+                    "{{enero.dia8.tmpmin}}",
+                    "{{enero.dia9.tmpmin}}",
+                    "{{enero.dia10.tmpmin}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false,
+                //backgroundColor: 'rgb(54, 162, 235,0.5)',
+            }
+        ]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Temperaturas Enero'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'grados'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+
+    var ctx = document.getElementById("myChart1").getContext("2d");
+    window.myLine_1 = new Chart(ctx, config);
+
+
+    const data_2 = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Maxima',
+                data: [
+                    "{{febrero.dia1.tmpmax}}",
+                    "{{febrero.dia2.tmpmax}}",
+                    "{{febrero.dia3.tmpmax}}",
+                    "{{febrero.dia4.tmpmax}}",
+                    "{{febrero.dia5.tmpmax}}",
+                    "{{febrero.dia6.tmpmax}}",
+                    "{{febrero.dia7.tmpmax}}",
+                    "{{febrero.dia8.tmpmax}}",
+                    "{{febrero.dia9.tmpmax}}",
+                    "{{febrero.dia10.tmpmax}}",
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+                //backgroundColor: 'rgb(255, 99, 132,0.5)',
+            },
+            {
+                label: 'Minima',
+                data: [
+                    "{{febrero.dia1.tmpmin}}",
+                    "{{febrero.dia2.tmpmin}}",
+                    "{{febrero.dia3.tmpmin}}",
+                    "{{febrero.dia4.tmpmin}}",
+                    "{{febrero.dia5.tmpmin}}",
+                    "{{febrero.dia6.tmpmin}}",
+                    "{{febrero.dia7.tmpmin}}",
+                    "{{febrero.dia8.tmpmin}}",
+                    "{{febrero.dia9.tmpmin}}",
+                    "{{febrero.dia10.tmpmin}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false,
+                //backgroundColor: 'rgb(54, 162, 235,0.5)',
+            }
+        ]
+    };
+
+    const config_2 = {
+        type: 'line',
+        data: data_2,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Temperaturas Febrero'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'grados'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+
+    var ctx_2 = document.getElementById("myChart2").getContext("2d");
+    window.myLine_2 = new Chart(ctx_2, config_2);
+
+    const data_3 = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Maxima',
+                data: [
+                    "{{marzo.dia1.tmpmax}}",
+                    "{{marzo.dia2.tmpmax}}",
+                    "{{marzo.dia3.tmpmax}}",
+                    "{{marzo.dia4.tmpmax}}",
+                    "{{marzo.dia5.tmpmax}}",
+                    "{{marzo.dia6.tmpmax}}",
+                    "{{marzo.dia7.tmpmax}}",
+                    "{{marzo.dia8.tmpmax}}",
+                    "{{marzo.dia9.tmpmax}}",
+                    "{{marzo.dia10.tmpmax}}",
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+                //backgroundColor: 'rgb(255, 99, 132,0.5)',
+            },
+            {
+                label: 'Minima',
+                data: [
+                    "{{marzo.dia1.tmpmin}}",
+                    "{{marzo.dia2.tmpmin}}",
+                    "{{marzo.dia3.tmpmin}}",
+                    "{{marzo.dia4.tmpmin}}",
+                    "{{marzo.dia5.tmpmin}}",
+                    "{{marzo.dia6.tmpmin}}",
+                    "{{marzo.dia7.tmpmin}}",
+                    "{{marzo.dia8.tmpmin}}",
+                    "{{marzo.dia9.tmpmin}}",
+                    "{{marzo.dia10.tmpmin}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false,
+                //backgroundColor: 'rgb(54, 162, 235,0.5)',
+            }
+        ]
+    };
+
+    const config_3 = {
+        type: 'line',
+        data: data_3,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Temperaturas Marzo'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'grados'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+
+    var ctx_3 = document.getElementById("myChart3").getContext("2d");
+    window.myLine_3 = new Chart(ctx_3, config_3);
+
+    const data_4 = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Maxima',
+                data: [
+                    "{{abril.dia1.tmpmax}}",
+                    "{{abril.dia2.tmpmax}}",
+                    "{{abril.dia3.tmpmax}}",
+                    "{{abril.dia4.tmpmax}}",
+                    "{{abril.dia5.tmpmax}}",
+                    "{{abril.dia6.tmpmax}}",
+                    "{{abril.dia7.tmpmax}}",
+                    "{{abril.dia8.tmpmax}}",
+                    "{{abril.dia9.tmpmax}}",
+                    "{{abril.dia10.tmpmax}}",
+                ],
+                borderColor: 'rgb(255, 99, 132)',
+                fill: false,
+                //backgroundColor: 'rgb(255, 99, 132,0.5)',
+            },
+            {
+                label: 'Minima',
+                data: [
+                    "{{abril.dia1.tmpmin}}",
+                    "{{abril.dia2.tmpmin}}",
+                    "{{abril.dia3.tmpmin}}",
+                    "{{abril.dia4.tmpmin}}",
+                    "{{abril.dia5.tmpmin}}",
+                    "{{abril.dia6.tmpmin}}",
+                    "{{abril.dia7.tmpmin}}",
+                    "{{abril.dia8.tmpmin}}",
+                    "{{abril.dia9.tmpmin}}",
+                    "{{abril.dia10.tmpmin}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                fill: false,
+                //backgroundColor: 'rgb(54, 162, 235,0.5)',
+            }
+        ]
+    };
+
+    const config_4 = {
+        type: 'line',
+        data: data_4,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Temperaturas Abril'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'grados'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+    var ctx_4 = document.getElementById("myChart4").getContext("2d");
+    window.myLine_4 = new Chart(ctx_4, config_4);
+
+    const data_5 = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Lluvia',
+                data: [
+                    "{{enero.dia1.precipitacion}}",
+                    "{{enero.dia2.precipitacion}}",
+                    "{{enero.dia3.precipitacion}}",
+                    "{{enero.dia4.precipitacion}}",
+                    "{{enero.dia5.precipitacion}}",
+                    "{{enero.dia6.precipitacion}}",
+                    "{{enero.dia7.precipitacion}}",
+                    "{{enero.dia8.precipitacion}}",
+                    "{{enero.dia9.precipitacion}}",
+                    "{{enero.dia10.precipitacion}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgb(54, 162, 235, 0.5)',
+            },
+        ]
+    };
+
+    const config_5 = {
+        type: 'bar',
+        data: data_5,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Precipitaciones Enero'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'mm'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+    var ctx_5 = document.getElementById("myChart5").getContext("2d");
+    window.myBar_5 = new Chart(ctx_5, config_5);
+
+    const data_6 = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Lluvia',
+                data: [
+                    "{{febrero.dia1.precipitacion}}",
+                    "{{febrero.dia2.precipitacion}}",
+                    "{{febrero.dia3.precipitacion}}",
+                    "{{febrero.dia4.precipitacion}}",
+                    "{{febrero.dia5.precipitacion}}",
+                    "{{febrero.dia6.precipitacion}}",
+                    "{{febrero.dia7.precipitacion}}",
+                    "{{febrero.dia8.precipitacion}}",
+                    "{{febrero.dia9.precipitacion}}",
+                    "{{febrero.dia10.precipitacion}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgb(54, 162, 235, 0.5)',
+            },
+        ]
+    };
+
+    const config_6 = {
+        type: 'bar',
+        data: data_6,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Precipitaciones Febrero'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'mm'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+    var ctx_6 = document.getElementById("myChart6").getContext("2d");
+    window.myBar_6 = new Chart(ctx_6, config_6);
+
+    const data_7 = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Lluvia',
+                data: [
+                    "{{marzo.dia1.precipitacion}}",
+                    "{{marzo.dia2.precipitacion}}",
+                    "{{marzo.dia3.precipitacion}}",
+                    "{{marzo.dia4.precipitacion}}",
+                    "{{marzo.dia5.precipitacion}}",
+                    "{{marzo.dia6.precipitacion}}",
+                    "{{marzo.dia7.precipitacion}}",
+                    "{{marzo.dia8.precipitacion}}",
+                    "{{marzo.dia9.precipitacion}}",
+                    "{{marzo.dia10.precipitacion}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgb(54, 162, 235, 0.5)',
+            },
+        ]
+    };
+
+    const config_7 = {
+        type: 'bar',
+        data: data_7,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Precipitaciones Marzo'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'mm'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+    var ctx_7 = document.getElementById("myChart7").getContext("2d");
+    window.myBar_6 = new Chart(ctx_7, config_7);
+
+    const data_8 = {
+        labels: labels,
+        datasets: [
+            {
+                label: 'Lluvia',
+                data: [
+                    "{{abril.dia1.precipitacion}}",
+                    "{{abril.dia2.precipitacion}}",
+                    "{{abril.dia3.precipitacion}}",
+                    "{{abril.dia4.precipitacion}}",
+                    "{{abril.dia5.precipitacion}}",
+                    "{{abril.dia6.precipitacion}}",
+                    "{{abril.dia7.precipitacion}}",
+                    "{{abril.dia8.precipitacion}}",
+                    "{{abril.dia9.precipitacion}}",
+                    "{{abril.dia10.precipitacion}}",
+                ],
+                borderColor: 'rgb(54, 162, 235)',
+                backgroundColor: 'rgb(54, 162, 235, 0.5)',
+            },
+        ]
+    };
+
+    const config_8 = {
+        type: 'bar',
+        data: data_8,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Precipitaciones Abril'
+                }
+            },
+            scales: {
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'mm'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'días'
+                    }
+                }]
+            }
+        },
+    };
+
+    var ctx_8 = document.getElementById("myChart8").getContext("2d");
+    window.myBar_8 = new Chart(ctx_8, config_8);
 </script>
 
 <!-- Demo de charts-->
