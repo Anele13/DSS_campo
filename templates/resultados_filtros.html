@@ -66,8 +66,10 @@
                                         </div>
                                     </div>
 
-                                    <a class="card-link" data-toggle="collapse" href="#collapseEnero">Ver
-                                        mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseEnero"
+                                        onclick="graficar('myChart1','myChart5','enero')">
+                                        Ver mes
+                                    </a>
 
                                 </div>
                             </div>
@@ -93,8 +95,10 @@
                                         </div>
                                     </div>
 
-                                    <a class="card-link" data-toggle="collapse" href="#collapseFebrero">Ver
-                                        mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseFebrero"
+                                        onclick="graficar('myChart2','myChart6','febrero')">
+                                        Ver mes
+                                    </a>
 
                                 </div>
                             </div>
@@ -120,8 +124,10 @@
                                         </div>
                                     </div>
 
-                                    <a class="card-link" data-toggle="collapse" href="#collapseMarzo">Ver
-                                        mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseMarzo"
+                                        onclick="graficar('myChart3','myChart7','marzo')">
+                                        Ver mes
+                                    </a>
 
                                 </div>
                             </div>
@@ -147,8 +153,10 @@
                                         </div>
                                     </div>
 
-                                    <a class="card-link" data-toggle="collapse" href="#collapseAbril">Ver
-                                        mes</a>
+                                    <a class="card-link" data-toggle="collapse" href="#collapseAbril"
+                                        onclick="graficar('myChart4','myChart8','abril')">
+                                        Ver mes
+                                    </a>
 
                                 </div>
                             </div>
@@ -619,552 +627,172 @@
 
 <script type="text/javascript">
 
-    var datos = []
-    if ('{{data|safe}}') {
-        datos = JSON.parse('{{data|safe}}');
+    var resultados = []
+    if ('{{resultados|safe}}') {
+        resultados = JSON.parse('{{resultados|safe}}');
     }
-    console.log(datos);
-    console.log(datos[1])
 
-    var labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const data = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Maxima',
-                data: [
-                    "{{enero.dia1.tmpmax}}",
-                    "{{enero.dia2.tmpmax}}",
-                    "{{enero.dia3.tmpmax}}",
-                    "{{enero.dia4.tmpmax}}",
-                    "{{enero.dia5.tmpmax}}",
-                    "{{enero.dia6.tmpmax}}",
-                    "{{enero.dia7.tmpmax}}",
-                    "{{enero.dia8.tmpmax}}",
-                    "{{enero.dia9.tmpmax}}",
-                    "{{enero.dia10.tmpmax}}",
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
-                //backgroundColor: 'rgb(255, 99, 132,0.5)',
-            },
-            {
-                label: 'Minima',
-                data: [
-                    "{{enero.dia1.tmpmin}}",
-                    "{{enero.dia2.tmpmin}}",
-                    "{{enero.dia3.tmpmin}}",
-                    "{{enero.dia4.tmpmin}}",
-                    "{{enero.dia5.tmpmin}}",
-                    "{{enero.dia6.tmpmin}}",
-                    "{{enero.dia7.tmpmin}}",
-                    "{{enero.dia8.tmpmin}}",
-                    "{{enero.dia9.tmpmin}}",
-                    "{{enero.dia10.tmpmin}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                fill: false,
-                //backgroundColor: 'rgb(54, 162, 235,0.5)',
-            }
-        ]
-    };
-
-    const config = {
-        type: 'line',
-        data: data,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
+    function armar_datos_temperatura(mes) {
+        var labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const datos = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Maxima',
+                    data: [
+                        resultados[mes].dia1.tmpmax,
+                        resultados[mes].dia2.tmpmax,
+                        resultados[mes].dia3.tmpmax,
+                        resultados[mes].dia4.tmpmax,
+                        resultados[mes].dia5.tmpmax,
+                        resultados[mes].dia6.tmpmax,
+                        resultados[mes].dia7.tmpmax,
+                        resultados[mes].dia8.tmpmax,
+                        resultados[mes].dia9.tmpmax,
+                        resultados[mes].dia10.tmpmax,
+                    ],
+                    borderColor: 'rgb(255, 99, 132)',
+                    fill: false,
+                    //backgroundColor: 'rgb(255, 99, 132,0.5)',
                 },
-                title: {
-                    display: true,
-                    text: 'Temperaturas Enero'
+                {
+                    label: 'Minima',
+                    data: [
+                        resultados[mes].dia1.tmpmin,
+                        resultados[mes].dia2.tmpmin,
+                        resultados[mes].dia3.tmpmin,
+                        resultados[mes].dia4.tmpmin,
+                        resultados[mes].dia5.tmpmin,
+                        resultados[mes].dia6.tmpmin,
+                        resultados[mes].dia7.tmpmin,
+                        resultados[mes].dia8.tmpmin,
+                        resultados[mes].dia9.tmpmin,
+                        resultados[mes].dia10.tmpmin,
+                    ],
+                    borderColor: 'rgb(54, 162, 235)',
+                    fill: false,
+                    //backgroundColor: 'rgb(54, 162, 235,0.5)',
+                }
+            ]
+        };
+        return datos;
+    }
+
+    function configurar_grafico_linea(datos_armados, mes) {
+        const config = {
+            type: 'line',
+            data: datos_armados,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Temperaturas ' + mes
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'grados'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'días'
+                        }
+                    }]
                 }
             },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'grados'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
+        };
+        return config;
+    }
 
-
-    var ctx = document.getElementById("myChart1").getContext("2d");
-    window.myLine_1 = new Chart(ctx, config);
-
-
-    const data_2 = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Maxima',
-                data: [
-                    "{{febrero.dia1.tmpmax}}",
-                    "{{febrero.dia2.tmpmax}}",
-                    "{{febrero.dia3.tmpmax}}",
-                    "{{febrero.dia4.tmpmax}}",
-                    "{{febrero.dia5.tmpmax}}",
-                    "{{febrero.dia6.tmpmax}}",
-                    "{{febrero.dia7.tmpmax}}",
-                    "{{febrero.dia8.tmpmax}}",
-                    "{{febrero.dia9.tmpmax}}",
-                    "{{febrero.dia10.tmpmax}}",
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
-                //backgroundColor: 'rgb(255, 99, 132,0.5)',
-            },
-            {
-                label: 'Minima',
-                data: [
-                    "{{febrero.dia1.tmpmin}}",
-                    "{{febrero.dia2.tmpmin}}",
-                    "{{febrero.dia3.tmpmin}}",
-                    "{{febrero.dia4.tmpmin}}",
-                    "{{febrero.dia5.tmpmin}}",
-                    "{{febrero.dia6.tmpmin}}",
-                    "{{febrero.dia7.tmpmin}}",
-                    "{{febrero.dia8.tmpmin}}",
-                    "{{febrero.dia9.tmpmin}}",
-                    "{{febrero.dia10.tmpmin}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                fill: false,
-                //backgroundColor: 'rgb(54, 162, 235,0.5)',
-            }
-        ]
-    };
-
-    const config_2 = {
-        type: 'line',
-        data: data_2,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
+    function armar_datos_lluvia(mes) {
+        //console.log(datos[mes].dia1)
+        var labels = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        const datos = {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Lluvia',
+                    data: [
+                        resultados[mes].dia1.precipitacion,
+                        resultados[mes].dia2.precipitacion,
+                        resultados[mes].dia3.precipitacion,
+                        resultados[mes].dia4.precipitacion,
+                        resultados[mes].dia5.precipitacion,
+                        resultados[mes].dia6.precipitacion,
+                        resultados[mes].dia7.precipitacion,
+                        resultados[mes].dia8.precipitacion,
+                        resultados[mes].dia9.precipitacion,
+                        resultados[mes].dia10.precipitacion,
+                    ],
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgb(54, 162, 235, 0.5)',
                 },
-                title: {
-                    display: true,
-                    text: 'Temperaturas Febrero'
+            ]
+        };
+        return datos;
+    }
+
+    function configurar_grafico_barra(datos_armados, mes) {
+        const config = {
+            type: 'bar',
+            data: datos_armados,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Precipitaciones ' + mes
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'mm'
+                        }
+                    }],
+                    xAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'días'
+                        }
+                    }]
                 }
             },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'grados'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
+        };
+        return config;
+    }
 
+    function grafico_linea(id_tempertaura, mes) {
+        console.log(id_tempertaura, mes);
+        datos_armados = armar_datos_temperatura(mes);
+        configuracion = configurar_grafico_linea(datos_armados, mes);
+        var canvas_line = document.getElementById(id_tempertaura).getContext("2d");
+        window.myLine = new Chart(canvas_line, configuracion);
+    }
 
-    var ctx_2 = document.getElementById("myChart2").getContext("2d");
-    window.myLine_2 = new Chart(ctx_2, config_2);
+    function grafico_barras(id_lluvia, mes) {
+        console.log(id_lluvia, mes);
+        datos_armados = armar_datos_lluvia(mes);
+        configuracion = configurar_grafico_barra(datos_armados, mes);
+        var canvas_bar = document.getElementById(id_lluvia).getContext("2d");
+        window.myBar = new Chart(canvas_bar, configuracion);
+    }
 
-    const data_3 = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Maxima',
-                data: [
-                    "{{marzo.dia1.tmpmax}}",
-                    "{{marzo.dia2.tmpmax}}",
-                    "{{marzo.dia3.tmpmax}}",
-                    "{{marzo.dia4.tmpmax}}",
-                    "{{marzo.dia5.tmpmax}}",
-                    "{{marzo.dia6.tmpmax}}",
-                    "{{marzo.dia7.tmpmax}}",
-                    "{{marzo.dia8.tmpmax}}",
-                    "{{marzo.dia9.tmpmax}}",
-                    "{{marzo.dia10.tmpmax}}",
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
-                //backgroundColor: 'rgb(255, 99, 132,0.5)',
-            },
-            {
-                label: 'Minima',
-                data: [
-                    "{{marzo.dia1.tmpmin}}",
-                    "{{marzo.dia2.tmpmin}}",
-                    "{{marzo.dia3.tmpmin}}",
-                    "{{marzo.dia4.tmpmin}}",
-                    "{{marzo.dia5.tmpmin}}",
-                    "{{marzo.dia6.tmpmin}}",
-                    "{{marzo.dia7.tmpmin}}",
-                    "{{marzo.dia8.tmpmin}}",
-                    "{{marzo.dia9.tmpmin}}",
-                    "{{marzo.dia10.tmpmin}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                fill: false,
-                //backgroundColor: 'rgb(54, 162, 235,0.5)',
-            }
-        ]
-    };
-
-    const config_3 = {
-        type: 'line',
-        data: data_3,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Temperaturas Marzo'
-                }
-            },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'grados'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
-
-
-    var ctx_3 = document.getElementById("myChart3").getContext("2d");
-    window.myLine_3 = new Chart(ctx_3, config_3);
-
-    const data_4 = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Maxima',
-                data: [
-                    "{{abril.dia1.tmpmax}}",
-                    "{{abril.dia2.tmpmax}}",
-                    "{{abril.dia3.tmpmax}}",
-                    "{{abril.dia4.tmpmax}}",
-                    "{{abril.dia5.tmpmax}}",
-                    "{{abril.dia6.tmpmax}}",
-                    "{{abril.dia7.tmpmax}}",
-                    "{{abril.dia8.tmpmax}}",
-                    "{{abril.dia9.tmpmax}}",
-                    "{{abril.dia10.tmpmax}}",
-                ],
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false,
-                //backgroundColor: 'rgb(255, 99, 132,0.5)',
-            },
-            {
-                label: 'Minima',
-                data: [
-                    "{{abril.dia1.tmpmin}}",
-                    "{{abril.dia2.tmpmin}}",
-                    "{{abril.dia3.tmpmin}}",
-                    "{{abril.dia4.tmpmin}}",
-                    "{{abril.dia5.tmpmin}}",
-                    "{{abril.dia6.tmpmin}}",
-                    "{{abril.dia7.tmpmin}}",
-                    "{{abril.dia8.tmpmin}}",
-                    "{{abril.dia9.tmpmin}}",
-                    "{{abril.dia10.tmpmin}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                fill: false,
-                //backgroundColor: 'rgb(54, 162, 235,0.5)',
-            }
-        ]
-    };
-
-    const config_4 = {
-        type: 'line',
-        data: data_4,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Temperaturas Abril'
-                }
-            },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'grados'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
-
-    var ctx_4 = document.getElementById("myChart4").getContext("2d");
-    window.myLine_4 = new Chart(ctx_4, config_4);
-
-    const data_5 = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Lluvia',
-                data: [
-                    "{{enero.dia1.precipitacion}}",
-                    "{{enero.dia2.precipitacion}}",
-                    "{{enero.dia3.precipitacion}}",
-                    "{{enero.dia4.precipitacion}}",
-                    "{{enero.dia5.precipitacion}}",
-                    "{{enero.dia6.precipitacion}}",
-                    "{{enero.dia7.precipitacion}}",
-                    "{{enero.dia8.precipitacion}}",
-                    "{{enero.dia9.precipitacion}}",
-                    "{{enero.dia10.precipitacion}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                backgroundColor: 'rgb(54, 162, 235, 0.5)',
-            },
-        ]
-    };
-
-    const config_5 = {
-        type: 'bar',
-        data: data_5,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Precipitaciones Enero'
-                }
-            },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'mm'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
-
-    var ctx_5 = document.getElementById("myChart5").getContext("2d");
-    window.myBar_5 = new Chart(ctx_5, config_5);
-
-    const data_6 = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Lluvia',
-                data: [
-                    "{{febrero.dia1.precipitacion}}",
-                    "{{febrero.dia2.precipitacion}}",
-                    "{{febrero.dia3.precipitacion}}",
-                    "{{febrero.dia4.precipitacion}}",
-                    "{{febrero.dia5.precipitacion}}",
-                    "{{febrero.dia6.precipitacion}}",
-                    "{{febrero.dia7.precipitacion}}",
-                    "{{febrero.dia8.precipitacion}}",
-                    "{{febrero.dia9.precipitacion}}",
-                    "{{febrero.dia10.precipitacion}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                backgroundColor: 'rgb(54, 162, 235, 0.5)',
-            },
-        ]
-    };
-
-    const config_6 = {
-        type: 'bar',
-        data: data_6,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Precipitaciones Febrero'
-                }
-            },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'mm'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
-
-    var ctx_6 = document.getElementById("myChart6").getContext("2d");
-    window.myBar_6 = new Chart(ctx_6, config_6);
-
-    const data_7 = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Lluvia',
-                data: [
-                    "{{marzo.dia1.precipitacion}}",
-                    "{{marzo.dia2.precipitacion}}",
-                    "{{marzo.dia3.precipitacion}}",
-                    "{{marzo.dia4.precipitacion}}",
-                    "{{marzo.dia5.precipitacion}}",
-                    "{{marzo.dia6.precipitacion}}",
-                    "{{marzo.dia7.precipitacion}}",
-                    "{{marzo.dia8.precipitacion}}",
-                    "{{marzo.dia9.precipitacion}}",
-                    "{{marzo.dia10.precipitacion}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                backgroundColor: 'rgb(54, 162, 235, 0.5)',
-            },
-        ]
-    };
-
-    const config_7 = {
-        type: 'bar',
-        data: data_7,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Precipitaciones Marzo'
-                }
-            },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'mm'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
-
-    var ctx_7 = document.getElementById("myChart7").getContext("2d");
-    window.myBar_6 = new Chart(ctx_7, config_7);
-
-    const data_8 = {
-        labels: labels,
-        datasets: [
-            {
-                label: 'Lluvia',
-                data: [
-                    "{{abril.dia1.precipitacion}}",
-                    "{{abril.dia2.precipitacion}}",
-                    "{{abril.dia3.precipitacion}}",
-                    "{{abril.dia4.precipitacion}}",
-                    "{{abril.dia5.precipitacion}}",
-                    "{{abril.dia6.precipitacion}}",
-                    "{{abril.dia7.precipitacion}}",
-                    "{{abril.dia8.precipitacion}}",
-                    "{{abril.dia9.precipitacion}}",
-                    "{{abril.dia10.precipitacion}}",
-                ],
-                borderColor: 'rgb(54, 162, 235)',
-                backgroundColor: 'rgb(54, 162, 235, 0.5)',
-            },
-        ]
-    };
-
-    const config_8 = {
-        type: 'bar',
-        data: data_8,
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Precipitaciones Abril'
-                }
-            },
-            scales: {
-                yAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'mm'
-                    }
-                }],
-                xAxes: [{
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'días'
-                    }
-                }]
-            }
-        },
-    };
-
-    var ctx_8 = document.getElementById("myChart8").getContext("2d");
-    window.myBar_8 = new Chart(ctx_8, config_8);
+    function graficar(id_tempertaura, id_lluvia, mes) {
+        grafico_linea(id_tempertaura, mes);
+        grafico_barras(id_lluvia, mes);
+    }
 </script>
-
-<!-- Demo de charts-->
-<script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-<script src="{% static 'js/demo/chart-pie-demo.js'' %}"></script>
 {% endblock %}

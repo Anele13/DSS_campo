@@ -92,5 +92,5 @@ def buscador(request):
                 },
                 }
 
-    contexto['data'] = json.dumps(contexto)
+    contexto['resultados'] = json.dumps(contexto)
     return render(request, "resultados_filtros.html", contexto)
