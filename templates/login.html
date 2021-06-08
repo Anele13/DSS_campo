@@ -3,6 +3,7 @@
 
 
 {% block body_base %}
+
 <body class="bg-gradient-primary">
 
     <div class="container">
@@ -16,7 +17,9 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                            <div class="col-lg-6 d-none d-lg-block">
+                                <img class="img-thumbnail mx-auto border-0" src="{% static 'img/sheep-2' %}" alt="...">
+                            </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
                                     <div class="text-center">
@@ -26,34 +29,34 @@
                                         {% if msg %}
                                         alert
 
-                                          <span class="text-danger">{{ msg }}</span>
+                                        <span class="text-danger">{{ msg }}</span>
                                         {% endif %}
-                                      </h6>
-                  
+                                    </h6>
+
                                     <form method="POST" action="{% url 'login' %}">
 
                                         {% csrf_token %}
 
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="bmd-label-floating">Usuario:</label>
                                                     {{ form.username }}
                                                 </div>
-                                                </div>
                                             </div>
+                                        </div>
 
-                                            <br />
+                                        <br />
 
-                                            <div class="row">
-                                                <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="bmd-label-floating">Contraseña:</label>
                                                     {{ form.password }}
                                                 </div>
-                                                </div>
                                             </div>
-                                            <br>
+                                        </div>
+                                        <br>
                                         <button class="btn btn-primary btn-user btn-block"> Ingresar </button>
 
                                         <hr>
