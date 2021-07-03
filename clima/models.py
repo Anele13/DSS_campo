@@ -57,5 +57,5 @@ class DatosClimaticos(models.Model):
     barometro = models.FloatField(blank=True, null=True)
     mm_lluvia = models.FloatField(blank=True, null=True)
     radiacion_solar = models.FloatField(blank=True, null=True)
-    sonda = models.ForeignKey(Sonda, null=True, db_column='sonda', on_delete=models.SET_NULL)
+    sonda = models.ForeignKey(Sonda, null=True, db_column='sonda', on_delete=models.SET_NULL, related_name='datos_climaticos_set')
 

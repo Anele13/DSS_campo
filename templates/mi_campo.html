@@ -1,0 +1,62 @@
+{% extends 'site_content.html' %}
+{% load static %}
+
+<!-- Escribir en este bloque todo lo que haga falta-->
+{% block site_content %}
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+
+    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 100px;">
+        <div class="toast " role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" style="position: absolute; top: 0; right: 0;">
+            <div class="toast-header">
+            <svg class="bd-placeholder-img rounded mr-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#e74a3b"></rect></svg>
+            <strong class="mr-auto"> Sugerencia</strong>
+            <small>11 mins ago</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="toast-body">
+            Comprar alimento balanceado en estos dias!
+            </div>
+        </div>
+    </div>
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Mi Campo</h1>
+    </div>
+
+    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Filtros disponibles
+    </button>
+    <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" style="">
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Rinde</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Mayor cantidad de mm de lluvia</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Mayor temperatura en verano</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Mejor Finura Peor Finura</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Menor mortandad</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Kg de Lana Producida</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Cantidad de pariciones</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' %}">Cantidad de Hacienda</a>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('.toast').toast('show');
+        });
+    </script>
+
+{% endblock %}
