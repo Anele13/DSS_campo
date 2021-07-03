@@ -1,4 +1,10 @@
 from django.db import models
+import pandas as pd
+import sqlite3
+
+
+from sistema_campo.settings import BASE_DIR
+
 
 class Sonda(models.Model):
     PERTENENCIA_CHOICES = (
@@ -18,6 +24,25 @@ class Sonda(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    def agregar_datos_climaticos(self, archivo):
+        df = pd.read_csv(archivo)
+        lista_columnas = ['periodo','temperatura_minima', 'temperatura_media',
+                    'temperatura_maxima', 'humedad', 'velocidad_viento', 
+                    'direccion_viento', 'velocidad_max_viento', 'barometro', 
+                    'mm_lluvia', 'radiacion_solar']
+        max_columnas = len(lista_columnas)
+
+        if (len(df.columns) != max_columnas):
+            raise Exception("El archivo debe contener las siguientes columnas: " + ','.join(lista_columnas))
+        
+        if(not all(columna in lista_columnas for columna in df.columns.tolist())):
+            raise Exception("El archivo ingresado tiene datos incorrectos.")
+
+        df.insert(len(df.columns.tolist()), "sonda", self.id)
+        conn = sqlite3.connect(BASE_DIR.as_posix()+'/db.sqlite3')
+        df.to_sql("clima_datosclimaticos", conn, if_exists="append",index=False)
+        conn.close()
 
 
 class DatosClimaticos(models.Model):

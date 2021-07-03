@@ -63,9 +63,10 @@
         </div>
     </div>
     </div>
-    <form id="form_subir_latitud_longitud" action="{% url 'carga_datos_climaticos' %}" method="POST">
+    <form id="form_subir_latitud_longitud" action="{% url 'carga_datos_climaticos' %}" method="POST" >
         {% csrf_token %}
-        <input type="text" name="latitud_longitud" id="input_form_latitud_longitud" hidden>
+        <input type="text" name="latitud" id="input_form_latitud" hidden>
+        <input type="text" name="longitud" id="input_form_longitud" hidden>
     </form>    
 
     <!--Modal-->
@@ -118,8 +119,9 @@
 
                 marker.on('click',function(){
                     //Util para cuando el usuario elija la ubicacion, asociamos sus datos a la sonda por lat y long
-                    //alert(this.getLatLng())
-                    $("#input_form_latitud_longitud").val(this.getLatLng())
+                    console.log(this.getLatLng().lng)
+                    $("#input_form_latitud").val(this.getLatLng().lat)
+                    $("#input_form_longitud").val(this.getLatLng().lng)
                     $('#btn_confirmar_modal').off()
                     $('#btn_confirmar_modal').on('click',function(){
                         $('#form_subir_latitud_longitud').submit();
