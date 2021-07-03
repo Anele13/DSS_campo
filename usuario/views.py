@@ -32,8 +32,10 @@ def registro(request):
     if request.method == 'POST':
         form = RegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            usuario = form.save()
             return redirect('login')
+        else:
+            print(form.errors)
     else:
         form = RegisterForm()
     return render(request, 'registro.html',{'form':form})

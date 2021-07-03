@@ -21,12 +21,13 @@ def cargar_datos_climaticos(request):
                                  'longitud': a.longitud,
                                  'altura': 0}
     contexto['sondas'] = json.dumps(sondas)
+    
     if request.method == 'POST':
         messages.success(request, 'Alta de datos correcta!')
         #engine = create_engine('sqlite://'+BASE_DIR.as_posix()+'/db.sqlite3', echo=False)
         archivo = request.FILES['archivo_csv']
         if archivo:
             df = pd.read_csv(archivo)
-            #df.to_sql('clima_datosclimaticos', con=engine, if_exists='append')
+            
 
     return render(request, "alta_datos_climaticos.html", contexto)
