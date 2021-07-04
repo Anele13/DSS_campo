@@ -22,9 +22,13 @@ def formatear_sondas(sondas):
 def cargar_datos_climaticos(request):
     contexto = {}
     campo = Campo.objects.get(persona=request.user.persona)
-    sondas = Sonda.objects.all()
+    sondas = Sonda.objects.filter(pertenencia='INTA') #TODO: mejorar esto, esta quedando un 1 en la base para las sondas que no son inta.
     contexto['sondas'] = formatear_sondas(sondas)
     
+
+    print("................")
+    print(formatear_sondas(sondas))
+    print("................")
     if request.method == 'POST':
         if 'archivo_csv' in request.FILES:
             archivo_climatico = request.FILES['archivo_csv']
