@@ -7,3 +7,12 @@ class Campo(models.Model):
     sonda = models.ForeignKey(Sonda, null=True, db_column='sonda', on_delete=models.SET_NULL)
     nombre = models.CharField(max_length=30, blank=True, null=True)
     cant_hectareas = models.IntegerField()
+
+    def get_or_create_sonda(self):
+        if self.sonda:
+            return self.sonda
+        else:
+            sonda = Sonda.objects.create()
+            self.sonda = sonda
+            self.save()
+            return sonda

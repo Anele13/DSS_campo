@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
+from .models import Campo
 
 
 @login_required(login_url='login')
@@ -96,4 +97,14 @@ def buscador(request):
     }
 
     contexto['resultados'] = json.dumps(contexto)
+
     return render(request, "resultados_filtros_v4.html", contexto)
+
+
+@login_required(login_url='login')
+def mi_campo(request):
+    campo = Campo.objects.get(persona=request.user.persona)
+    datos_climaticos = campo.sonda.datos_climaticos_set.all()
+    print(datos_climaticos)
+
+    return render(request, "mi_campo.html", {})
