@@ -13,7 +13,7 @@ class DatosProduccion(models.Model):
     cantidad_carne_producida = models.IntegerField(blank=True, null=True)
     rinde_lana = models.IntegerField(blank=True, null=True)
     finura_lana = models.IntegerField(blank=True, null=True)
-    campo = models.ForeignKey(Campo, null=True, db_column='campo', on_delete=models.SET_NULL)
+    campo = models.ForeignKey(Campo, null=True, db_column='campo', on_delete=models.SET_NULL, related_name='datos_produccion_set')
 
 
 
