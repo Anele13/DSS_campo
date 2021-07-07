@@ -1,6 +1,15 @@
 <!-- Sidebar -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
+    <div class="sidebar-brand d-flex align-items-center justify-content-center">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fas fa-laugh-wink"></i>
+        </div>
+        <div class="sidebar-brand-text mx-3">Nombre App</div>
+    </div>
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'inicio' %}">
         <i class="fas fa-home"></i>
@@ -11,51 +20,44 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Heading -->
-    <div class="sidebar-heading"><br>Utilidades</div>
+    <div class="sidebar-heading"><br>Carga de datos</div>
 
-    <!-- Nav Item - Novedades Collapse Menu -->
+    <!-- Nav Item - Novedades Carga de Datos -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseNovedades"
-            aria-expanded="true" aria-controls="collapseNovedades">
+        <a class="nav-link" href="{% url 'carga_datos_climaticos' %}">
             <i class="fas fa-fw fa-table"></i>
-            <span>Carga de datos</span>
+            <span>Alta datos climaticos</span>
         </a>
-        <div id="collapseNovedades" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ver:</h6>
-                <a class="collapse-item" href="{% url 'carga_datos_climaticos' %}">
-                    <i class="fas fa-fw fa-cloud-upload-alt"></i>
-                    Alta datos climaticos</a>
-                <a class="collapse-item" href="{% url 'carga_datos_produccion' %}">
-                    <i class="fas fa-fw fa-cloud-upload-alt"></i>
-                    Alta datos de produccion</a>
-            </div>
-        </div>
+        <a class="nav-link" href="{% url 'carga_datos_produccion' %}">
+            <i class="fas fa-fw fa-cloud-upload-alt"></i>
+            <span>Alta datos de producción</span>
+        </a>
     </li>
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+    <!-- Heading -->
+    <div class="sidebar-heading"><br>Mi campo</div>
+
+    <!-- Nav Item - Novedades Mi campo -->
     <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseAgentes"
-            aria-expanded="true" aria-controls="collapseAgentes">
-            <i class="fa fa-chart-bar" aria-hidden="true"></i>
+        <a class="nav-link" href="{% url 'mostrar_filtros' %}">
+            <i class="fa fa-chart-bar"></i>
+            <span>¿Como esta mi campo?</span>
+        </a>
+        <a class="nav-link" href="{% url 'mi_campo' %}">
+            <i class="fa fa-chart-bar"></i>
             <span>Mi campo</span>
         </a>
-        <div id="collapseAgentes" class="collapse" aria-labelledby="headingAgentes" data-parent="#accordionSidebar">
-            <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Ver:</h6>
-                <a class="collapse-item" href="#">
-                    <i class="fas fa-fw fa-cloud-sun" aria-hidden="true"></i>
-                    Prediccion Climatica</a>
-                <a class="collapse-item" href="{% url 'mostrar_filtros' %}">
-                    <i class="fas fa-paw" aria-hidden="true"></i>
-                    Como esta mi campo?</a>
+        <a class="nav-link" href="#">
+            <i class="fas fa-fw fa-cloud-sun"></i>
+            <span>Predicción Climatica</span>
 
-
-                <a class="collapse-item" href="{% url 'mi_campo' %}">
-                    <i class="fas fa-paw" aria-hidden="true"></i>
-                    Mi campo</a>
-            </div>
-        </div>
+        </a>
     </li>
+
+    <div class="text-center d-none d-md-inline">
+        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    </div>
 </ul>
 <!-- End of Sidebar -->
