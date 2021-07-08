@@ -18,63 +18,75 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Crear nueva cuenta</h1>
                             </div>
-                             <form class="user" method='POST' action="{% url 'registro' %}">
+                            <form class="user" method='POST' action="{% url 'registro' %}">
                                 {% csrf_token %}
                                 <h5 class="h6 text-gray-900 mb-6">Datos Personales</h5>
-                                
+
                                 <div class="form-group">
                                     {{form.documento}}
                                     {% if form.documento.errors %}
-                                        {% for error in form.documento.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.documento.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{form.nombre}}
                                     {% if form.nombre.errors %}
-                                        {% for error in form.nombre.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.nombre.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{form.apellido}}
                                     {% if form.apellido.errors %}
-                                        {% for error in form.apellido.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.apellido.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{form.fecha_nacimiento}}
                                     {% if form.fecha_nacimiento.errors %}
-                                        {% for error in form.fecha_nacimiento.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.fecha_nacimiento.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
-                                
-                                
-                                
-                                
-                                
-                                
-                                
+
+
+
+
+
+
+
                                 <div class="form-group">
                                     {{form.username}}
                                     {% if form.username.errors %}
-                                        {% for error in form.username.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.username.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{form.email}}
                                     {% if form.email.errors %}
-                                        {% for error in form.email.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.email.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
                                 <div class="form-group row">
@@ -82,9 +94,11 @@
                                         {{form.password1}}
                                         {% if form.password2.errors %}
                                         {% for error in form.password2.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
+                                        <ul>
+                                            <li><span class="text-danger">{{ error }}</span></li>
+                                        </ul>
                                         {% endfor %}
-                                    {% endif %}
+                                        {% endif %}
                                     </div>
                                     <div class="col-sm-6">
                                         {{form.password2}}
@@ -96,17 +110,21 @@
                                 <div class="form-group">
                                     {{form.nombre_campo}}
                                     {% if form.nombre_campo.errors %}
-                                        {% for error in form.nombre_campo.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.nombre_campo.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
                                 <div class="form-group">
                                     {{form.cant_hectareas}}
                                     {% if form.cant_hectareas.errors %}
-                                        {% for error in form.cant_hectareas.errors %}
-                                        <ul><li><span class="text-danger">{{ error }}</span></li></ul>
-                                        {% endfor %}
+                                    {% for error in form.cant_hectareas.errors %}
+                                    <ul>
+                                        <li><span class="text-danger">{{ error }}</span></li>
+                                    </ul>
+                                    {% endfor %}
                                     {% endif %}
                                 </div>
                                 <br>
@@ -133,4 +151,4 @@
         </div>
 
     </div>
-{% endblock %}
+    {% endblock %}

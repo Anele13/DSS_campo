@@ -3,11 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from campo.models import Campo
 from produccion.models import DatosProduccion
+from produccion.forms import DatosProduccionForm
 
 
 @login_required(login_url='login')
 def cargar_datos_produccion(request):
-    contexto = {}
+    contexto={}
+    contexto['form'] = DatosProduccionForm()
     campo = Campo.objects.get(persona=request.user.persona)
     if request.method == 'POST':
         if 'archivo_csv' in request.FILES:
@@ -26,5 +28,4 @@ def cargar_datos_produccion(request):
             campo.save()
             messages.success(request,"Sonda cargada exitosamente")
             """
-
     return render(request, "alta_datos_produccion.html",contexto)

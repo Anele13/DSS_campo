@@ -11,132 +11,131 @@ class LoginForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 "class": "form-control",
-                "required":'required'
+                "required": 'required'
             }
         ))
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
                 "class": "form-control",
-                "required":'required'
+                "required": 'required'
             }
         ))
 
+
 class RegisterForm(forms.Form):
-    documento =  forms.IntegerField(label='Ingresar el documento',
-                                widget=forms.TextInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "placeholder":"Documento",
-                                                            "required":'required'
-                                                            }
-                                                        )
-                                )
+    documento = forms.IntegerField(label='Ingresar el documento',
+                                   widget=forms.TextInput(attrs={
+                                       "class": "form-control form-control-user",
+                                       "placeholder": "Documento",
+                                       "required": 'required'
+                                   }
+                                   )
+                                   )
 
     nombre = forms.CharField(label='Ingresar el nombre',
-                                min_length=4,
-                                max_length=150,
-                                widget=forms.TextInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "placeholder":"Nombre",
-                                                            "required":'required'
-                                                            }
-                                                        )
-                                )
+                             min_length=4,
+                             max_length=150,
+                             widget=forms.TextInput(attrs={
+                                 "class": "form-control form-control-user",
+                                 "placeholder": "Nombre",
+                                 "required": 'required'
+                             }
+                             )
+                             )
     apellido = forms.CharField(label='Ingresar el apellido',
-                                min_length=4,
-                                max_length=150,
-                                widget=forms.TextInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "placeholder":"Apellido",
-                                                            "required":'required'
-                                                            }
-                                                        )
-                                )
+                               min_length=4,
+                               max_length=150,
+                               widget=forms.TextInput(attrs={
+                                   "class": "form-control form-control-user",
+                                   "placeholder": "Apellido",
+                                   "required": 'required'
+                               }
+                               )
+                               )
     fecha_nacimiento = forms.DateField(label='Ingresar fecha nacimiento',
-                                widget= forms.DateInput(format=('%d-%m-%Y'), attrs={"class": "form-control form-control-user", 'firstDay': 1, 'pattern=': '\d{4}-\d{2}-\d{2}', 'lang': 'pl', 'format': 'yyyy-mm-dd', 'type': 'date'})
+                                       widget=forms.DateInput(format=('%d-%m-%Y'), attrs={
+                                                              "class": "form-control form-control-user", 'firstDay': 1, 'pattern=': '\d{4}-\d{2}-\d{2}', 'lang': 'pl', 'format': 'yyyy-mm-dd', 'type': 'date'})
 
 
-                                )
-
-                                      
+                                       )
 
     username = forms.CharField(label='Ingresar el nombre de usuario',
-                                min_length=4,
-                                max_length=150,
-                                widget=forms.TextInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "placeholder":"Nombre de usuario",
-                                                            "required":'required'
-                                                            }
-                                                        )
-                                )
+                               min_length=4,
+                               max_length=150,
+                               widget=forms.TextInput(attrs={
+                                   "class": "form-control form-control-user",
+                                   "placeholder": "Nombre de usuario",
+                                   "required": 'required'
+                               }
+                               )
+                               )
     email = forms.EmailField(label='Ingresar email',
-                            widget=forms.TextInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "required":'required',
-                                                            "placeholder":"Email"
-                                                            }
-                                                        )
-                                )
-                            
+                             widget=forms.TextInput(attrs={
+                                 "class": "form-control form-control-user",
+                                 "required": 'required',
+                                 "placeholder": "Email"
+                             }
+                             )
+                             )
+
     password1 = forms.CharField(label='Ingresar contraseña',
                                 widget=forms.PasswordInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "required":'required',
-                                                            "placeholder":"Contraseña"
-                                                            }
-                                                        )
+                                    "class": "form-control form-control-user",
+                                    "required": 'required',
+                                    "placeholder": "Contraseña"
+                                }
                                 )
-    password2 = forms.CharField(label='Confirmar contraseña', 
+                                )
+    password2 = forms.CharField(label='Confirmar contraseña',
                                 widget=forms.PasswordInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "required":'required',
-                                                            "placeholder":"Confirmacion contraseña"
-                                                            }
-                                                        )
+                                    "class": "form-control form-control-user",
+                                    "required": 'required',
+                                    "placeholder": "Confirmacion contraseña"
+                                }
+                                )
                                 )
 
-    cant_hectareas =  forms.IntegerField(label='Ingresar el la cantidad de hectareas',
-                                widget=forms.TextInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "placeholder":"Cantidad de Hectareas",
-                                                            "required":'required'
-                                                            }
-                                                        )
-                                )
+    cant_hectareas = forms.IntegerField(label='Ingresar el la cantidad de hectareas',
+                                        widget=forms.TextInput(attrs={
+                                            "class": "form-control form-control-user",
+                                            "placeholder": "Cantidad de Hectareas",
+                                            "required": 'required'
+                                        }
+                                        )
+                                        )
 
     nombre_campo = forms.CharField(label='Ingresar el nombre',
-                                min_length=4,
-                                max_length=150,
-                                widget=forms.TextInput(attrs={
-                                                            "class": "form-control form-control-user",
-                                                            "placeholder":"Nombre del Campo",
-                                                            "required":'required'
-                                                            }
-                                                        )
-                                )
-    
+                                   min_length=4,
+                                   max_length=150,
+                                   widget=forms.TextInput(attrs={
+                                       "class": "form-control form-control-user",
+                                       "placeholder": "Nombre del Campo",
+                                       "required": 'required'
+                                   }
+                                   )
+                                   )
+
     def clean_cant_hectareas(self):
         cant_hectareas = self.cleaned_data['cant_hectareas']
         if int(cant_hectareas) <= 0:
-            raise  ValidationError("La cantidad de hectareas debe ser mayor a 0")
-        return cant_hectareas   
-   
+            raise ValidationError(
+                "La cantidad de hectareas debe ser mayor a 0")
+        return cant_hectareas
+
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
         r = User.objects.filter(username=username)
         if r.count():
-            raise  ValidationError("El nombre de usuario ya existe")
+            raise ValidationError("El nombre de usuario ya existe")
         return username
-
 
     def clean_email(self):
         email = self.cleaned_data['email'].lower()
         r = User.objects.filter(email=email)
         if r.count():
-            raise  ValidationError("Email ya existe")
+            raise ValidationError("Email ya existe")
         return email
-
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
@@ -146,27 +145,27 @@ class RegisterForm(forms.Form):
         return password2
 
     def save(self, commit=True):
-        #Usuario
+        # Usuario
         user = User.objects.create_user(
             self.cleaned_data['username'],
             self.cleaned_data['email'],
             self.cleaned_data['password1']
         )
 
-        #Persona
+        # Persona
         persona = Persona.objects.create(
-            documento = self.cleaned_data['documento'],
-            nombre = self.cleaned_data['nombre'],
-            apellido = self.cleaned_data['apellido'],
-            fecha_nacimiento = self.cleaned_data['fecha_nacimiento'],
-            usuario = user
+            documento=self.cleaned_data['documento'],
+            nombre=self.cleaned_data['nombre'],
+            apellido=self.cleaned_data['apellido'],
+            fecha_nacimiento=self.cleaned_data['fecha_nacimiento'],
+            usuario=user
         )
 
-        #Campo
+        # Campo
         campo = Campo.objects.create(
-            persona =persona,
-            sonda =None,
-            nombre = self.cleaned_data['nombre'],
-            cant_hectareas = self.cleaned_data['cant_hectareas'],
+            persona=persona,
+            sonda=None,
+            nombre=self.cleaned_data['nombre'],
+            cant_hectareas=self.cleaned_data['cant_hectareas'],
         )
         return user, persona, campo
