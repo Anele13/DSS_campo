@@ -3,5 +3,6 @@ from django.urls import path, include
 from .views import cargar_datos_produccion
 
 urlpatterns = [
-    path('carga_datos_produccion', cargar_datos_produccion, name="carga_datos_produccion"),
+    path('carga_datos_produccion', cargar_datos_produccion,
+         name="carga_datos_produccion"),
 ]
