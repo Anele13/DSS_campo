@@ -33,7 +33,11 @@ def buscador(request):
 
 
 @login_required(login_url='login')
-def buscador(request):
+def mi_campo(request):
+    campo = Campo.objects.get(persona=request.user.persona)
+    datos_climaticos = campo.sonda.datos_climaticos_set.all()
+    print(datos_climaticos)
+
     contexto = {
         'anio': 2012,
         'meses': {
@@ -99,12 +103,3 @@ def buscador(request):
     contexto['resultados'] = json.dumps(contexto)
 
     return render(request, "resultados_filtros_v4.html", contexto)
-
-
-@login_required(login_url='login')
-def mi_campo(request):
-    campo = Campo.objects.get(persona=request.user.persona)
-    datos_climaticos = campo.sonda.datos_climaticos_set.all()
-    print(datos_climaticos)
-
-    return render(request, "mi_campo.html", {})
