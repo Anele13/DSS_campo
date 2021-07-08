@@ -1,8 +1,6 @@
 from django.db import models
 import pandas as pd
 import sqlite3
-
-
 from sistema_campo.settings import BASE_DIR
 
 

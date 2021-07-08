@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import mostrar_filtros, buscador, mi_campo
+from campo.views import mostrar_filtros, buscador, mi_campo
 
 urlpatterns = [
     path('mostrar_filtros', mostrar_filtros, name="mostrar_filtros"),

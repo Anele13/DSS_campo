@@ -1,10 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django import forms
 from django.core.exceptions import ValidationError
 from campo.models import Campo
-from .models import Persona
+from usuario.models import Persona
 
 
 class LoginForm(forms.Form):

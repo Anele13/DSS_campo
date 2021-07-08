@@ -1,5 +1,5 @@
 from django.db import models
-from usuario.models import Persona
+import pandas as pd
 from campo.models import Campo
 
 class DatosProduccion(models.Model):
@@ -17,4 +17,25 @@ class DatosProduccion(models.Model):
 
 
 
-    
+    @classmethod
+    def agregar_datos_produccion(self, archivo, campo):
+        df = pd.read_csv(archivo)
+        lista_columnas = ['periodo','temperatura_minima', 'temperatura_media',
+                    'temperatura_maxima', 'humedad', 'velocidad_viento', 
+                    'direccion_viento', 'velocidad_max_viento', 'barometro', 
+                    'mm_lluvia', 'radiacion_solar']
+        max_columnas = len(lista_columnas)
+        print(df)
+
+        """
+        if (len(df.columns) != max_columnas):
+            raise Exception("El archivo debe contener las siguientes columnas: " + ','.join(lista_columnas))
+        
+        if(not all(columna in lista_columnas for columna in df.columns.tolist())):
+            raise Exception("El archivo ingresado tiene datos incorrectos.")
+
+        df.insert(len(df.columns.tolist()), "sonda", self.id)
+        conn = sqlite3.connect(BASE_DIR.as_posix()+'/db.sqlite3')
+        df.to_sql("clima_datosclimaticos", conn, if_exists="append",index=False)
+        conn.close()
+        """

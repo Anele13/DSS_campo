@@ -1,6 +1,7 @@
 from django.db import models
 from usuario.models import Persona
 from clima.models import Sonda
+import pandas as pd
 
 class Campo(models.Model):
     persona = models.ForeignKey(Persona, null=True, db_column='persona', on_delete=models.SET_NULL)
@@ -16,3 +17,4 @@ class Campo(models.Model):
             self.sonda = sonda
             self.save()
             return sonda
+
