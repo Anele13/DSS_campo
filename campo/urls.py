@@ -4,4 +4,5 @@ from campo.views import mi_campo
 
 urlpatterns = [
     path('mi_campo', mi_campo, name="mi_campo"),
+    path('mi_campo/<str:query>', mi_campo, name="mi_campo"),
 ]

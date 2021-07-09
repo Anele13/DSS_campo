@@ -27,12 +27,20 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
+  var meses = []
+ 
+  meses = JSON.parse('{{meses|safe}}');
+
+
+  console.log(JSON.parse('{{meses|safe}}'))
+
+  
 // Area Chart Example
 var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: meses,
     datasets: [{
       label: "Earnings",
       lineTension: 0.3,
