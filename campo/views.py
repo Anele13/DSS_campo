@@ -60,7 +60,7 @@ def get_mejor_año_por_condicion(query, datos_produccion,datos_climaticos):
 
 
 @login_required(login_url='login')
-def mi_campo(request, query=None): #TODO probar otro default. la primera vez que solicita la pagina ya podria filtrar por alguna condicion
+def mi_campo(request, query='rinde'): #TODO probar otro default. la primera vez que solicita la pagina ya podria filtrar por alguna condicion
     campo = Campo.objects.get(persona=request.user.persona)
     datos_produccion = campo.datos_produccion_set.all()
     datos_climaticos = campo.sonda.datos_climaticos_set.all()
