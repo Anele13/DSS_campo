@@ -19,6 +19,7 @@ def cargar_datos_produccion(request):
                 DatosProduccion.agregar_datos_produccion(
                     archivo_produccion, campo)
                 messages.success(request, "Datos registrados exitosamente")
+                contexto['form'] = DatosProduccionForm()
             except Exception as e:
                 messages.warning(request, str(e))
         else:
