@@ -86,9 +86,17 @@ def mi_campo(request, query='rinde'): #TODO probar otro default. la primera vez 
                                                 'temperatura': list(datos.values_list('temperatura_media',flat=True)),
                                                 'temperatura_maxima': max(list(datos.values_list('temperatura_media',flat=True))),
                                                 'viento_promedio': statistics.mean(list(datos.values_list('velocidad_max_viento',flat=True))),
-                                                'humedad_promedio': statistics.mean(list(datos.values_list('humedad',flat=True)))}
+                                                'humedad_promedio': statistics.mean(list(datos.values_list('humedad',flat=True)))
+                                                
+                                                }
+        datos_prod = datos_produccion.filter(periodo__month__gte=mes, periodo__month__lte=mes)
+        resultado[calendar.month_name[mes]]['cant_ovejas'] = sum(list(datos_prod.values_list('cantidad_ovejas',flat=True)))
+        resultado[calendar.month_name[mes]]['cant_corderos'] = sum(list(datos_prod.values_list('cantidad_corderos',flat=True)))
+        resultado[calendar.month_name[mes]]['cant_carneros'] = sum(list(datos_prod.values_list('cantidad_carneros',flat=True)))
+        
 
     contexto={}
     contexto['resultado'] = resultado
     contexto['año'] = mejor_año
+    contexto['query'] = query
     return render(request, "mi_campo.html", contexto)

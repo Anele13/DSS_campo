@@ -2,7 +2,14 @@
 {% load static %}
 
 <!-- Escribir en este bloque todo lo que haga falta-->
+{% block chart %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>    
+{% endblock %}
+
+
 {% block site_content %}
+
+
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -108,20 +115,13 @@
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                            <div class="dropdown-header">Dropdown Header:</div>
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Algo mas..</a>
-                        </div>
                     </div>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                        <canvas id="myAreaChart" style="display: block; width: 996px; height: 320px;" width="996" height="320" class="chartjs-render-monitor"></canvas>
-                    </div>
+                   
+
+                    <canvas id="canvas"></canvas>
                 </div>
             </div>
         </div>
@@ -167,8 +167,62 @@
     </div>
  
     <!-- Demo de charts-->
-    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-    <script src="{% static 'js/demo/chart-pie-demo.js'' %}"></script>
+
+    <script>
+
+        var barChartData = {
+            labels: ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5"],
+            datasets: [{
+                label: 'Dataset 1',
+                backgroundColor: "#0B84A5",
+                borderColor: '#F6C85F',
+                data: [1500, 1200, 1000, 800, 400]
+            }]
+
+        };
+
+        window.onload = function() {
+        var ctx = document.getElementById('canvas')
+        var chart = new Chart(ctx,{
+            type: 'barFunnel',
+            data: barChartData,
+            options: {
+                    // Elements options apply to all of the options unless overridden in a dataset
+                    // In this case, we are setting the border of each bar to be 2px wide and green
+                    elements: {
+                        rectangle: {
+                            borderWidth: 2,
+                            borderColor: '0B84A5',
+                            borderSkipped: 'bottom',
+                            stepLabel: {
+                                display: true,
+                                fontSize: 20,
+                                // color: "red"
+                            }
+                        }
+                    },
+                    region: {
+                      display: true
+                    },
+                    responsive: true,
+                    legend: {
+                        position: 'top',
+                    },
+                    scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true
+                          }
+                      }]
+                    },
+                    title: {
+                        display: true,
+                        text: 'Chart.js Bar Funnel Chart'
+                    }
+                }
+        });
+    }
+    </script>
 
 
 {% endblock %}
