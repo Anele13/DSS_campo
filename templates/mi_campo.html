@@ -6,575 +6,683 @@
 
 
 {% if messages %}
-    {% for message in messages %}
-    <div class="container-fluid p-0">
-        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
-        </div>
-    </div>
-    {% endfor %}
-{% endif %} 
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
 
 
 <div class="row">
-    <!-- Area Chart -->
-    <div class="col-xl-12 col-lg-12">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                 
-                <a class="btn btn-secondary" href="#myCarousel" role="button"
-                data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-                </a>
-                <h6 class="m-0 font-weight-bold text-primary">Mejor Año con respecto a {{query|capfirst}}: {{año}}</h6>
-                <a class="btn btn-secondary" href="#myCarousel" role="button"
-                    data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>
+  <!-- Area Chart -->
+  <div class="col-xl-12 col-lg-12">
+    <div class="card shadow mb-4">
+      <!-- Card Header - Dropdown -->
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
-                <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Filtros:</div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='rinde' %}">Rinde</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='finura' %}">Finura</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='lluvia' %}">Mayor cantidad de mm de lluvia</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='temperatura' %}">Mayor temperatura en verano</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='mortandad' %}">Menor mortandad</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='lana' %}">Kg de Lana Producida</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='carne' %}">Kg de Carne Producida</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='pariciones' %}">Cantidad de pariciones</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{% url 'mi_campo' query='hacienda' %}">Cantidad de Hacienda</a>
-                    </div>
-                </div>
-            </div>
-           
-            <!-- Card Body -->
-            <div class="card-body">
+        <a class="btn btn-secondary" href="#myCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <h6 class="m-0 font-weight-bold text-primary">Mejor Año con respecto a {{query|capfirst}}: {{año}}</h6>
+        <a class="btn btn-secondary" href="#myCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
 
-                <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-interval="false">
-                    <div class="carousel-inner">
-                        {% for mes, value in resultado.items %}
-                            {% if forloop.counter == 1 %}  
-                                <div class="carousel-item active">
-                                    <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
-                                    <div class="row">      
-                                        <!--Filtros temperatura y Lluvias-->          
-                                        <div class="col-lg-9">
-                                            <div class="chart-area">
-                                                <div class="mt-4 text-center medium">
-                                                    Variacion Mensual de Temperatura {{mes}}
-                                                </div>
-                                                <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996" height="320" class="chartjs-render-monitor"></canvas>
-                                            </div>
-                                            <br>
-                                            <div class="chart-bar pt-4 pb-2">
-                                                <div class="mt-4 text-center medium">
-                                                    Variacion Mensual de Lluvias {{mes}}
-                                                </div>
-                                                <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;" class="chartjs-render-monitor" width="996" height="320"></canvas>
-                                            </div>
-                                            <br>
-                                            <br>
-                                        </div>
-
-                                        <!--Filtros laterales-->
-                                        <div class="col-lg-3">
-                                            <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
-                                                src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
-                                            <table class="table">
-                                                <thead>
-                                                </thead>
-                                                <tbody>
-                                                  <tr>
-                                                    <th scope="row">Temperatura Minima</th>
-                                                    <td id="temperatura_min_{{mes}}"> </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th  scope="row">Temperatura Maxima</th>
-                                                    <td id="temperatura_max_{{mes}}"></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th scope="row">Humedad Promedio</th>
-                                                    <td id="humedad_{{mes}}"></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th scope="row">Viento Promedio</th>
-                                                    <td id="viento_{{mes}}"></td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                              <br>
-                                              <!--Produccion grafico-->
-                                                <div class="mt-4 text-center medium">
-                                                    Cantidad de Hacienda en {{mes}}
-                                                </div>
-                                                <div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465" height="245" class="chartjs-render-monitor"></canvas>
-                                                </div>
-                                                <div class="mt-4 text-center small">
-                                                    <span class="mr-2">
-                                                        <i class="fas fa-circle text-primary"></i> Capones
-                                                    </span>
-                                                    <span class="mr-2">
-                                                        <i class="fas fa-circle text-success"></i> Corderos
-                                                    </span>
-                                                    <span class="mr-2">
-                                                        <i class="fas fa-circle text-info"></i> Ovejas
-                                                    </span>
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                            {% else %}
-                                <div class="carousel-item">
-                                    <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
-                                    <div class="row">      
-                                        <!--Filtros temperatura y Lluvias-->          
-                                        <div class="col-lg-9">
-                                            <div class="chart-area">
-                                                <div class="mt-4 text-center medium">
-                                                    Variacion Mensual de Temperatura {{mes}}
-                                                </div>
-                                                <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996" height="320" class="chartjs-render-monitor"></canvas>
-                                            </div>
-                                            <br>
-                                            <div class="chart-bar pt-4 pb-2">
-                                                <div class="mt-4 text-center medium">
-                                                    Variacion Mensual de Lluvias {{mes}}
-                                                </div>
-                                                <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;" class="chartjs-render-monitor" width="996" height="320"></canvas>
-                                            </div>
-                                            <br>
-                                            <br>
-                                        </div>
-
-                                        <!--Filtros laterales-->
-                                        <div class="col-lg-3">
-                                            <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
-                                                src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
-                                            <table class="table">
-                                                <thead>
-                                                </thead>
-                                                <tbody>
-                                                  <tr>
-                                                    <th scope="row">Temperatura Minima</th>
-                                                    <td id="temperatura_min_{{mes}}"> </td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th  scope="row">Temperatura Maxima</th>
-                                                    <td id="temperatura_max_{{mes}}"></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th scope="row">Humedad Promedio</th>
-                                                    <td id="humedad_{{mes}}"></td>
-                                                  </tr>
-                                                  <tr>
-                                                    <th scope="row">Viento Promedio</th>
-                                                    <td id="viento_{{mes}}"></td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                              <br>
-                                                <!--Produccion grafico-->
-                                                <div class="mt-4 text-center medium">
-                                                    Cantidad de Hacienda en {{mes}}
-                                                </div>
-                                                <div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465" height="245" class="chartjs-render-monitor"></canvas>
-                                                </div>
-                                                <div class="mt-4 text-center small">
-                                                    <span class="mr-2">
-                                                        <i class="fas fa-circle text-primary"></i> Capones
-                                                    </span>
-                                                    <span class="mr-2">
-                                                        <i class="fas fa-circle text-success"></i> Corderos
-                                                    </span>
-                                                    <span class="mr-2">
-                                                        <i class="fas fa-circle text-info"></i> Ovejas
-                                                    </span>
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {%endfor%}
-                    </div>
-                </div>
-            </div>
+        <div class="dropdown no-arrow">
+          <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+            <div class="dropdown-header">Filtros:</div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='rinde' %}">Rinde</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='finura' %}">Finura</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='lluvia' %}">Mayor cantidad de mm de lluvia</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='temperatura' %}">Mayor temperatura en verano</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='mortandad' %}">Menor mortandad</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='lana' %}">Kg de Lana Producida</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='carne' %}">Kg de Carne Producida</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='pariciones' %}">Cantidad de pariciones</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='hacienda' %}">Cantidad de Hacienda</a>
+          </div>
         </div>
-    </div>  
+      </div>
 
+      <!-- Card Body -->
+      <div class="card-body">
 
+        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-interval="false">
+          <div class="carousel-inner">
+            {% for mes, value in resultado.items %}
+            {% if forloop.counter == 1 %}
+            <div class="carousel-item active">
+              <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
+              <div class="row">
+                <!--Filtros temperatura y Lluvias-->
+                <div class="col-lg-9">
+                  <div class="chart-area">
+                    <div class="mt-4 text-center medium">
+                      Variacion Mensual de Temperatura {{mes}}
+                    </div>
+                    <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
+                      height="320" class="chartjs-render-monitor"></canvas>
+                  </div>
+                  <br>
+                  <div class="chart-bar pt-4 pb-2">
+                    <div class="mt-4 text-center medium">
+                      Variacion Mensual de Lluvias {{mes}}
+                    </div>
+                    <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
+                      class="chartjs-render-monitor" width="996" height="320"></canvas>
+                  </div>
+                  <br>
+                  <br>
+                </div>
 
-
-
-    <!-- Area Chart -->
-    <div class="col-xl-12 col-lg-12">
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Datos de Produccion: {{año}}</h6>
-           </div>
-           
-            <!-- Card Body -->
-            <div class="card-body">
-                <table class="table">
+                <!--Filtros laterales-->
+                <div class="col-lg-3">
+                  <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
+                    src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
+                  <table class="table">
                     <thead>
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                      </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
+                        <th scope="row">Temperatura Minima</th>
+                        <td id="temperatura_min_{{mes}}"> </td>
                       </tr>
                       <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
+                        <th scope="row">Temperatura Maxima</th>
+                        <td id="temperatura_max_{{mes}}"></td>
                       </tr>
                       <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>the Bird</td>
-                        <td>@twitter</td>
+                        <th scope="row">Humedad Promedio</th>
+                        <td id="humedad_{{mes}}"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Viento Promedio</th>
+                        <td id="viento_{{mes}}"></td>
                       </tr>
                     </tbody>
                   </table>
+                  <br>
+                  <!--Produccion grafico-->
+                  <div class="mt-4 text-center medium">
+                    Cantidad de Hacienda en {{mes}}
+                  </div>
+                  <div class="chart-pie pt-4 pb-2">
+                    <div class="chartjs-size-monitor">
+                      <div class="chartjs-size-monitor-expand">
+                        <div class=""></div>
+                      </div>
+                      <div class="chartjs-size-monitor-shrink">
+                        <div class=""></div>
+                      </div>
+                    </div>
+                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465"
+                      height="245" class="chartjs-render-monitor"></canvas>
+                  </div>
+                  <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-primary"></i> Capones
+                    </span>
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-success"></i> Corderos
+                    </span>
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-info"></i> Ovejas
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {% else %}
+            <div class="carousel-item">
+              <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
+              <div class="row">
+                <!--Filtros temperatura y Lluvias-->
+                <div class="col-lg-9">
+                  <div class="chart-area">
+                    <div class="mt-4 text-center medium">
+                      Variacion Mensual de Temperatura {{mes}}
+                    </div>
+                    <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
+                      height="320" class="chartjs-render-monitor"></canvas>
+                  </div>
+                  <br>
+                  <div class="chart-bar pt-4 pb-2">
+                    <div class="mt-4 text-center medium">
+                      Variacion Mensual de Lluvias {{mes}}
+                    </div>
+                    <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
+                      class="chartjs-render-monitor" width="996" height="320"></canvas>
+                  </div>
+                  <br>
+                  <br>
+                </div>
+
+                <!--Filtros laterales-->
+                <div class="col-lg-3">
+                  <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
+                    src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
+                  <table class="table">
+                    <thead>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Temperatura Minima</th>
+                        <td id="temperatura_min_{{mes}}"> </td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Temperatura Maxima</th>
+                        <td id="temperatura_max_{{mes}}"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Humedad Promedio</th>
+                        <td id="humedad_{{mes}}"></td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Viento Promedio</th>
+                        <td id="viento_{{mes}}"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <br>
+                  <!--Produccion grafico-->
+                  <div class="mt-4 text-center medium">
+                    Cantidad de Hacienda en {{mes}}
+                  </div>
+                  <div class="chart-pie pt-4 pb-2">
+                    <div class="chartjs-size-monitor">
+                      <div class="chartjs-size-monitor-expand">
+                        <div class=""></div>
+                      </div>
+                      <div class="chartjs-size-monitor-shrink">
+                        <div class=""></div>
+                      </div>
+                    </div>
+                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465"
+                      height="245" class="chartjs-render-monitor"></canvas>
+                  </div>
+                  <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-primary"></i> Capones
+                    </span>
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-success"></i> Corderos
+                    </span>
+                    <span class="mr-2">
+                      <i class="fas fa-circle text-info"></i> Ovejas
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+            {%endfor%}
+          </div>
         </div>
-    </div>  
+      </div>
+    </div>
+  </div>
+
+  <!-- Area Chart -->
+  <div class="row">
+    <div class="col-xl-4 col-md-4 col-sm-4">
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          Producción de carne
+          <div class="chart-bar">
+            <div class="chartjs-size-monitor">
+              <div class="chartjs-size-monitor-expand">
+                <div class=""></div>
+              </div>
+              <div class="chartjs-size-monitor-shrink">
+                <div class=""></div>
+              </div>
+            </div>
+            <canvas id="myBarChartCarne" style="display: block; width: 996px; height: 320px;" width="996" height="320"
+              class="chartjs-render-monitor"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-4 col-sm-4">
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          Acumulado de lluvia anual
+          <div class="chart-pie">
+            <div class="chartjs-size-monitor">
+              <div class="chartjs-size-monitor-expand">
+                <div class=""></div>
+              </div>
+              <div class="chartjs-size-monitor-shrink">
+                <div class=""></div>
+              </div>
+            </div>
+            <canvas id="myPieChart" style="display: block; width: 996px; height: 320px;" width="996" height="320"
+              class="chartjs-render-monitor"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-4 col-sm-4">
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          Producción de lana
+          <div class="chart-bar">
+            <div class="chartjs-size-monitor">
+              <div class="chartjs-size-monitor-expand">
+                <div class=""></div>
+              </div>
+              <div class="chartjs-size-monitor-shrink">
+                <div class=""></div>
+              </div>
+            </div>
+            <canvas id="myBarChartLana" style="display: block; width: 996px; height: 320px;" width="996" height="320"
+              class="chartjs-render-monitor"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-
-
 
 <script>
 
-    // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
+  // Set new default font family and font color to mimic Bootstrap's default styling
+  Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  Chart.defaults.global.defaultFontColor = '#858796';
 
-function number_format(number, decimals, dec_point, thousands_sep) {
-  // *     example: number_format(1234.56, 2, ',', ' ');
-  // *     return: '1 234,56'
-  number = (number + '').replace(',', '').replace(' ', '');
-  var n = !isFinite(+number) ? 0 : +number,
-    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-    s = '',
-    toFixedFix = function(n, prec) {
-      var k = Math.pow(10, prec);
-      return '' + Math.round(n * k) / k;
-    };
-  // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-  if (s[0].length > 3) {
-    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+  function number_format(number, decimals, dec_point, thousands_sep) {
+    // *     example: number_format(1234.56, 2, ',', ' ');
+    // *     return: '1 234,56'
+    number = (number + '').replace(',', '').replace(' ', '');
+    var n = !isFinite(+number) ? 0 : +number,
+      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+      sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+      dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+      s = '',
+      toFixedFix = function (n, prec) {
+        var k = Math.pow(10, prec);
+        return '' + Math.round(n * k) / k;
+      };
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || '').length < prec) {
+      s[1] = s[1] || '';
+      s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+    return s.join(dec);
   }
-  if ((s[1] || '').length < prec) {
-    s[1] = s[1] || '';
-    s[1] += new Array(prec - s[1].length + 1).join('0');
-  }
-  return s.join(dec);
-}
 
-
-
-
-function crear_grafico_lineas(mes, dias, temperaturas){
+  function crear_grafico_lineas(mes, dias, temperaturas) {
     var datos = []
     for (let index = 0; index < dias.length; index++) {
-        const element = dias[index];
-        datos.push('Dia: '+element)
-        
+      const element = dias[index];
+      datos.push('Dia: ' + element)
+
     }
-var ctx = document.getElementById("myAreaChart_"+mes);
-var myLineChart = new Chart(ctx, {
-  type: 'line',
-  data: {
-    labels: datos,
-    datasets: [{
-      label: "Temperatura",
-      lineTension: 0.3,
-      backgroundColor: "rgba(78, 115, 223, 0.05)",
-      borderColor: "rgba(78, 115, 223, 1)",
-      pointRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointBorderColor: "rgba(78, 115, 223, 1)",
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
-      pointHitRadius: 10,
-      pointBorderWidth: 2,
-      data: temperaturas,
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
-    },
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'date'
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          maxTicksLimit: 7
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          maxTicksLimit: 5,
-          padding: 10,
-          // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            return number_format(value)+'°';
+    var ctx = document.getElementById("myAreaChart_" + mes);
+    var myLineChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: datos,
+        datasets: [{
+          label: "Temperatura",
+          lineTension: 0.3,
+          backgroundColor: "rgba(78, 115, 223, 0.05)",
+          borderColor: "rgba(78, 115, 223, 1)",
+          pointRadius: 3,
+          pointBackgroundColor: "rgba(78, 115, 223, 1)",
+          pointBorderColor: "rgba(78, 115, 223, 1)",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+          pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: temperaturas,
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0
           }
         },
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
-        }
-      }],
-    },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      intersect: false,
-      mode: 'index',
-      caretPadding: 10,
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel+': ' + number_format(tooltipItem.yLabel) + '°';
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'date'
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            },
+            ticks: {
+              maxTicksLimit: 7
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              maxTicksLimit: 5,
+              padding: 10,
+              // Include a dollar sign in the ticks
+              callback: function (value, index, values) {
+                return number_format(value) + '°';
+              }
+            },
+            gridLines: {
+              color: "rgb(234, 236, 244)",
+              zeroLineColor: "rgb(234, 236, 244)",
+              drawBorder: false,
+              borderDash: [2],
+              zeroLineBorderDash: [2]
+            }
+          }],
+        },
+        legend: {
+          display: false
+        },
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          titleMarginBottom: 10,
+          titleFontColor: '#6e707e',
+          titleFontSize: 14,
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          intersect: false,
+          mode: 'index',
+          caretPadding: 10,
+          callbacks: {
+            label: function (tooltipItem, chart) {
+              var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+              return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + '°';
+            }
+          }
         }
       }
-    }
+    });
   }
-});
-}
 
 </script>
 
-
-
-<script src="{% static 'js/demo/chart-pie-demo.js'' %}"></script>
 <script>
 
-    function crear_grafico_baras(mes, dias, lluvia){
+  function crear_grafico_baras(mes, dias, lluvia) {
 
-        var datos = []
-        for (let index = 0; index < dias.length; index++) {
-            const element = dias[index];
-            datos.push('Dia: '+element)
-            
-        }
-        var ctx = document.getElementById("myBarChart_"+mes);
-        var myBarChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: datos,
-                    datasets: [{
-                    label: "Revenue",
-                    backgroundColor: "#4e73df",
-                    hoverBackgroundColor: "#2e59d9",
-                    borderColor: "#4e73df",
-                    data: lluvia,
-                    }],
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    layout: {
-                    padding: {
-                        left: 10,
-                        right: 25,
-                        top: 25,
-                        bottom: 0
-                    }
-                    },
-                    scales: {
-                    xAxes: [{
-                        time: {
-                        unit: 'day'
-                        },
-                        gridLines: {
-                        display: false,
-                        drawBorder: false
-                        },
-                        ticks: {
-                        maxTicksLimit: 6,
-                        // Include a dollar sign in the ticks
-                        callback: function(value, index, values) {
-                            return value
-                        }
-                        },
-                        maxBarThickness: 25,
-                    }],
-                    yAxes: [{
-                        ticks: {
-                        min: 1,
-                        max: 40,
-                        maxTicksLimit: 40,
-                        padding: 2,
-                        // Include a dollar sign in the ticks
-                        callback: function(value, index, values) {
-                            return value + 'mm.'
-                        }
-                        },
-                        gridLines: {
-                        color: "rgb(234, 236, 244)",
-                        zeroLineColor: "rgb(234, 236, 244)",
-                        drawBorder: false,
-                        borderDash: [2],
-                        zeroLineBorderDash: [2]
-                        }
-                    }],
-                    },
-                    legend: {
-                    display: false
-                    },
-                    tooltips: {
-                    titleMarginBottom: 10,
-                    titleFontColor: '#6e707e',
-                    titleFontSize: 14,
-                    backgroundColor: "rgb(255,255,255)",
-                    bodyFontColor: "#858796",
-                    borderColor: '#dddfeb',
-                    borderWidth: 1,
-                    xPadding: 15,
-                    yPadding: 15,
-                    displayColors: false,
-                    caretPadding: 10,
-                    callbacks: {
-                        label: function(tooltipItem, chart) {
-                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-                        return 'mm. de lluvia: ' + tooltipItem.yLabel;
-                        }
-                    }
-                    },
-                }
-                });
+    var datos = []
+    for (let index = 0; index < dias.length; index++) {
+      const element = dias[index];
+      datos.push('Dia: ' + element)
+
     }
-
-    function agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento){
-        $('#temperatura_min_'+mes).html(temp_min)
-        $('#temperatura_max_'+mes).html(temp_max)
-        $('#humedad_'+mes).html(humedad)
-        $('#viento_'+mes).html(viento)
-    }
-
-    function agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas){
-        console.log(mes)
-        console.log(cant_ovejas)
-        var ctx = document.getElementById("myPieChart_"+mes);
-        var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ["Cantidad de Carneros", "Cantidad de Corderos", "Cantidad de Ovejas"],
-            datasets: [{
-            data: [cant_carneros, cant_corderos, cant_ovejas],
-            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-            hoverBorderColor: "rgba(234, 236, 244, 1)",
-            }],
+    var ctx = document.getElementById("myBarChart_" + mes);
+    var myBarChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: datos,
+        datasets: [{
+          label: "Revenue",
+          backgroundColor: "#4e73df",
+          hoverBackgroundColor: "#2e59d9",
+          borderColor: "#4e73df",
+          data: lluvia,
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0
+          }
         },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-            backgroundColor: "rgb(255,255,255)",
-            bodyFontColor: "#858796",
-            borderColor: '#dddfeb',
-            borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
-            displayColors: false,
-            caretPadding: 10,
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'day'
             },
-            legend: {
-            display: false
+            gridLines: {
+              display: false,
+              drawBorder: false
             },
-            cutoutPercentage: 80,
+            ticks: {
+              maxTicksLimit: 6,
+              // Include a dollar sign in the ticks
+              callback: function (value, index, values) {
+                return value
+              }
+            },
+            maxBarThickness: 25,
+          }],
+          yAxes: [{
+            ticks: {
+              min: 1,
+              max: 40,
+              maxTicksLimit: 40,
+              padding: 2,
+              // Include a dollar sign in the ticks
+              callback: function (value, index, values) {
+                return value + 'mm.'
+              }
+            },
+            gridLines: {
+              color: "rgb(234, 236, 244)",
+              zeroLineColor: "rgb(234, 236, 244)",
+              drawBorder: false,
+              borderDash: [2],
+              zeroLineBorderDash: [2]
+            }
+          }],
         },
-        });
-    }
+        legend: {
+          display: false
+        },
+        tooltips: {
+          titleMarginBottom: 10,
+          titleFontColor: '#6e707e',
+          titleFontSize: 14,
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          caretPadding: 10,
+          callbacks: {
+            label: function (tooltipItem, chart) {
+              var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+              return 'mm. de lluvia: ' + tooltipItem.yLabel;
+            }
+          }
+        },
+      }
+    });
+  }
 
+  function agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento) {
+    $('#temperatura_min_' + mes).html(temp_min)
+    $('#temperatura_max_' + mes).html(temp_max)
+    $('#humedad_' + mes).html(humedad)
+    $('#viento_' + mes).html(viento)
+  }
 
-
-
+  function agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas) {
+    //console.log(mes)
+    //console.log(cant_ovejas)
+    var ctx = document.getElementById("myPieChart_" + mes);
+    var myPieChart = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ["Cantidad de Carneros", "Cantidad de Corderos", "Cantidad de Ovejas"],
+        datasets: [{
+          data: [cant_carneros, cant_corderos, cant_ovejas],
+          backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+          hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+          hoverBorderColor: "rgba(234, 236, 244, 1)",
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          caretPadding: 10,
+        },
+        legend: {
+          display: false
+        },
+        cutoutPercentage: 80,
+      },
+    });
+  }
 </script>
 
 
 {% for mes, value in resultado.items %}
-    <script>
-        var mes = "{{mes}}"
-        var dias = JSON.parse("{{value.dias|safe}}")
-        var temperatura = JSON.parse("{{value.temperatura|safe}}")
-        var lluvia = JSON.parse("{{value.lluvia|safe}}")
-        
-        var temp_min = JSON.parse("{{value.temperatura_minima|safe}}")
-        var temp_max = JSON.parse("{{value.temperatura_maxima|safe}}")
-        var humedad = JSON.parse("{{value.humedad_promedio|safe}}")
-        var viento = JSON.parse("{{value.viento_promedio|safe}}")
+<script>
+  var mes = "{{mes}}"
+  var dias = JSON.parse("{{value.dias|safe}}")
+  var temperatura = JSON.parse("{{value.temperatura|safe}}")
+  var lluvia = JSON.parse("{{value.lluvia|safe}}")
 
-        var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
-        var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
-        var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
+  var temp_min = JSON.parse("{{value.temperatura_minima|safe}}")
+  var temp_max = JSON.parse("{{value.temperatura_maxima|safe}}")
+  var humedad = JSON.parse("{{value.humedad_promedio|safe}}")
+  var viento = JSON.parse("{{value.viento_promedio|safe}}")
 
-        crear_grafico_lineas(mes, dias, temperatura)
-        crear_grafico_baras(mes, dias, lluvia)
-        agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento)
-        agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas)
-    </script>
+  var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
+  var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
+  var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
+
+  console.log(typeof cant_carneros)
+
+  crear_grafico_lineas(mes, dias, temperatura)
+  crear_grafico_baras(mes, dias, lluvia)
+  agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento)
+  agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas)
+</script>
 {% endfor %}
+
+<script>
+  function crear_grafico_barras_lana(lana, labels) {
+
+    var ctx = document.getElementById("myBarChartLana");
+    var myBarChartLana = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Lana producida",
+          data: lana,
+          backgroundColor:
+            'rgba(255, 99, 132, 0.2)',
+
+          borderColor:
+            'rgb(255, 99, 132)',
+
+          borderWidth: 1
+        }],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+  };
+
+  function crear_grafico_barras_carne(carne, labels) {
+
+    var ctx = document.getElementById("myBarChartCarne");
+    var myBarChartLana = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Carne producida",
+          data: carne,
+          backgroundColor:
+            'rgba(255, 99, 132, 0.2)',
+
+          borderColor:
+            'rgb(255, 99, 132)',
+
+          borderWidth: 1
+        }],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+
+  };
+
+</script>
+
+<script>
+  var labels_1 = [];
+  var produccion_lana_1 = [];
+  var produccion_carne_1 = [];
+</script>
+
+{% for mes, value in resultado.items %}
+<script>
+  labels_1.push("{{mes}}");
+  var lana = JSON.parse("{{value.lana|safe}}");
+  var carne = JSON.parse("{{value.carne|safe}}");
+  produccion_lana_1.push(lana);
+  produccion_carne_1.push(carne)
+</script>
+{% endfor %}
+
+<script>
+  crear_grafico_barras_lana(produccion_lana_1, labels_1);
+  crear_grafico_barras_carne(produccion_carne_1, labels_1);
+</script>
 
 {% endblock %}
