@@ -31,7 +31,7 @@
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
                 </a>
-                <h6 class="m-0 font-weight-bold text-primary">Mejor Año: {{año}}</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Mejor Año con respecto a {{query|capfirst}}: {{año}}</h6>
                 <a class="btn btn-secondary" href="#myCarousel" role="button"
                     data-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
@@ -120,6 +120,25 @@
                                                   </tr>
                                                 </tbody>
                                               </table>
+                                              <br>
+                                              <!--Produccion grafico-->
+                                                <div class="mt-4 text-center medium">
+                                                    Cantidad de Hacienda en {{mes}}
+                                                </div>
+                                                <div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465" height="245" class="chartjs-render-monitor"></canvas>
+                                                </div>
+                                                <div class="mt-4 text-center small">
+                                                    <span class="mr-2">
+                                                        <i class="fas fa-circle text-primary"></i> Capones
+                                                    </span>
+                                                    <span class="mr-2">
+                                                        <i class="fas fa-circle text-success"></i> Corderos
+                                                    </span>
+                                                    <span class="mr-2">
+                                                        <i class="fas fa-circle text-info"></i> Ovejas
+                                                    </span>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -173,6 +192,25 @@
                                                   </tr>
                                                 </tbody>
                                               </table>
+                                              <br>
+                                                <!--Produccion grafico-->
+                                                <div class="mt-4 text-center medium">
+                                                    Cantidad de Hacienda en {{mes}}
+                                                </div>
+                                                <div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                                                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465" height="245" class="chartjs-render-monitor"></canvas>
+                                                </div>
+                                                <div class="mt-4 text-center small">
+                                                    <span class="mr-2">
+                                                        <i class="fas fa-circle text-primary"></i> Capones
+                                                    </span>
+                                                    <span class="mr-2">
+                                                        <i class="fas fa-circle text-success"></i> Corderos
+                                                    </span>
+                                                    <span class="mr-2">
+                                                        <i class="fas fa-circle text-info"></i> Ovejas
+                                                    </span>
+                                                </div>
                                         </div>
                                     </div>
                                 </div>
@@ -469,23 +507,47 @@ var myLineChart = new Chart(ctx, {
     }
 
     function agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento){
-
-        console.log(mes)
-        console.log(temp_max)
-        console.log(temp_min)
-        console.log(humedad)
-        console.log(viento)
-
-
         $('#temperatura_min_'+mes).html(temp_min)
-    
         $('#temperatura_max_'+mes).html(temp_max)
-    
         $('#humedad_'+mes).html(humedad)
-        
         $('#viento_'+mes).html(viento)
-
     }
+
+    function agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas){
+        console.log(mes)
+        console.log(cant_ovejas)
+        var ctx = document.getElementById("myPieChart_"+mes);
+        var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ["Cantidad de Carneros", "Cantidad de Corderos", "Cantidad de Ovejas"],
+            datasets: [{
+            data: [cant_carneros, cant_corderos, cant_ovejas],
+            backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+            hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+            },
+            legend: {
+            display: false
+            },
+            cutoutPercentage: 80,
+        },
+        });
+    }
+
 
 
 
@@ -504,9 +566,14 @@ var myLineChart = new Chart(ctx, {
         var humedad = JSON.parse("{{value.humedad_promedio|safe}}")
         var viento = JSON.parse("{{value.viento_promedio|safe}}")
 
+        var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
+        var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
+        var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
+
         crear_grafico_lineas(mes, dias, temperatura)
         crear_grafico_baras(mes, dias, lluvia)
         agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento)
+        agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas)
     </script>
 {% endfor %}
 

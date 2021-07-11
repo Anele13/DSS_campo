@@ -40,13 +40,25 @@
 <!-- Core plugin JavaScript-->
 <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
 <!--Chart js-->
+{% block chart %}
 <script src="{% static 'vendor/chart.js/Chart.js' %}"></script>
 <script src="{% static 'vendor/chart.js/Chart.bundle.js' %}"></script>
+{% endblock %}
+
+
 
 <!--Mapa-->
 <script src="{% static 'js/leaflet.js' %}"></script>
 
+<!--Barfunnel-->
+<!--Barfunnel-->
+
+
+<script src="{% static 'js/Chart.BarFunnel.js' %}"></script>
 
 {% block scripts_adicionales %}
 {% endblock %}
