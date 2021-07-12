@@ -115,7 +115,7 @@ def mi_campo(request, query='rinde'):
 
                                                }
         datos_prod = datos_produccion.filter(
-            periodo__month__gte=mes, periodo__month__lte=mes)
+            periodo__month=mes)
         resultado[calendar.month_name[mes]]['cant_ovejas'] = sum(
             list(datos_prod.values_list('cantidad_ovejas', flat=True)))
         resultado[calendar.month_name[mes]]['cant_corderos'] = sum(
@@ -123,7 +123,8 @@ def mi_campo(request, query='rinde'):
         resultado[calendar.month_name[mes]]['cant_carneros'] = sum(
             list(datos_prod.values_list('cantidad_carneros', flat=True)))
 
-        #print("PROD", datos_prod.values_list('cantidad_lana_producida', flat=True))
+        print("PROD", datos_prod.values_list(
+            'cantidad_lana_producida', flat=True))
         resultado[calendar.month_name[mes]]['lana'] = list(datos_prod.values_list(
             'cantidad_lana_producida', flat=True))[0]
         resultado[calendar.month_name[mes]]['carne'] = list(datos_prod.values_list(
