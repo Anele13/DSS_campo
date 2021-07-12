@@ -11,7 +11,7 @@
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Bienvenido</h1>
+    <h1 class="h3 mb-0 text-gray-800">Hola {{user}}</h1>
 </div>
 
 <!-- Content Row -->
@@ -24,11 +24,11 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Ganancia (Mensual)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                            Ovejas</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">1000</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        <img src="{% static 'img/oveja.png' %}" class="img-responsive" width="45" height="45" alt="">
                     </div>
                 </div>
             </div>
@@ -42,11 +42,29 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Ganancia (Anual)</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                            Corderos</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                        <img src="{% static 'img/cordero.png' %}" class="img-responsive" width="55" height="55" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Carneros</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                    </div>
+                    <div class="col-auto">
+                        <img src="{% static 'img/carnero.png' %}" class="img-responsive" width="45" height="45" alt="">
                     </div>
                 </div>
             </div>
@@ -59,7 +77,8 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tareas pendientes
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Ocupacion del campo
                         </div>
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
@@ -74,25 +93,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Solicitudes Pendientes</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                        <img src="{% static 'img/granja.png' %}" class="img-responsive" width="45" height="45" alt="">
                     </div>
                 </div>
             </div>
@@ -109,7 +110,7 @@
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Ganancias</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Lluvia Acumulada</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
@@ -202,12 +203,12 @@
 <script>
 
     var barChartData = {
-        labels: ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5"],
+        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"],
         datasets: [{
-            label: 'Dataset 1',
+            label: 'LLuvia',
             backgroundColor: "#0B84A5",
             borderColor: '#F6C85F',
-            data: [1500, 1200, 1000, 800, 400]
+            data: [87, 30, 15, 0, 0, 0]
         }]
 
     };
@@ -247,7 +248,7 @@
                     }]
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Chart.js Bar Funnel Chart'
                 }
             }
