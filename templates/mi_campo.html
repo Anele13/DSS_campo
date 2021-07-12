@@ -1,6 +1,10 @@
 {% extends 'site_content.html' %}
 {% load static %}
 
+{% block chart %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.js"></script>
+{% endblock %}
+
 <!-- Escribir en este bloque todo lo que haga falta-->
 {% block site_content %}
 
@@ -247,8 +251,10 @@
   <div class="row">
     <div class="col-xl-4 col-md-4 col-sm-4">
       <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary"> Producción de carne </h6>
+        </div>
         <div class="card-body">
-          Producción de carne
           <div class="chart-bar">
             <div class="chartjs-size-monitor">
               <div class="chartjs-size-monitor-expand">
@@ -258,7 +264,7 @@
                 <div class=""></div>
               </div>
             </div>
-            <canvas id="myBarChartCarne" style="display: block; width: 996px; height: 320px;" width="996" height="320"
+            <canvas id="myBarChartCarne" style="display: block; width: 350px; height: 350px;" width="350" height="350"
               class="chartjs-render-monitor"></canvas>
           </div>
         </div>
@@ -266,9 +272,11 @@
     </div>
     <div class="col-xl-4 col-md-4 col-sm-4">
       <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary"> Acumulado de lluvia </h6>
+        </div>
         <div class="card-body">
-          Acumulado de lluvia anual
-          <div class="chart-pie">
+          <div class="chart-area">
             <div class="chartjs-size-monitor">
               <div class="chartjs-size-monitor-expand">
                 <div class=""></div>
@@ -277,7 +285,7 @@
                 <div class=""></div>
               </div>
             </div>
-            <canvas id="myPieChart" style="display: block; width: 996px; height: 320px;" width="996" height="320"
+            <canvas id="canvas" style="display: block; width: 350px; height: 350px;" width="350" height="350"
               class="chartjs-render-monitor"></canvas>
           </div>
         </div>
@@ -285,8 +293,10 @@
     </div>
     <div class="col-xl-4 col-md-4 col-sm-4">
       <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary"> Producción de lana </h6>
+        </div>
         <div class="card-body">
-          Producción de lana
           <div class="chart-bar">
             <div class="chartjs-size-monitor">
               <div class="chartjs-size-monitor-expand">
@@ -296,7 +306,7 @@
                 <div class=""></div>
               </div>
             </div>
-            <canvas id="myBarChartLana" style="display: block; width: 996px; height: 320px;" width="996" height="320"
+            <canvas id="myBarChartLana" style="display: block; width: 350px; height: 350px;" width="350" height="350"
               class="chartjs-render-monitor"></canvas>
           </div>
         </div>
@@ -592,14 +602,14 @@
   var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
   var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
 
-  console.log(typeof cant_carneros)
-
   crear_grafico_lineas(mes, dias, temperatura)
   crear_grafico_baras(mes, dias, lluvia)
   agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento)
   agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas)
 </script>
 {% endfor %}
+
+<script src="{% static 'js/Chart.BarFunnel.js' %}"></script>
 
 <script>
   function crear_grafico_barras_lana(lana, labels) {
@@ -610,22 +620,24 @@
       data: {
         labels: labels,
         datasets: [{
-          label: "Lana producida",
+          label: "kg lana producida",
           data: lana,
-          backgroundColor:
-            'rgba(255, 99, 132, 0.2)',
-
-          borderColor:
-            'rgb(255, 99, 132)',
-
+          backgroundColor: 'rgba(153, 102, 255, 0.2)',
+          borderColor: 'rgb(153, 102, 255)',
           borderWidth: 1
         }],
       },
       options: {
         scales: {
-          y: {
-            beginAtZero: true
-          }
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            scaleLabel: {
+              display: false,
+              labelString: 'kg'
+            }
+          }]
         }
       }
     });
@@ -640,27 +652,85 @@
       data: {
         labels: labels,
         datasets: [{
-          label: "Carne producida",
+          label: "kg carne producida",
           data: carne,
-          backgroundColor:
-            'rgba(255, 99, 132, 0.2)',
-
-          borderColor:
-            'rgb(255, 99, 132)',
-
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgb(75, 192, 192)',
           borderWidth: 1
         }],
       },
       options: {
         scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            scaleLabel: {
+              display: false,
+              labelString: 'kg'
+            }
+          }]
+        },
+        responsive: true
       }
     });
 
   };
+
+  function crear_grafico_funnel_lluvia(labels, lluvia) {
+
+    var barChartData = {
+      labels: labels,
+      datasets: [{
+        label: 'mm lluvia',
+        backgroundColor: "#0B84A5",
+        borderColor: '#F6C85F',
+        data: lluvia
+      }]
+
+    };
+
+    window.onload = function () {
+      var ctx = document.getElementById('canvas')
+      var chart = new Chart(ctx, {
+        type: 'barFunnel',
+        data: barChartData,
+        options: {
+          // Elements options apply to all of the options unless overridden in a dataset
+          // In this case, we are setting the border of each bar to be 2px wide and green
+          elements: {
+            rectangle: {
+              borderWidth: 2,
+              borderColor: '0B84A5',
+              borderSkipped: 'bottom',
+              stepLabel: {
+                display: true,
+                fontSize: 10,
+              }
+            }
+          },
+          region: {
+            display: true
+          },
+          responsive: true,
+          legend: {
+            position: 'top',
+          },
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              },
+              scaleLabel: {
+                display: false,
+                labelString: 'mm'
+              }
+            }]
+          },
+        }
+      });
+    }
+  }
 
 </script>
 
@@ -668,6 +738,22 @@
   var labels_1 = [];
   var produccion_lana_1 = [];
   var produccion_carne_1 = [];
+  var lluvia_anual = []
+
+  function sum(input) {
+
+    if (toString.call(input) !== "[object Array]")
+      return false;
+
+    var total = 0;
+    for (var i = 0; i < input.length; i++) {
+      if (isNaN(input[i])) {
+        continue;
+      }
+      total += Number(input[i]);
+    }
+    return Number(total.toFixed(2));
+  }
 </script>
 
 {% for mes, value in resultado.items %}
@@ -675,14 +761,20 @@
   labels_1.push("{{mes}}");
   var lana = JSON.parse("{{value.lana|safe}}");
   var carne = JSON.parse("{{value.carne|safe}}");
+  var lluvia_a = JSON.parse("{{value.lluvia|safe}}")
+  //console.log("De a uno")
+  //console.log(lluvia_a)
   produccion_lana_1.push(lana);
   produccion_carne_1.push(carne)
+  lluvia_anual.push(sum(lluvia_a))
 </script>
 {% endfor %}
 
 <script>
+  console.log(lluvia_anual)
   crear_grafico_barras_lana(produccion_lana_1, labels_1);
   crear_grafico_barras_carne(produccion_carne_1, labels_1);
+  crear_grafico_funnel_lluvia(labels_1, lluvia_anual);
 </script>
 
 {% endblock %}
