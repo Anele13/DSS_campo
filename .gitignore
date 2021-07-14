@@ -3,7 +3,6 @@ __pycache__
 *~
 .vscode
 idea/
-*.sqlite3
 *.pyc
 *.xls
 *.pdf
