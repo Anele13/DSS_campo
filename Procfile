@@ -1,1 +1,1 @@
-web: gunicorn sistema_campo.wsgi
+web: python manage.py collectstatic --no-input; gunicorn sistema_campo.wsgi --log-file - --log-level debug
