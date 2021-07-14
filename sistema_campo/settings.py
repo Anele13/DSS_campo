@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-!4koscoro7z6y4627n-#=8hf9%*h8mh(&r5hhmqtrz24!xci8z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['sensationnel-fromage-53159.herokuapp.com']
+ALLOWED_HOSTS = ['sensationnel-fromage-53159.herokuapp.com','*']
 
 
 # Application definition
@@ -123,7 +123,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/static_prod/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static_prod")
 
