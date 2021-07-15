@@ -1,1 +1,1 @@
-web: gunicorn sistema_campo.wsgi;
+web: gunicorn sistema_campo.wsgi
