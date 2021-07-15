@@ -1,1 +1,1 @@
-web: gunicorn sistema_campo.wsgi
+python manage.py collectstatic --noinput; gunicorn sistema_campo.wsgi;
