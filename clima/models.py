@@ -50,7 +50,7 @@ class DatosClimaticos(models.Model):
     temperatura_maxima = models.FloatField(blank=True, null=True)
     humedad = models.FloatField(blank=True, null=True)
     velocidad_viento = models.FloatField(blank=True, null=True)
-    direccion_viento = models.FloatField(blank=True, null=True)
+    direccion_viento = models.CharField(max_length=100, blank=True, null=True)
     velocidad_max_viento = models.FloatField(blank=True, null=True)
     barometro = models.FloatField(blank=True, null=True)
     mm_lluvia = models.FloatField(blank=True, null=True)
