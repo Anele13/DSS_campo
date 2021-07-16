@@ -20,7 +20,7 @@ def login_view(request):
             msg = 'Error en los datos ingresados'
     else:
         form = LoginForm()
-    return render(request, "login.html", {"form": form, "msg" : msg})
+    return render(request, "login.html", {"form": form, "msg": msg})
 
 
 def logout_view(request):
@@ -38,4 +38,4 @@ def registro(request):
             print(form.errors)
     else:
         form = RegisterForm()
-    return render(request, 'registro.html',{'form':form})
+    return render(request, 'registro.html', {'form': form})

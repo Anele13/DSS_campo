@@ -9,3 +9,11 @@ def inicio(request):
     Vista Inicio
     """
     return render(request, "bienvenido.html")
+
+
+@login_required(login_url='login')
+def politica(request):
+    """
+    Vista Politicas de privacidad
+    """
+    return render(request, "politica_privacidad.html")

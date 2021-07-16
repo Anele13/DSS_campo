@@ -15,14 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from sistema_campo.views import inicio
+from django.conf.urls import url
 
+from sistema_campo.views import inicio, politica
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', inicio, name="inicio"),
+    path('politica/', politica, name="politica"),
     path('', include('usuario.urls')),
     path('', include('clima.urls')),
     path('', include('campo.urls')),
     path('', include('produccion.urls')),
-    path('', inicio, name="inicio"),
+    url(r'^social/', include('social_django.urls', namespace='social')),
 ]
