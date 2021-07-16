@@ -7,4 +7,5 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=30, blank=True, null=True)
     apellido = models.CharField(max_length=30, blank=True, null=True)
     fecha_nacimiento = models.DateField(blank=True, null=True)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    usuario = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='persona')

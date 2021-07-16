@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
 from .models import Campo
+from usuario.models import User
 from django.db.models import Max
 from django.db.models.functions import ExtractMonth, ExtractDay
 import calendar
@@ -80,58 +81,72 @@ def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
 @login_required(login_url='login')
 # TODO probar otro default. la primera vez que solicita la pagina ya podria filtrar por alguna condicion
 def mi_campo(request, query='rinde'):
-    campo = Campo.objects.get(persona=request.user.persona)
-    datos_produccion = campo.datos_produccion_set.all()
-    datos_climaticos = campo.sonda.datos_climaticos_set.all()
-
-    mejor_año = get_mejor_año_por_condicion(
-        query, datos_produccion, datos_climaticos)
-    datos_climaticos = datos_climaticos.filter(
-        periodo__year=mejor_año).order_by('periodo')
-    datos_produccion = datos_produccion.filter(
-        periodo__year=mejor_año).order_by('periodo')
-
-    resultado = {}
-    produccion = {}
-    meses = sorted(
-        datos_climaticos
-        .annotate(month=ExtractMonth('periodo'))
-        .values_list('month', flat=True)
-        .distinct()
-    )
-
-    for mes in meses:  # dejo solo los meses que tengan datos
-        datos = datos_climaticos.filter(
-            periodo__month__gte=mes, periodo__month__lte=mes)
-        dias = datos.annotate(day=ExtractDay('periodo')).values_list(
-            'day', flat=True).distinct()
-        resultado[calendar.month_name[mes]] = {'dias': list(dias),
-                                               'temperatura_minima': min(list(datos.values_list('temperatura_media', flat=True))),
-                                               'lluvia': list(datos.values_list('mm_lluvia', flat=True)),
-                                               'temperatura': list(datos.values_list('temperatura_media', flat=True)),
-                                               'temperatura_maxima': max(list(datos.values_list('temperatura_media', flat=True))),
-                                               'viento_promedio': statistics.mean(list(datos.values_list('velocidad_max_viento', flat=True))),
-                                               'humedad_promedio': statistics.mean(list(datos.values_list('humedad', flat=True)))
-
-                                               }
-        datos_prod = datos_produccion.filter(
-            periodo__month=mes)
-        resultado[calendar.month_name[mes]]['cant_ovejas'] = sum(
-            list(datos_prod.values_list('cantidad_ovejas', flat=True)))
-        resultado[calendar.month_name[mes]]['cant_corderos'] = sum(
-            list(datos_prod.values_list('cantidad_corderos', flat=True)))
-        resultado[calendar.month_name[mes]]['cant_carneros'] = sum(
-            list(datos_prod.values_list('cantidad_carneros', flat=True)))
-
-        print("PROD", datos_prod.values_list(
-            'cantidad_lana_producida', flat=True))
-        resultado[calendar.month_name[mes]]['lana'] = list(datos_prod.values_list(
-            'cantidad_lana_producida', flat=True))[0]
-        resultado[calendar.month_name[mes]]['carne'] = list(datos_prod.values_list(
-            'cantidad_carne_producida', flat=True))[0]
 
     contexto = {}
-    contexto['resultado'] = resultado
-    contexto['año'] = mejor_año
-    contexto['query'] = query
+    try:
+        campo = Campo.objects.get(persona=request.user.persona)
+        try:
+            datos_produccion = campo.datos_produccion_set.all()
+        except Exception as e_produccion:
+            messages.warning(request, "Debe cargar sus datos de producción")
+
+        try:
+            datos_climaticos = campo.sonda.datos_climaticos_set.all()
+        except Exception as e_produccion:
+            messages.warning(
+                request, "Debe cargar sus datos climaticos o elegir una sonda")
+
+        mejor_año = get_mejor_año_por_condicion(
+            query, datos_produccion, datos_climaticos)
+        datos_climaticos = datos_climaticos.filter(
+            periodo__year=mejor_año).order_by('periodo')
+        datos_produccion = datos_produccion.filter(
+            periodo__year=mejor_año).order_by('periodo')
+
+        resultado = {}
+        produccion = {}
+        meses = sorted(
+            datos_climaticos
+            .annotate(month=ExtractMonth('periodo'))
+            .values_list('month', flat=True)
+            .distinct()
+        )
+
+        for mes in meses:  # dejo solo los meses que tengan datos
+            datos = datos_climaticos.filter(
+                periodo__month__gte=mes, periodo__month__lte=mes)
+            dias = datos.annotate(day=ExtractDay('periodo')).values_list(
+                'day', flat=True).distinct()
+            resultado[calendar.month_name[mes]] = {'dias': list(dias),
+                                                   'temperatura_minima': min(list(datos.values_list('temperatura_media', flat=True))),
+                                                   'lluvia': list(datos.values_list('mm_lluvia', flat=True)),
+                                                   'temperatura': list(datos.values_list('temperatura_media', flat=True)),
+                                                   'temperatura_maxima': max(list(datos.values_list('temperatura_media', flat=True))),
+                                                   'viento_promedio': statistics.mean(list(datos.values_list('velocidad_max_viento', flat=True))),
+                                                   'humedad_promedio': statistics.mean(list(datos.values_list('humedad', flat=True)))
+
+                                                   }
+            datos_prod = datos_produccion.filter(
+                periodo__month=mes)
+            resultado[calendar.month_name[mes]]['cant_ovejas'] = sum(
+                list(datos_prod.values_list('cantidad_ovejas', flat=True)))
+            resultado[calendar.month_name[mes]]['cant_corderos'] = sum(
+                list(datos_prod.values_list('cantidad_corderos', flat=True)))
+            resultado[calendar.month_name[mes]]['cant_carneros'] = sum(
+                list(datos_prod.values_list('cantidad_carneros', flat=True)))
+
+            print("PROD", datos_prod.values_list(
+                'cantidad_lana_producida', flat=True))
+            resultado[calendar.month_name[mes]]['lana'] = list(datos_prod.values_list(
+                'cantidad_lana_producida', flat=True))[0]
+            resultado[calendar.month_name[mes]]['carne'] = list(datos_prod.values_list(
+                'cantidad_carne_producida', flat=True))[0]
+
+        contexto['resultado'] = resultado
+        contexto['año'] = mejor_año
+        contexto['query'] = query
+    except Exception as e_campo:
+        messages.warning(
+            request, "Porfavor cargue los datos personales y de su campo desde su perfil")
+
     return render(request, "mi_campo.html", contexto)
