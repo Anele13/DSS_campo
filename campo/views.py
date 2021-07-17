@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import json
 from .models import Campo
+from usuario.models import User
 from django.db.models import Max
 from django.db.models.functions import ExtractMonth, ExtractDay
 import calendar
