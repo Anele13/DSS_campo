@@ -15,7 +15,7 @@
                         <div class="text-center">
                             <h1 class="h4 text-gray-900 mb-4">Mi Perfil</h1>
                         </div>
-                        <form class="user" method='POST' action="{% url 'editarperfil' userId %}">
+                        <form class="user" method='POST' action="{% url 'edicion' %}">
                             {% csrf_token %}
                             <h5 class="h6 text-gray-900 mb-6">Datos Personales</h5>
 

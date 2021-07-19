@@ -1,10 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, UpdateForm
 from .models import Persona
 from django.contrib.auth.models import User
 from campo.models import Campo
-from django.shortcuts import get_object_or_404
 
 
 def login_view(request):
@@ -47,38 +46,31 @@ def registro(request):
 
 def perfil_view(request):
     contexto = {}
-    usuario = request.user
-    usu = User.objects.get(username=usuario)
-    datos_persona = Persona.objects.get(usuario=usuario)
+    datos_persona = Persona.objects.get(usuario=request.user)
     datos_campo = Campo.objects.get(persona=datos_persona)
+    return render(request, 'mi_perfil.html', {'usuario': datos_persona, 'campo': datos_campo})
 
-    return render(request, 'mi_perfil.html', {'usuario': datos_persona, 'campo': datos_campo, 'userId': usu.id})
 
-
-def editar_perfil_view(request, pk):
+def editar_perfil_view(request):
     contexto = {}
-    usuario_inst = get_object_or_404(User, pk=pk)
+    user = request.user
+    datos = {}
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = UpdateForm(request.POST)
         if form.is_valid():
-            usuario = form.save(crear_usuario=False)
-            return redirect('miperfil')
-        else:
-            print(form.errors)
+            form.save(user)
+            return redirect('perfil')
     else:
-        datos = Persona.objects.get(usuario=usuario_inst)
-        datos_campo = Campo.objects.get(persona=datos)
-        datos_2 = {'documento': datos.documento,
-                   'nombre': datos.nombre,
-                   'apellido': datos.apellido,
-                   'fecha_nacimiento': datos.fecha_nacimiento,
-                   'nombre_campo': datos_campo.nombre,
-                   'cant_hectareas': datos_campo.cant_hectareas,
-                   }
-        # form = RegisterForm(instance=datos_2) no anda porque no es un ModelForms
-        form = RegisterForm(initial=datos_2)
-        ''' form = RegisterForm(datos_2, initial=datos_2)
-            if form.has_changed():
-            form.save()'''
-
-    return render(request, 'editar_perfil.html', {'form': form, 'userId': usuario_inst.id})
+        if user.persona:
+            p = user.persona
+            datos['documento']= p.documento
+            datos['nombre']= p.nombre
+            datos['apellido']= p.apellido
+            datos['fecha_nacimiento']= p.fecha_nacimiento
+            datos['nombre_campo']= p.nombre
+        campo = Campo.objects.get(persona=request.user.persona)
+        if campo:
+            datos['nombre_campo']=campo.nombre
+            datos['cant_hectareas']=campo.cant_hectareas
+        form = UpdateForm(initial=datos)
+    return render(request, 'editar_perfil.html', {'form': form})
