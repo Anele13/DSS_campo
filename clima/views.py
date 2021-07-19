@@ -48,7 +48,7 @@ def cargar_datos_climaticos(request):
             else:
                 messages.warning(
                     request, "Porfavor cargue los datos de su campo desde su perfil")
-        except Exception:
+        except Exception as e2:
             messages.warning(
-                request, "Porfavor cargue los datos personales y de su campo desde su perfil")
+                request, "Porfavor cargue los datos personales y de su campo desde su perfil"+str(e2))
     return render(request, "alta_datos_climaticos.html", contexto)
