@@ -36,8 +36,9 @@
 
 
 <!-- Bootstrap core JavaScript-->
-<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 
@@ -48,13 +49,16 @@
 {% block chart %}
 <script src="{% static 'vendor/chart.js/Chart.js' %}"></script>
 <script src="{% static 'vendor/chart.js/Chart.bundle.js' %}"></script>
+<!-- Graficos para mi campo html-->
+<script src="{% static 'js/graficos_campo.js' %}"></script>
+
 {% endblock %}
 
 <!--Mapa-->
 <script src="{% static 'js/leaflet.js' %}"></script>
 
-<!--Barfunnel-->
-<script src="{% static 'js/Chart.BarFunnel.js' %}"></script>
+
+
 
 {% block scripts_adicionales %}
 {% endblock %}
