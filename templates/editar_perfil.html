@@ -1,0 +1,98 @@
+{% extends 'site_content.html' %}
+{% load static %}
+
+
+{% block site_content %}
+
+<div class="container">
+
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <!-- Nested Row within Card Body -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="p-5">
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Mi Perfil</h1>
+                        </div>
+                        <form class="user" method='POST' action="{% url 'editarperfil' userId %}">
+                            {% csrf_token %}
+                            <h5 class="h6 text-gray-900 mb-6">Datos Personales</h5>
+
+                            <div class="form-group">
+                                {{form.documento}}
+                                {% if form.documento.errors %}
+                                {% for error in form.documento.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{form.nombre}}
+                                {% if form.nombre.errors %}
+                                {% for error in form.nombre.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{form.apellido}}
+                                {% if form.apellido.errors %}
+                                {% for error in form.apellido.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{form.fecha_nacimiento}}
+                                {% if form.fecha_nacimiento.errors %}
+                                {% for error in form.fecha_nacimiento.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <br>
+                            <!-- Datos del CAMPO -->
+                            <h5 class="h6 text-gray-900 mb-6">Datos del Campo</h5>
+                            <div class="form-group">
+                                {{form.nombre_campo}}
+                                {% if form.nombre_campo.errors %}
+                                {% for error in form.nombre_campo.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{form.cant_hectareas}}
+                                {% if form.cant_hectareas.errors %}
+                                {% for error in form.cant_hectareas.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <br>
+                            <button class="btn btn-primary btn-user btn-block">
+                                Guardar
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

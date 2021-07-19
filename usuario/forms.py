@@ -24,6 +24,7 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
+
     documento = forms.IntegerField(label='Ingresar el documento',
                                    widget=forms.TextInput(attrs={
                                        "class": "form-control form-control-user",
@@ -144,13 +145,14 @@ class RegisterForm(forms.Form):
             raise ValidationError("Las contraseñas no coinciden")
         return password2
 
-    def save(self, commit=True):
+    def save(self, crear_usuario=True):
         # Usuario
-        user = User.objects.create_user(
-            self.cleaned_data['username'],
-            self.cleaned_data['email'],
-            self.cleaned_data['password1']
-        )
+        if crear_usuario:
+            user = User.objects.create_user(
+                self.cleaned_data['username'],
+                self.cleaned_data['email'],
+                self.cleaned_data['password1']
+            )
 
         # Persona
         persona = Persona.objects.create(
