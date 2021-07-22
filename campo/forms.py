@@ -33,10 +33,5 @@ class AltaCampoForm(forms.Form):
 
    
     def save(self, persona, commit=True):
-        campo = Campo.objects.create(
-            persona,
-            None,
-            self.cleaned_data['nombre'],
-            self.cleaned_data['cant_hectareas'],
-        )   
+        campo = Campo.objects.create(persona, None, self.cleaned_data['nombre'],self.cleaned_data['cant_hectareas'])   
         return campo

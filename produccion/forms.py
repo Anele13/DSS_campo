@@ -162,3 +162,20 @@ class DatosProduccionForm(forms.Form):
             raise ValidationError(
                 "La finura de la lana no puede ser mayor a 100")
         return finura_lana
+
+    def save(self, campo, commit=True):
+        datos_produccion = DatosProduccion()
+        datos_produccion.periodo = self.cleaned_data["periodo"]
+        datos_produccion.cantidad_corderos = self.cleaned_data['cantidad_corderos']
+        datos_produccion.cantidad_carneros = self.cleaned_data['cantidad_carneros']
+        datos_produccion.cantidad_carne_producida = self.cleaned_data['cantidad_carne_producida']
+        datos_produccion.cantidad_lana_producida = self.cleaned_data['cantidad_lana_producida']
+        datos_produccion.cantidad_muertes_corderos = self.cleaned_data['cantidad_muertes_corderos']
+        datos_produccion.cantidad_ovejas = self.cleaned_data['cantidad_ovejas']
+        datos_produccion.cantidad_pariciones = self.cleaned_data['cantidad_pariciones']
+        datos_produccion.rinde_lana = self.cleaned_data['rinde_lana']
+        datos_produccion.finura_lana = self.cleaned_data['finura_lana']
+        datos_produccion.campo = campo
+        return datos_produccion.save()
+        
+

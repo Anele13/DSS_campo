@@ -19,317 +19,317 @@
   {% endfor %}
 {% endif %}
 
-<div class="row">
-  <div class="col-md-10">
-    <h2 class="m-0"> Mejor Año con respecto a {{query|capfirst}}: {{año}} </h2>
-  </div>
-  <div class="col-md-2">
-    <div class="dropdown mb-4 show">
-      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          Filtros Disponibles
-      </button>
-      <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);" x-placement="top-start">
-        <div class="dropdown-header">Filtros:</div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='rinde' %}">Rinde</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='finura' %}">Finura</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='lluvia' %}">Mayor cantidad de mm de lluvia</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='temperatura' %}">Mayor temperatura en verano</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='mortandad' %}">Menor mortandad</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='lana' %}">Kg de Lana Producida</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='carne' %}">Kg de Carne Producida</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='pariciones' %}">Cantidad de pariciones</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='hacienda' %}">Cantidad de Hacienda</a>
+{% if año %}
+    <div class="row">
+      <div class="col-md-10">
+        <h2 class="m-0"> Mejor Año con respecto a {{query|capfirst}}: {{año}} </h2>
       </div>
-      </div>
-  </div>
-</div>
-<br>
-
-<div class="row">
-  <div class="col-xl-4 col-md-4 col-sm-4">
-    <div class="card shadow mb-4">
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary"> Producción de Carne Anual</h6>
-      </div>
-      <div class="card-body">
-          <canvas id="myBarChartCarne" style="display: block; width: 350px; height: 350px;" width="350" height="350"
-            class="chartjs-render-monitor"></canvas>
+      <div class="col-md-2">
+        <div class="dropdown mb-4 show">
+          <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Filtros Disponibles
+          </button>
+          <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);" x-placement="top-start">
+            <div class="dropdown-header">Filtros:</div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='rinde' %}">Rinde</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='finura' %}">Finura</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='lluvia' %}">Mayor cantidad de mm de lluvia</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='temperatura' %}">Mayor temperatura en verano</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='mortandad' %}">Menor mortandad</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='lana' %}">Kg de Lana Producida</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='carne' %}">Kg de Carne Producida</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='pariciones' %}">Cantidad de pariciones</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'mi_campo' query='hacienda' %}">Cantidad de Hacienda</a>
+          </div>
+          </div>
       </div>
     </div>
-  </div>
-  <div class="col-xl-4 col-md-4 col-sm-4">
-    <div class="card shadow mb-4">
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary"> Acumulado de Lluvia Anual</h6>
+    <br>
+
+    <div class="row">
+      <div class="col-xl-4 col-md-4 col-sm-4">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary"> Producción de Carne Anual</h6>
+          </div>
+          <div class="card-body">
+              <canvas id="myBarChartCarne" style="display: block; width: 350px; height: 350px;" width="350" height="350"
+                class="chartjs-render-monitor"></canvas>
+          </div>
+        </div>
       </div>
-      <div class="card-body">
-          <canvas id="canvas" style="display: block; width: 350px; height: 350px;" width="350" height="350"
-            class="chartjs-render-monitor"></canvas>
+      <div class="col-xl-4 col-md-4 col-sm-4">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary"> Acumulado de Lluvia Anual</h6>
+          </div>
+          <div class="card-body">
+              <canvas id="canvas" style="display: block; width: 350px; height: 350px;" width="350" height="350"
+                class="chartjs-render-monitor"></canvas>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="col-xl-4 col-md-4 col-sm-4">
-    <div class="card shadow mb-4">
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary"> Producción de Lana Anual </h6>
-      </div>
-      <div class="card-body">
-          <canvas id="myBarChartLana" style="display: block; width: 350px; height: 350px;" width="350" height="350"
-            class="chartjs-render-monitor"></canvas>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <!-- Area Chart -->
-  <div class="col-xl-12 col-lg-12">
-    <div class="card shadow mb-4">
-      <!-- Card Header - Dropdown -->
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-
-        <a class="btn btn-secondary" href="#myCarousel" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <h6 class="m-0 font-weight-bold text-primary">Datos climaticos y de produccion mensuales para el año {{año}}</h6>
-        <a class="btn btn-secondary" href="#myCarousel" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
-
-      <!-- Card Body -->
-      <div class="card-body">
-
-        <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-interval="false">
-          <div class="carousel-inner">
-            {% for mes, value in resultado.items %}
-            {% if forloop.counter == 1 %}
-            <div class="carousel-item active">
-              <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
-              <div class="row">
-                <!--Filtros temperatura y Lluvias-->
-                <div class="col-lg-9">
-                  <div class="chart-area">
-                    <div class="mt-4 text-center medium">
-                      Variacion Mensual de Temperatura {{mes}}
-                    </div>
-                    <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
-                      height="320" class="chartjs-render-monitor"></canvas>
-                  </div>
-                  <br>
-                  <div class="chart-bar pt-4 pb-2">
-                    <div class="mt-4 text-center medium">
-                      Variacion Mensual de Lluvias {{mes}}
-                    </div>
-                    <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
-                      class="chartjs-render-monitor" width="996" height="320"></canvas>
-                  </div>
-                  <br>
-                  <br>
-                </div>
-
-                <!--Filtros laterales-->
-                <div class="col-lg-3">
-                  <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
-                    src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
-                  <table class="table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">Temperatura Minima</th>
-                        <td id="temperatura_min_{{mes}}"> </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Temperatura Maxima</th>
-                        <td id="temperatura_max_{{mes}}"></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Humedad Promedio</th>
-                        <td id="humedad_{{mes}}"></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Viento Promedio</th>
-                        <td id="viento_{{mes}}"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <br>
-                  <!--Produccion grafico-->
-                  <div class="mt-4 text-center medium">
-                    Cantidad de Hacienda en {{mes}}
-                  </div>
-                  <div class="chart-pie pt-4 pb-2">
-                    <div class="chartjs-size-monitor">
-                      <div class="chartjs-size-monitor-expand">
-                        <div class=""></div>
-                      </div>
-                      <div class="chartjs-size-monitor-shrink">
-                        <div class=""></div>
-                      </div>
-                    </div>
-                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465"
-                      height="245" class="chartjs-render-monitor"></canvas>
-                  </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Capones
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Corderos
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Ovejas
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {% else %}
-            <div class="carousel-item">
-              <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
-              <div class="row">
-                <!--Filtros temperatura y Lluvias-->
-                <div class="col-lg-9">
-                  <div class="chart-area">
-                    <div class="mt-4 text-center medium">
-                      Variacion Mensual de Temperatura {{mes}}
-                    </div>
-                    <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
-                      height="320" class="chartjs-render-monitor"></canvas>
-                  </div>
-                  <br>
-                  <div class="chart-bar pt-4 pb-2">
-                    <div class="mt-4 text-center medium">
-                      Variacion Mensual de Lluvias {{mes}}
-                    </div>
-                    <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
-                      class="chartjs-render-monitor" width="996" height="320"></canvas>
-                  </div>
-                  <br>
-                  <br>
-                </div>
-
-                <!--Filtros laterales-->
-                <div class="col-lg-3">
-                  <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
-                    src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
-                  <table class="table">
-                    <thead>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">Temperatura Minima</th>
-                        <td id="temperatura_min_{{mes}}"> </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Temperatura Maxima</th>
-                        <td id="temperatura_max_{{mes}}"></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Humedad Promedio</th>
-                        <td id="humedad_{{mes}}"></td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Viento Promedio</th>
-                        <td id="viento_{{mes}}"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <br>
-                  <!--Produccion grafico-->
-                  <div class="mt-4 text-center medium">
-                    Cantidad de Hacienda en {{mes}}
-                  </div>
-                  <div class="chart-pie pt-4 pb-2">
-                    <div class="chartjs-size-monitor">
-                      <div class="chartjs-size-monitor-expand">
-                        <div class=""></div>
-                      </div>
-                      <div class="chartjs-size-monitor-shrink">
-                        <div class=""></div>
-                      </div>
-                    </div>
-                    <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465"
-                      height="245" class="chartjs-render-monitor"></canvas>
-                  </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Capones
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Corderos
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Ovejas
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {% endif %}
-            {%endfor%}
+      <div class="col-xl-4 col-md-4 col-sm-4">
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary"> Producción de Lana Anual </h6>
+          </div>
+          <div class="card-body">
+              <canvas id="myBarChartLana" style="display: block; width: 350px; height: 350px;" width="350" height="350"
+                class="chartjs-render-monitor"></canvas>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Area Chart -->
+    <div class="row">
+      <!-- Area Chart -->
+      <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+          <!-- Card Header - Dropdown -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 
-</div>
+            <a class="btn btn-secondary" href="#myCarousel" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <h6 class="m-0 font-weight-bold text-primary">Datos climaticos y de produccion mensuales para el año {{año}}</h6>
+            <a class="btn btn-secondary" href="#myCarousel" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body">
+
+            <div id="myCarousel" class="carousel slide" data-bs-ride="carousel" data-interval="false">
+              <div class="carousel-inner">
+                {% for mes, value in resultado.items %}
+                {% if forloop.counter == 1 %}
+                <div class="carousel-item active">
+                  <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
+                  <div class="row">
+                    <!--Filtros temperatura y Lluvias-->
+                    <div class="col-lg-9">
+                      <div class="chart-area">
+                        <div class="mt-4 text-center medium">
+                          Variacion Mensual de Temperatura {{mes}}
+                        </div>
+                        <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
+                          height="320" class="chartjs-render-monitor"></canvas>
+                      </div>
+                      <br>
+                      <div class="chart-bar pt-4 pb-2">
+                        <div class="mt-4 text-center medium">
+                          Variacion Mensual de Lluvias {{mes}}
+                        </div>
+                        <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
+                          class="chartjs-render-monitor" width="996" height="320"></canvas>
+                      </div>
+                      <br>
+                      <br>
+                    </div>
+
+                    <!--Filtros laterales-->
+                    <div class="col-lg-3">
+                      <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
+                        src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
+                      <table class="table">
+                        <thead>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">Temperatura Minima</th>
+                            <td id="temperatura_min_{{mes}}"> </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Temperatura Maxima</th>
+                            <td id="temperatura_max_{{mes}}"></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Humedad Promedio</th>
+                            <td id="humedad_{{mes}}"></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Viento Promedio</th>
+                            <td id="viento_{{mes}}"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <br>
+                      <!--Produccion grafico-->
+                      <div class="mt-4 text-center medium">
+                        Cantidad de Hacienda en {{mes}}
+                      </div>
+                      <div class="chart-pie pt-4 pb-2">
+                        <div class="chartjs-size-monitor">
+                          <div class="chartjs-size-monitor-expand">
+                            <div class=""></div>
+                          </div>
+                          <div class="chartjs-size-monitor-shrink">
+                            <div class=""></div>
+                          </div>
+                        </div>
+                        <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465"
+                          height="245" class="chartjs-render-monitor"></canvas>
+                      </div>
+                      <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                          <i class="fas fa-circle text-primary"></i> Capones
+                        </span>
+                        <span class="mr-2">
+                          <i class="fas fa-circle text-success"></i> Corderos
+                        </span>
+                        <span class="mr-2">
+                          <i class="fas fa-circle text-info"></i> Ovejas
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {% else %}
+                <div class="carousel-item">
+                  <!--TODOS LOS GRAFICOS ESTAN CONTENIDOS DENTRO DE ESTA ROW-->
+                  <div class="row">
+                    <!--Filtros temperatura y Lluvias-->
+                    <div class="col-lg-9">
+                      <div class="chart-area">
+                        <div class="mt-4 text-center medium">
+                          Variacion Mensual de Temperatura {{mes}}
+                        </div>
+                        <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
+                          height="320" class="chartjs-render-monitor"></canvas>
+                      </div>
+                      <br>
+                      <div class="chart-bar pt-4 pb-2">
+                        <div class="mt-4 text-center medium">
+                          Variacion Mensual de Lluvias {{mes}}
+                        </div>
+                        <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
+                          class="chartjs-render-monitor" width="996" height="320"></canvas>
+                      </div>
+                      <br>
+                      <br>
+                    </div>
+
+                    <!--Filtros laterales-->
+                    <div class="col-lg-3">
+                      <img class="img-thumbnail mx-auto border-0" style="width: 9rem;"
+                        src="{% static 'img/parcialmente_soleado.svg' %}" alt="...">
+                      <table class="table">
+                        <thead>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">Temperatura Minima</th>
+                            <td id="temperatura_min_{{mes}}"> </td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Temperatura Maxima</th>
+                            <td id="temperatura_max_{{mes}}"></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Humedad Promedio</th>
+                            <td id="humedad_{{mes}}"></td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Viento Promedio</th>
+                            <td id="viento_{{mes}}"></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <br>
+                      <!--Produccion grafico-->
+                      <div class="mt-4 text-center medium">
+                        Cantidad de Hacienda en {{mes}}
+                      </div>
+                      <div class="chart-pie pt-4 pb-2">
+                        <div class="chartjs-size-monitor">
+                          <div class="chartjs-size-monitor-expand">
+                            <div class=""></div>
+                          </div>
+                          <div class="chartjs-size-monitor-shrink">
+                            <div class=""></div>
+                          </div>
+                        </div>
+                        <canvas id="myPieChart_{{mes}}" style="display: block; width: 465px; height: 245px;" width="465"
+                          height="245" class="chartjs-render-monitor"></canvas>
+                      </div>
+                      <div class="mt-4 text-center small">
+                        <span class="mr-2">
+                          <i class="fas fa-circle text-primary"></i> Capones
+                        </span>
+                        <span class="mr-2">
+                          <i class="fas fa-circle text-success"></i> Corderos
+                        </span>
+                        <span class="mr-2">
+                          <i class="fas fa-circle text-info"></i> Ovejas
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {%endfor%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Area Chart -->
+
+    </div>
+
+    {% for mes, value in resultado.items %}
+      <script>
+        var mes = "{{mes}}"
+        var dias = JSON.parse("{{value.dias|safe}}")
+        var temperatura = JSON.parse("{{value.temperatura|safe}}")
+        var lluvia = JSON.parse("{{value.lluvia|safe}}")
+
+        var temp_min = JSON.parse("{{value.temperatura_minima|safe}}")
+        var temp_max = JSON.parse("{{value.temperatura_maxima|safe}}")
+        var humedad = JSON.parse("{{value.humedad_promedio|safe}}")
+        var viento = JSON.parse("{{value.viento_promedio|safe}}")
+
+        var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
+        var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
+        var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
+
+      
+
+        crear_grafico_lineas(mes, dias, temperatura)
+        crear_grafico_baras(mes, dias, lluvia)
+        agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento)
+        agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas)
 
 
-{% for mes, value in resultado.items %}
-  <script>
-    var mes = "{{mes}}"
-    var dias = JSON.parse("{{value.dias|safe}}")
-    var temperatura = JSON.parse("{{value.temperatura|safe}}")
-    var lluvia = JSON.parse("{{value.lluvia|safe}}")
+        
+      </script>
+    {% endfor %}
 
-    var temp_min = JSON.parse("{{value.temperatura_minima|safe}}")
-    var temp_max = JSON.parse("{{value.temperatura_maxima|safe}}")
-    var humedad = JSON.parse("{{value.humedad_promedio|safe}}")
-    var viento = JSON.parse("{{value.viento_promedio|safe}}")
+    <script>
+        var lana = JSON.parse("{{lana|safe}}");
+        var carne = JSON.parse("{{carne|safe}}");
+        //var meses = JSON.parse("{{meses|safe}}") 
+        var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
-    var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
-    var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
-    var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
+        crear_grafico_barras_lana(lana, meses);
+        crear_grafico_barras_carne(carne, meses);
+        crear_grafico_funnel_lluvia(lluvia, meses);
+    </script>
 
-   
-
-    crear_grafico_lineas(mes, dias, temperatura)
-    crear_grafico_baras(mes, dias, lluvia)
-    agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento)
-    agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas)
-
-
-    
-  </script>
-{% endfor %}
-
-<script>
-    var lana = JSON.parse("{{lana|safe}}");
-    var carne = JSON.parse("{{carne|safe}}");
-    //var meses = JSON.parse("{{meses|safe}}") 
-    var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-
-    crear_grafico_barras_lana(lana, meses);
-    crear_grafico_barras_carne(carne, meses);
-    crear_grafico_funnel_lluvia(lluvia, meses);
-</script>
-
-
+{% endif %}
 
 {% endblock %}

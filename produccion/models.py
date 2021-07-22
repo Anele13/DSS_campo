@@ -18,7 +18,6 @@ class DatosProduccion(models.Model):
     campo = models.ForeignKey(Campo, null=True, db_column='campo', on_delete=models.SET_NULL, related_name='datos_produccion_set')
 
 
-
     @classmethod
     def agregar_datos_produccion(self, archivo, campo):
         df = pd.read_csv(archivo)

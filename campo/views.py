@@ -7,6 +7,7 @@ from .models import Campo
 from usuario.models import User
 from django.db.models import Max
 from django.db.models.functions import ExtractMonth, ExtractDay
+from usuario.views import get_persona_campo
 import calendar
 import locale
 import statistics
@@ -80,51 +81,61 @@ def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
 
 
 @login_required(login_url='login')
-# TODO probar otro default. la primera vez que solicita la pagina ya podria filtrar por alguna condicion
 def mi_campo(request, query='rinde'):
-    campo = Campo.objects.get(persona=request.user.persona)
-    datos_produccion = campo.datos_produccion_set.all()
-    datos_climaticos = campo.sonda.datos_climaticos_set.all()
-
-    mejor_año = get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos)
-    datos_climaticos = datos_climaticos.filter(periodo__year=mejor_año).order_by('periodo')
-    datos_produccion = datos_produccion.filter(periodo__year=mejor_año).order_by('periodo')
-
+    user = request.user 
+    persona, campo = get_persona_campo(user)
     resultado = {}
     produccion = {}
-    meses = sorted(
-        datos_climaticos
-        .annotate(month=ExtractMonth('periodo'))
-        .values_list('month', flat=True)
-        .distinct()
-    )
-
-    
-    datos = datos_climaticos.filter(periodo__month__gte=1, periodo__month__lte=12)
-    datos_prod = datos_produccion.filter(periodo__month__gte=1, periodo__month__lte=12)
-    d_1 = datos.values('periodo__month','temperatura_minima','mm_lluvia','temperatura_media','temperatura_maxima','velocidad_max_viento','humedad', 'periodo__day')
-    d_2 = datos_prod.values('periodo__month','cantidad_ovejas','cantidad_corderos','cantidad_carneros','cantidad_lana_producida','cantidad_carne_producida')
-    
-    for mes in meses:  # dejo solo los meses que tengan datos
-        d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
-        nombre_mes = calendar.month_name[mes]
-        resultado[nombre_mes] = {'dias': [d['periodo__day'] for d in d2],
-                                'temperatura_minima': min([d['temperatura_minima'] for d in d2]),
-                                'lluvia': [d['mm_lluvia'] for d in d2],
-                                'temperatura': [d['temperatura_media'] for d in d2],
-                                'temperatura_maxima': max([d['temperatura_maxima'] for d in d2]),
-                                'viento_promedio': statistics.mean([d['velocidad_max_viento'] for d in d2]),
-                                'humedad_promedio': statistics.mean([d['humedad'] for d in d2])}
-        d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
-        resultado[nombre_mes]['cant_ovejas'] = sum([d['cantidad_ovejas'] for d in d3])
-        resultado[nombre_mes]['cant_corderos'] = sum([d['cantidad_corderos'] for d in d3])
-        resultado[nombre_mes]['cant_carneros'] = sum([d['cantidad_carneros'] for d in d3])
-    
     contexto = {}
-    #contexto['meses'] = json.dumps([calendar.month_name[mes] for mes in  range(1,11)])
-    contexto['lana'] = json.dumps([random.randint(600,800) for i in range(1,13)])#[d['cantidad_lana_producida'] for d in d3] TODO aca tambien va sum
-    contexto['carne'] =  json.dumps([random.randint(30,50) for i in range(1,13)]) # [d['cantidad_carne_producida'] for d in d3]
-    contexto['resultado'] = resultado
-    contexto['año'] = mejor_año
-    contexto['query'] = query
+
+    if not (persona and campo):
+        messages.warning(request, "Cargue sus datos personales y de su campo.")
+
+    elif not(campo.sonda):
+        messages.warning(request, "Debe cargar los datos climaticos de su campo.")
+    
+    elif not(campo.datos_produccion_set.all()):
+        messages.warning(request, "Debe cargar los datos de produccion de su campo.")
+    
+    else:
+        campo = Campo.objects.get(persona=request.user.persona)
+        datos_produccion = campo.datos_produccion_set.all()
+        datos_climaticos = campo.sonda.datos_climaticos_set.all()
+
+        mejor_año = get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos)
+        datos_climaticos = datos_climaticos.filter(periodo__year=mejor_año).order_by('periodo')
+        datos_produccion = datos_produccion.filter(periodo__year=mejor_año).order_by('periodo')
+        meses = sorted(
+            datos_climaticos
+            .annotate(month=ExtractMonth('periodo'))
+            .values_list('month', flat=True)
+            .distinct()
+        )
+        
+        datos = datos_climaticos.filter(periodo__month__gte=1, periodo__month__lte=12)
+        datos_prod = datos_produccion.filter(periodo__month__gte=1, periodo__month__lte=12)
+        d_1 = datos.values('periodo__month','temperatura_minima','mm_lluvia','temperatura_media','temperatura_maxima','velocidad_max_viento','humedad', 'periodo__day')
+        d_2 = datos_prod.values('periodo__month','cantidad_ovejas','cantidad_corderos','cantidad_carneros','cantidad_lana_producida','cantidad_carne_producida')
+        
+        #TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
+        for mes in meses:  # dejo solo los meses que tengan datos
+            d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
+            nombre_mes = calendar.month_name[mes]
+            resultado[nombre_mes] = {'dias': [d['periodo__day'] for d in d2],
+                                    'temperatura_minima': min([d['temperatura_minima'] for d in d2]),
+                                    'lluvia': [d['mm_lluvia'] for d in d2],
+                                    'temperatura': [d['temperatura_media'] for d in d2],
+                                    'temperatura_maxima': max([d['temperatura_maxima'] for d in d2]),
+                                    'viento_promedio': 100, #statistics.mean([d['velocidad_max_viento'] for d in d2]),
+                                    'humedad_promedio': 100}#statistics.mean([d['humedad'] for d in d2])}
+            d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
+            resultado[nombre_mes]['cant_ovejas'] = sum([d['cantidad_ovejas'] for d in d3])
+            resultado[nombre_mes]['cant_corderos'] = sum([d['cantidad_corderos'] for d in d3])
+            resultado[nombre_mes]['cant_carneros'] = sum([d['cantidad_carneros'] for d in d3])
+        
+        contexto['lana'] = json.dumps([random.randint(600,800) for i in range(1,13)])#[d['cantidad_lana_producida'] for d in d3] TODO aca tambien va sum
+        contexto['carne'] =  json.dumps([random.randint(30,50) for i in range(1,13)]) # [d['cantidad_carne_producida'] for d in d3]
+        contexto['resultado'] = resultado
+        contexto['año'] = mejor_año
+        contexto['query'] = query
     return render(request, "mi_campo.html", contexto)

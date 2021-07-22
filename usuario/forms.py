@@ -242,7 +242,11 @@ class UpdateForm(forms.Form):
     
     def save(self, user, commit=True):
         # Persona
-        persona = user.persona
+        try:
+            persona = Persona.objects.get(usuario=user)
+        except Exception:
+            persona = None
+
         if persona:
             persona.documento=self.cleaned_data['documento']
             persona.nombre=self.cleaned_data['nombre']
@@ -259,7 +263,11 @@ class UpdateForm(forms.Form):
                 usuario=user
             )
         
-        campo = Campo.objects.get(persona=persona)
+        try:
+            campo = Campo.objects.get(persona=persona)
+        except Exception:
+            campo = None
+            
         if campo:
             campo.sonda=None
             campo.nombre=self.cleaned_data['nombre_campo']

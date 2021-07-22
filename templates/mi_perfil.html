@@ -9,61 +9,68 @@
         <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
-                <div class="col-lg-12 col-md-12">
+                <div class="col-lg-12 col-md-12 bg-gradient-primary">
                     <div class="p-5">
                         <div class="text-center">
                             <img alt="Responsive image" style="width:10%" class="img-fluid img-profile rounded-circle"
                                 src="{% static 'img/undraw_profile.svg' %}">
-                            <h1 class="h4 text-gray-900 mb-4">Mi Perfil</h1>
-                            <a href="{% url 'edicion' %}">Editar Datos</a>
+                            <h1 class="h4 text-gray-100 mb-4 ">{{user}}</h1>
+                            <a class="btn btn-sm btn-warning" href="{% url 'edicion' %}">
+                                <i class="fas fa-pencil-alt"></i> Editar
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
+            <br>
+            <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div>
                         <h1 class="h4 text-gray-900 mb-4 text-center">Datos Personales</h1>
                     </div>
-                    <div class="form-group">
-                        <label class="col-lg-6 col-md-6 control-label text-right">
-                            DNI:
-                        </label>
-                        {{usuario.documento}}
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-6 col-md-6 control-label text-right">
-                            Nombre:
-                        </label>
-                        {{usuario.nombre}}
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-6 col-md-6 control-label text-right">
-                            Apellido:
-                        </label>
-                        {{usuario.apellido}}
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-6 col-md-6 control-label text-right">
-                            Fecha Nacimiento:
-                        </label>
-                        {{usuario.fecha_nacimiento}}
+                    <div class="container">
+                        <table class="table">
+                            <tbody>
+                              <tr>
+                                <th scope="row">DNI</th>
+                                <td>{{persona.documento}}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Nombre</th>
+                                <td>{{persona.nombre}}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Apellido</th>
+                                <td>{{persona.apellido}}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Fecha Nacimiento</th>
+                                <td>{{persona.fecha_nacimiento}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                     </div>
                 </div>
+
+
                 <div class="col-lg-6 col-md-6">
+
                     <div>
                         <h1 class="h4 text-gray-900 mb-4 text-center">Datos del Campo</h1>
                     </div>
-
-                    <div class="form-group">
-                        <label class="col-lg-6 col-md-6 control-label text-right">
-                            Nombre del campo:
-                        </label>
-                        {{campo.nombre}}
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-6 col-md-6 control-label text-right">
-                            Cantidad de hectareas:
-                        </label>
-                        {{campo.cant_hectareas}}
+                    <div class="container">
+                        <table class="table">
+                            <tbody>
+                              <tr>
+                                <th scope="row">Nombre del Campo</th>
+                                <td>{{campo.nombre}}</td>
+                              </tr>
+                              <tr>
+                                <th scope="row">Cantidad de Hectareas</th>
+                                <td>{{campo.cant_hectareas}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
                     </div>
                 </div>
             </div>

@@ -4,6 +4,20 @@ from .forms import LoginForm, RegisterForm, UpdateForm
 from .models import Persona
 from django.contrib.auth.models import User
 from campo.models import Campo
+from django.contrib import messages
+
+def get_persona_campo(user):
+    persona = None
+    campo = None
+    try:
+        persona = Persona.objects.get(usuario=user)
+    except Exception as e:
+        pass
+    try:
+        campo = Campo.objects.get(persona=persona)
+    except Exception:
+        pass
+    return persona, campo
 
 
 def login_view(request):
@@ -37,8 +51,6 @@ def registro(request):
         if form.is_valid():
             usuario = form.save()
             return redirect('login')
-        else:
-            print(form.errors)
     else:
         form = RegisterForm()
     return render(request, 'registro.html', {'form': form})
@@ -46,9 +58,11 @@ def registro(request):
 
 def perfil_view(request):
     contexto = {}
-    datos_persona = Persona.objects.get(usuario=request.user)
-    datos_campo = Campo.objects.get(persona=datos_persona)
-    return render(request, 'mi_perfil.html', {'usuario': datos_persona, 'campo': datos_campo})
+    user = request.user
+    persona, campo = get_persona_campo(user)
+    if not (persona and campo):
+        return redirect('edicion')
+    return render(request, 'mi_perfil.html', {'persona': persona, 'campo': campo})
 
 
 def editar_perfil_view(request):
@@ -61,14 +75,13 @@ def editar_perfil_view(request):
             form.save(user)
             return redirect('perfil')
     else:
-        if user.persona:
-            p = user.persona
-            datos['documento']= p.documento
-            datos['nombre']= p.nombre
-            datos['apellido']= p.apellido
-            datos['fecha_nacimiento']= p.fecha_nacimiento
-            datos['nombre_campo']= p.nombre
-        campo = Campo.objects.get(persona=request.user.persona)
+        persona, campo = get_persona_campo(user)
+        if persona:
+            datos['documento']= persona.documento
+            datos['nombre']= persona.nombre
+            datos['apellido']= persona.apellido
+            datos['fecha_nacimiento']= persona.fecha_nacimiento
+            datos['nombre_campo']= persona.nombre
         if campo:
             datos['nombre_campo']=campo.nombre
             datos['cant_hectareas']=campo.cant_hectareas

@@ -2,6 +2,7 @@ from django.db import models
 import pandas as pd
 import sqlite3
 from sistema_campo.settings import BASE_DIR
+import json
 
 
 class Sonda(models.Model):
@@ -41,6 +42,19 @@ class Sonda(models.Model):
         conn = sqlite3.connect(BASE_DIR.as_posix()+'/db.sqlite3')
         df.to_sql("clima_datosclimaticos", conn, if_exists="append",index=False)
         conn.close()
+
+
+    @classmethod
+    def formatear(self, sondas):
+        respuesta = {}  
+        for s in sondas:
+            if s.latitud and s.longitud:
+                respuesta[str(s.id)] = {'nombre': s.nombre,
+                                        'latitud': s.latitud,
+                                        'longitud': s.longitud,
+                                        'altura': 0}
+        return json.dumps(respuesta)
+
 
 
 class DatosClimaticos(models.Model):
