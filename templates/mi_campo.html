@@ -5,6 +5,8 @@
 <!-- Escribir en este bloque todo lo que haga falta-->
 {% block site_content %}
 
+<link rel="stylesheet" href="boxplot.css">
+<script src='https://unpkg.com/chartjs-chart-box-and-violin-plot@2/build/Chart.BoxPlot.js'></script>
 
 {% if messages %}
   {% for message in messages %}
@@ -69,10 +71,10 @@
       <div class="col-xl-4 col-md-4 col-sm-4">
         <div class="card shadow mb-4">
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary"> Acumulado de Lluvia Anual</h6>
+            <h6 class="m-0 font-weight-bold text-primary"> RInde</h6>
           </div>
           <div class="card-body">
-              <canvas id="canvas" style="display: block; width: 350px; height: 350px;" width="350" height="350"
+              <canvas id="canvasRinde" style="display: block; width: 350px; height: 350px;" width="350" height="350"
                 class="chartjs-render-monitor"></canvas>
           </div>
         </div>
@@ -290,6 +292,9 @@
       <!-- Area Chart -->
 
     </div>
+    <script>
+      var rinde_lana_meses = []
+    </script>
 
     {% for mes, value in resultado.items %}
       <script>
@@ -306,7 +311,7 @@
         var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
         var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
         var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
-
+        rinde_lana_meses.push(JSON.parse("{{value.rinde_lana_meses|safe}}"))
       
 
         crear_grafico_lineas(mes, dias, temperatura)
@@ -322,12 +327,101 @@
     <script>
         var lana = JSON.parse("{{lana|safe}}");
         var carne = JSON.parse("{{carne|safe}}");
-        //var meses = JSON.parse("{{meses|safe}}") 
         var meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
         crear_grafico_barras_lana(lana, meses);
         crear_grafico_barras_carne(carne, meses);
         crear_grafico_funnel_lluvia(lluvia, meses);
+
+    </script>
+
+    <script>
+      const myChart = document.getElementById('canvasRinde').getContext('2d');
+      const label = meses;
+      const datas = rinde_lana_meses;
+      const colorRed = 'rgba(255, 99, 132, 0.3)';
+      const borderRed = 'rgba(255, 99, 132, 1)';
+
+      const iChart = new Chart(myChart, {
+          type: 'boxplot',
+          data: {
+              labels: label,
+              datasets: [{
+                  label: 'EQA-Übereinstimmung',
+                  data: datas,
+                  backgroundColor: colorRed,
+                  borderColor: borderRed,
+                  borderWidth: 1
+              }]
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              title: {
+                display: true,
+                text: 'Test',
+                fontSize: 20,
+              },
+              scales: {
+                yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+              gridLines: {
+                      color: "rgb(234, 236, 244)",
+                      zeroLineColor: "rgb(234, 236, 244)",
+                      drawBorder: false,
+                      borderDash: [2],
+                      zeroLineBorderDash: [2]
+                    },
+                  scaleLabel: {
+                    display: false,
+                    labelString: 'kg'
+                  }
+                }],
+                xAxes: [{
+                  maxBarThickness: 35,
+                }]
+              },
+              layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 25,
+                    bottom: 0
+                  }
+              },
+              
+            legend: false,
+            tooltips: {
+            titleMarginBottom: 10,
+            titleFontColor: '#6e707e',
+            titleFontSize: 14,
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+            callbacks: {
+              label: function (tooltipItem, chart) {
+                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                //console.log(tooltipItem.index)
+                console.log(chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats)
+                var min = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.min
+                var max = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.max
+                var media = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.median
+                var bigote_min = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.whiskerMin
+                var bigote_max = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.whiskerMax
+                return "min:" + min +", media:"+media+", max: "+max+ ", bigote_min: "+ bigote_min+", bigote_max: "+ bigote_max
+              }
+            }
+          },
+          }
+      });
+
     </script>
 
 {% endif %}

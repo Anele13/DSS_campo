@@ -103,22 +103,21 @@ def mi_campo(request, query='rinde'):
         datos_climaticos = campo.sonda.datos_climaticos_set.all()
 
         mejor_año = get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos)
-        datos_climaticos = datos_climaticos.filter(periodo__year=mejor_año).order_by('periodo')
-        datos_produccion = datos_produccion.filter(periodo__year=mejor_año).order_by('periodo')
+        datos = datos_climaticos.filter(periodo__year=mejor_año).order_by('periodo')
+        datos_prod = datos_produccion.filter(periodo__year=mejor_año).order_by('periodo')
         meses = sorted(
-            datos_climaticos
+            datos
             .annotate(month=ExtractMonth('periodo'))
             .values_list('month', flat=True)
             .distinct()
-        )
-        
-        datos = datos_climaticos.filter(periodo__month__gte=1, periodo__month__lte=12)
-        datos_prod = datos_produccion.filter(periodo__month__gte=1, periodo__month__lte=12)
+        )        
+        #datos = datos_climaticos.filter(periodo__month__gte=1, periodo__month__lte=12)
+        #datos_prod = datos_produccion.filter(periodo__month__gte=1, periodo__month__lte=12)
         d_1 = datos.values('periodo__month','temperatura_minima','mm_lluvia','temperatura_media','temperatura_maxima','velocidad_max_viento','humedad', 'periodo__day')
-        d_2 = datos_prod.values('periodo__month','cantidad_ovejas','cantidad_corderos','cantidad_carneros','cantidad_lana_producida','cantidad_carne_producida')
+        d_2 = datos_prod.values('periodo__month','cantidad_ovejas','cantidad_corderos','cantidad_carneros','cantidad_lana_producida','cantidad_carne_producida','rinde_lana')
         
         #TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
-        for mes in meses:  # dejo solo los meses que tengan datos
+        for mes in list(set(meses)):  # dejo solo los meses que tengan datos
             d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
             nombre_mes = calendar.month_name[mes]
             resultado[nombre_mes] = {'dias': [d['periodo__day'] for d in d2],
@@ -132,7 +131,10 @@ def mi_campo(request, query='rinde'):
             resultado[nombre_mes]['cant_ovejas'] = sum([d['cantidad_ovejas'] for d in d3])
             resultado[nombre_mes]['cant_corderos'] = sum([d['cantidad_corderos'] for d in d3])
             resultado[nombre_mes]['cant_carneros'] = sum([d['cantidad_carneros'] for d in d3])
-        
+            resultado[nombre_mes]['rinde_lana_meses'] = [random.randint(1,100) for x in range(1,13)]#[d['rinde_lana'] for d in d3]
+            print("..........."+str(mes))
+            print([d['rinde_lana'] for d in d3])
+
         contexto['lana'] = json.dumps([random.randint(600,800) for i in range(1,13)])#[d['cantidad_lana_producida'] for d in d3] TODO aca tambien va sum
         contexto['carne'] =  json.dumps([random.randint(30,50) for i in range(1,13)]) # [d['cantidad_carne_producida'] for d in d3]
         contexto['resultado'] = resultado
