@@ -17,14 +17,35 @@
     {% endfor %}
 {% endif %}
 
+<div class="row">
+    <div class="col-md-10">
+      <h2 class="m-0"> Estimacion de {{flag_filtro}} </h2>
+    </div>
+    <div class="col-md-2">
+      <div class="dropdown mb-4 show">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Filtros Disponibles
+        </button>
+        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);" x-placement="top-start">
+          <div class="dropdown-header">ESTIMACION CLIMATICA SEGUN:</div>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'estimacion_climatica' query='mm_lluvia' %}">Mm. Lluvia</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'estimacion_climatica' query='temperatura_maxima' %}">Temp. Maxima</a>
+          <div class="dropdown-divider"></div>
+        </div>
+        </div>
+    </div>
+  </div>
 
 
+<div class="row">
 
-
+</div>
 <div class="col-xl-8 col-md-6 col-sm-6">
     <div class="card shadow mb-4">
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary"> Producción de Carne Anual</h6>
+        <h6 class="m-0 font-weight-bold text-primary"> Modelo de Estimacion</h6>
       </div>
       <div class="card-body">
           <canvas id="canvas" style="display: block; width: 500px; height: 350px;" 
@@ -39,28 +60,20 @@
     var datos_prediccion = {{datos_prediccion|safe}}
     var intervalo_bajo = {{intervalo_bajo|safe}}
     var intervalo_alto = {{intervalo_alto|safe}}
-
-
-    console.log(datos_sonda)
-    console.log(intervalo_bajo)
 </script>
 {% endautoescape %}
 
-
 <script>
-
-
-
-console.log(datos_sonda)
 
 var ctx = document.getElementById("canvas");
 var color = ["#ff6384", "#5959e6", "#2babab", "#8c4d15", "#8bc34a", "#607d8b", "#009688"];
+const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
 var scatterChart = new Chart(ctx, {
   type: 'line',
   data: {
     datasets: [{
-        label: 'Linea A',
+        label: "{{label_estimacion}}",
         backgroundColor: "#ff4928",
         borderColor:"#ff4928",
         pointBackgroundColor:"#ff4928",
@@ -68,10 +81,10 @@ var scatterChart = new Chart(ctx, {
         pointHoverBackgroundColor:"#ff4928",
         pointHoverBorderColor:"#ff4928",
         data: datos_prediccion,
-        fill:false
+        fill:false,
       },
       {
-        label: 'Linea B',
+        label: "{{label_datos}}",
         backgroundColor: "transparent",
         borderColor: "#0691d4",
         pointBackgroundColor: "#0691d4",
@@ -82,7 +95,7 @@ var scatterChart = new Chart(ctx, {
         fill:false
       },
       {
-        label: "BandBottom",
+        label: "Intervalo Confianza Inf.",
         type: "line",
         backgroundColor: "rgb(70,70,70, 0.5)",
         borderColor: "transparent",
@@ -92,7 +105,7 @@ var scatterChart = new Chart(ctx, {
         data: intervalo_bajo
       },
       {
-        label: "BandTop",
+        label: "Intervalo Confianza Sup.",
         type: "line",
         backgroundColor: "rgb(70,70,70, 0.5)",
         borderColor: "transparent",
@@ -104,12 +117,7 @@ var scatterChart = new Chart(ctx, {
     ]
   },
   options: {
-    title: {
-      display: true,
-      text: 'Polveri',
-      fontSize: 18
-    },
-    legend: {
+     legend: {
       display: true,
       position: "bottom"
     },
@@ -128,10 +136,42 @@ var scatterChart = new Chart(ctx, {
             'quarter': 'MM/YY',
             'year': 'MM/YY',
           },
-          tooltipFormat: "DD/MM/YY"
+          tooltipFormat: "D/M/Y"
         }
       }]
-    }
+    },
+    tooltips:{
+        titleMarginBottom: 10,
+            titleFontColor: '#6e707e',
+            titleFontSize: 14,
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+            callbacks: {
+              title: function(tooltipItems, data) {
+                var dia = tooltipItems[0].xLabel.split('/')[0]
+                var mes = meses[tooltipItems[0].xLabel.split('/')[1]]
+                var año=tooltipItems[0].xLabel.split('/')[2]
+                return dia +' de '+ mes + ' de '+ año;
+              },
+              label: function (tooltipItem, chart) {
+                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                return datasetLabel+': ' +tooltipItem.yLabel.toFixed(2)+'mm';
+              }
+            }
+    },
+    gridLines: {
+        color: "rgb(234, 236, 244)",
+        zeroLineColor: "rgb(234, 236, 244)",
+        drawBorder: false,
+        borderDash: [2],
+        zeroLineBorderDash: [2]
+    },
   }
 });
 </script>
