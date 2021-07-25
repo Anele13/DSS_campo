@@ -1,0 +1,138 @@
+{% extends 'site_content.html' %}
+{% load static %}
+
+<!-- Escribir en este bloque todo lo que haga falta-->
+{% block site_content %}
+
+{% if messages %}
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+
+
+
+
+
+<div class="col-xl-8 col-md-6 col-sm-6">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <h6 class="m-0 font-weight-bold text-primary"> Producción de Carne Anual</h6>
+      </div>
+      <div class="card-body">
+          <canvas id="canvas" style="display: block; width: 500px; height: 350px;" 
+            class="chartjs-render-monitor"></canvas>
+      </div>
+    </div>
+</div>
+
+{% autoescape off %}
+<script>
+    var datos_sonda = {{datos_sonda|safe}}
+    var datos_prediccion = {{datos_prediccion|safe}}
+    var intervalo_bajo = {{intervalo_bajo|safe}}
+    var intervalo_alto = {{intervalo_alto|safe}}
+</script>
+{% endautoescape %}
+
+
+<script>
+
+
+
+console.log(datos_sonda)
+
+var ctx = document.getElementById("canvas");
+var color = ["#ff6384", "#5959e6", "#2babab", "#8c4d15", "#8bc34a", "#607d8b", "#009688"];
+
+var scatterChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    datasets: [{
+        label: 'Linea A',
+        backgroundColor: "#ff4928",
+        borderColor:"#ff4928",
+        pointBackgroundColor:"#ff4928",
+        pointBorderColor:"#ff4928",
+        pointHoverBackgroundColor:"#ff4928",
+        pointHoverBorderColor:"#ff4928",
+        data: datos_prediccion,
+        fill:false
+      },
+      {
+        label: 'Linea B',
+        backgroundColor: "transparent",
+        borderColor: "#0691d4",
+        pointBackgroundColor: "#0691d4",
+        pointBorderColor: "#0691d4",
+        pointHoverBackgroundColor: "#0691d4",
+        pointHoverBorderColor: "#0691d4",
+        data: datos_sonda,
+        fill:false
+      },
+      {
+        label: "BandBottom",
+        type: "line",
+        backgroundColor: "rgb(70,70,70, 0.5)",
+        borderColor: "transparent",
+        pointRadius: 0,
+        fill: 'origin',
+        tension: 0,
+        data: intervalo_bajo
+      },
+      {
+        label: "BandTop",
+        type: "line",
+        backgroundColor: "rgb(70,70,70, 0.5)",
+        borderColor: "transparent",
+        pointRadius: 0,
+        fill: 'origin',
+        tension: 0,
+        data: intervalo_alto
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: 'Polveri',
+      fontSize: 18
+    },
+    legend: {
+      display: true,
+      position: "bottom"
+    },
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          displayFormats: {
+            'millisecond': 'MM/YY',
+            'second': 'MM/YY',
+            'minute': 'MM/YY',
+            'hour': 'MM/YY',
+            'day': 'MM/YY',
+            'week': 'MM/YY',
+            'month': 'MM/YY',
+            'quarter': 'MM/YY',
+            'year': 'MM/YY',
+          },
+          tooltipFormat: "DD/MM/YY"
+        }
+      }]
+    }
+  }
+});
+</script>
+
+
+
+
+{% endblock %}  

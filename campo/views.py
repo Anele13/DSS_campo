@@ -5,7 +5,7 @@ from django.contrib import messages
 import json
 from .models import Campo
 from usuario.models import User
-from django.db.models import Max
+from django.db.models import Max, Sum
 from django.db.models.functions import ExtractMonth, ExtractDay
 from usuario.views import get_persona_campo
 import calendar
@@ -16,26 +16,23 @@ import random
 
 def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
 
+    #para el maximo valor es order by con el - adelante.
+
     if query == 'rinde':
-        max_rinde = datos_produccion.aggregate(Max('rinde_lana'))[
-            'rinde_lana__max']
-        mejor_año_rinde = datos_produccion.filter(
-            rinde_lana=max_rinde)[0].periodo.year
-        return mejor_año_rinde
+        return datos_produccion.values('periodo__year').\
+                            annotate(rinde_anual=Max('rinde_lana')).\
+                            order_by('rinde_anual')[0]['periodo__year']
 
     if query == 'finura':
-        max_finura = datos_produccion.aggregate(Max('finura_lana'))[
-            'finura_lana__max']
-        mejor_año_finura = datos_produccion.filter(
-            finura_lana=max_finura)[0].periodo.year
-        return mejor_año_finura
+        return datos_produccion.values('periodo__year').\
+                            annotate(finura_anual=Max('finura_lana')).\
+                            order_by('-finura_anual')[0]['periodo__year'] #TODO checkaear 
 
     if query == 'lluvia':
-        max_lluvia = datos_climaticos.aggregate(
-            Max('mm_lluvia'))['mm_lluvia__max']
-        mejor_año_lluvia = datos_climaticos.filter(
-            mm_lluvia=max_lluvia)[0].periodo.year
-        return mejor_año_lluvia
+       return datos_climaticos.values('periodo__year').\
+                            annotate(mm_lluvia_anual=Sum('mm_lluvia')).\
+                            order_by('-mm_lluvia_anual')[0]['periodo__year']
+
 
     if query == 'temperatura':
         max_temperatura = datos_climaticos.aggregate(Max('temperatura_maxima'))[
@@ -44,40 +41,36 @@ def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
             temperatura_maxima=max_temperatura)[0].periodo.year
         return mejor_año_temperatura
 
+
     if query == 'mortandad':
-        max_mortandad = datos_produccion.aggregate(Max('cantidad_muertes_corderos'))[
-            'cantidad_muertes_corderos__max']
-        max_año_mortandad = datos_produccion.filter(
-            cantidad_muertes_corderos=max_mortandad)[0].periodo.year
-        return max_año_mortandad
+        return datos_produccion.values('periodo__year').\
+                            annotate(mortandad_anual=Sum('cantidad_muertes_corderos')).\
+                            order_by('mortandad_anual')[0]['periodo__year']
+
 
     if query == 'lana':
-        max_lana = datos_produccion.aggregate(Max('cantidad_lana_producida'))[
-            'cantidad_lana_producida__max']
-        mejor_año_lana = datos_produccion.filter(
-            cantidad_lana_producida=max_lana)[0].periodo.year
-        return mejor_año_lana
+        return datos_produccion.values('periodo__year').\
+                            annotate(kg_lana_anual=Sum('cantidad_lana_producida')).\
+                            order_by('-kg_lana_anual')[0]['periodo__year']
+
 
     if query == 'carne':
-        max_carne = datos_produccion.aggregate(Max('cantidad_carne_producida'))[
-            'cantidad_carne_producida__max']
-        mejor_año_carne = datos_produccion.filter(
-            cantidad_carne_producida=max_carne)[0].periodo.year
-        return datos_climaticos.filter(periodo__year=mejor_año_carne)
+        return datos_produccion.values('periodo__year').\
+                            annotate(kg_carne_anual=Sum('cantidad_carne_producida')).\
+                            order_by('-kg_carne_anual')[0]['periodo__year']
+
 
     if query == 'pariciones':
-        max_cantidad_pariciones = datos_produccion.aggregate(
-            Max('cantidad_pariciones'))['cantidad_pariciones__max']
-        mejor_año_pariciones = datos_produccion.filter(
-            cantidad_pariciones=max_cantidad_pariciones)[0].periodo.year
-        return mejor_año_pariciones
+        return datos_produccion.values('periodo__year').\
+                            annotate(pariciones_anual=Sum('cantidad_pariciones')).\
+                            order_by('-pariciones_anual')[0]['periodo__year']
+
 
     if query == 'hacienda':
-        max_hacienda = datos_produccion.aggregate(Max('cantidad_ovejas'))[
-            'cantidad_ovejas__max']
-        mejor_año_hacienda = datos_produccion.filter(
-            cantidad_ovejas=max_hacienda)[0].periodo.year
-        return mejor_año_hacienda
+         return datos_produccion.values('periodo__year').\
+                            annotate(cantidad_ovejas_anual=Sum('cantidad_ovejas')).\
+                            order_by('-cantidad_ovejas_anual')[0]['periodo__year']
+
 
 
 @login_required(login_url='login')
@@ -105,16 +98,23 @@ def mi_campo(request, query='rinde'):
         mejor_año = get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos)
         datos = datos_climaticos.filter(periodo__year=mejor_año).order_by('periodo')
         datos_prod = datos_produccion.filter(periodo__year=mejor_año).order_by('periodo')
-        meses = sorted(
-            datos
-            .annotate(month=ExtractMonth('periodo'))
-            .values_list('month', flat=True)
-            .distinct()
-        )        
-        #datos = datos_climaticos.filter(periodo__month__gte=1, periodo__month__lte=12)
-        #datos_prod = datos_produccion.filter(periodo__month__gte=1, periodo__month__lte=12)
-        d_1 = datos.values('periodo__month','temperatura_minima','mm_lluvia','temperatura_media','temperatura_maxima','velocidad_max_viento','humedad', 'periodo__day')
-        d_2 = datos_prod.values('periodo__month','cantidad_ovejas','cantidad_corderos','cantidad_carneros','cantidad_lana_producida','cantidad_carne_producida','rinde_lana')
+        meses = sorted(datos.annotate(month=ExtractMonth('periodo')).values_list('month', flat=True).distinct())
+
+        d_1 = datos.values('periodo__month',
+                            'temperatura_minima',
+                            'mm_lluvia',
+                            'temperatura_media',
+                            'temperatura_maxima',
+                            'velocidad_max_viento',
+                            'humedad',
+                            'periodo__day')
+        d_2 = datos_prod.values('periodo__month',
+                                'cantidad_ovejas',
+                                'cantidad_corderos',
+                                'cantidad_carneros',
+                                'cantidad_lana_producida',
+                                'cantidad_carne_producida',
+                                'rinde_lana')
         
         #TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
         for mes in list(set(meses)):  # dejo solo los meses que tengan datos
@@ -132,8 +132,6 @@ def mi_campo(request, query='rinde'):
             resultado[nombre_mes]['cant_corderos'] = sum([d['cantidad_corderos'] for d in d3])
             resultado[nombre_mes]['cant_carneros'] = sum([d['cantidad_carneros'] for d in d3])
             resultado[nombre_mes]['rinde_lana_meses'] = [random.randint(1,100) for x in range(1,13)]#[d['rinde_lana'] for d in d3]
-            print("..........."+str(mes))
-            print([d['rinde_lana'] for d in d3])
 
         contexto['lana'] = json.dumps([random.randint(600,800) for i in range(1,13)])#[d['cantidad_lana_producida'] for d in d3] TODO aca tambien va sum
         contexto['carne'] =  json.dumps([random.randint(30,50) for i in range(1,13)]) # [d['cantidad_carne_producida'] for d in d3]
@@ -141,3 +139,6 @@ def mi_campo(request, query='rinde'):
         contexto['año'] = mejor_año
         contexto['query'] = query
     return render(request, "mi_campo.html", contexto)
+
+
+
