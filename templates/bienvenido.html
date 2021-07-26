@@ -13,6 +13,9 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Hola {{user}}</h1>
 </div>
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h5 mb-0 text-gray-800">Infomación del ultimo registro</h1>
+</div>
 
 <!-- Content Row -->
 <div class="row">
@@ -23,8 +26,11 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Ovejas</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">1000</div>
+                            Ovejas
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{cantidad_ovejas}}
+                        </div>
                     </div>
                     <div class="col-auto">
                         <img src="{% static 'img/oveja.png' %}" class="img-responsive" width="45" height="45" alt="">
@@ -41,8 +47,11 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Corderos</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                            Corderos
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{cantidad_corderos}}
+                        </div>
                     </div>
                     <div class="col-auto">
                         <img src="{% static 'img/cordero.png' %}" class="img-responsive" width="55" height="55" alt="">
@@ -59,8 +68,11 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Carneros</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                            Carneros
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{cantidad_carneros}}
+                        </div>
                     </div>
                     <div class="col-auto">
                         <img src="{% static 'img/carnero.png' %}" class="img-responsive" width="45" height="45" alt="">
@@ -72,27 +84,19 @@
 
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-info shadow h-100 py-2">
+        <div class="card border-left-danger shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                            Ocupacion del campo
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            Mortandad
                         </div>
-                        <div class="row no-gutters align-items-center">
-                            <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                            </div>
-                            <div class="col">
-                                <div class="progress progress-sm mr-2">
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{mortandad}}
                         </div>
                     </div>
                     <div class="col-auto">
-                        <img src="{% static 'img/granja.png' %}" class="img-responsive" width="45" height="45" alt="">
+                        <img src="{% static 'img/muerte.png' %}" class="img-responsive" width="55" height="55" alt="">
                     </div>
                 </div>
             </div>
