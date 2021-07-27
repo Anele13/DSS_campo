@@ -138,7 +138,7 @@
                             <div class=""></div>
                         </div>
                     </div>
-                    <canvas id="canvas" style="display: block; width: 996px; height: 320px;" width="996" height="320"
+                    <canvas id="canvas" style="display: block; width: 500px; height: 500px;" width="500" height="500"
                         class="chartjs-render-monitor"></canvas>
                 </div>
             </div>
@@ -165,27 +165,33 @@
                     <canvas id="canvas_ocupacion_campo" style="display: block; width: 300px; height: 300px;" width="300"
                         height="300" class="chartjs-render-monitor"></canvas>
                 </div>
+                <div class="mt-4 text-center small">
+                    <span class="mr-2">
+                        <i class=""></i>
+                    </span>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-
-<!-- Demo de charts-->
-<script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
-<script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
 <script src="{% static 'js/Chart.BarFunnel.js' %}"></script>
 
 <script>
 
+    var nombre_meses = JSON.parse('{{nombres_meses|safe}}');
+    var lluvias = JSON.parse("{{lluvias_mensuales|safe}}");
+
     var barChartData = {
-        labels: ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"],
-        datasets: [{
-            label: 'LLuvia',
-            backgroundColor: "#0B84A5",
-            borderColor: '#F6C85F',
-            data: [87, 30, 15, 0, 0, 0]
-        }]
+        labels: nombre_meses,
+        datasets: [
+            {
+                label: 'Mm lLuvia',
+                data: lluvias,
+                backgroundColor: "#0B84A5",
+                borderColor: '#F6C85F'
+            }
+        ]
 
     };
 
@@ -200,19 +206,20 @@
                 elements: {
                     rectangle: {
                         borderWidth: 2,
-                        borderColor: '0B84A5',
+                        borderColor: '#0B84A5',
                         borderSkipped: 'bottom',
                         stepLabel: {
                             display: true,
-                            fontSize: 20,
-                            // color: "red"
-                        }
+                            fontSize: 13,
+                            color: "black"
+                        },
                     }
                 },
                 region: {
                     display: true
                 },
                 responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     position: 'top',
                 },
@@ -234,15 +241,16 @@
 
 <script>
 
-    datos = ["{{ha_ocupadas}}", "{{ha_libres}}"]
+    var datos = ["{{ha_ocupadas|safe}}", "{{ha_libres|safe}}"]
+    var nombres = ['Ha Ocupadas', 'Ha Libres']
 
     const data = {
-        labels: ['Ha Ocupadas', 'Ha Libres'],
+        labels: nombres,
         datasets: [
             {
                 label: 'Dataset 1',
                 data: datos,
-                backgroundColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)'],
+                backgroundColor: ['#0B84A5', '#F6C85F8C'],
             }
         ]
     };
@@ -258,7 +266,7 @@
                     position: 'top',
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Chart.js Doughnut Chart'
                 }
             }
