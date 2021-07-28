@@ -70,11 +70,11 @@ def inicio(request):
 
     elif not(campo.sonda):
         messages.warning(
-            request, "Debe cargar los datos climaticos de su campo.")
+            request, "Debe cargar los datos climáticos de su campo.")
 
     elif not(campo.datos_produccion_set.all()):
         messages.warning(
-            request, "Debe cargar los datos de produccion de su campo.")
+            request, "Debe cargar los datos de producción de su campo.")
 
     else:
 
