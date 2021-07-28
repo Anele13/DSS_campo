@@ -19,22 +19,22 @@
 
 <style>
   img {
-    display: block;
-    max-width: 100%;
-    height: 25px;
-    width: 25px;
-  }
+  display: block;
+  max-width: 100%;
+  height: 25px;
+  width: 25px;
+}
 </style>
 
 <div class="row">
-  <div class="col-md-10">
-    <h2 class="m-0"> Estimación de {{flag_filtro}} </h2>
+  <div class="col-xl-11 col-md-10 col-sm-12 col-xs-12">
+    <h2 class="m-0"> Estimacion de {{flag_filtro}} </h2>
   </div>
-  <div class="col-md-2">
+  <div class="col-xs-12 offset-xs-1 col-xl-1 col-md-2 col-sm-12 offset-sm-9 offset-xl-0 offset-md-0">
     <div class="dropdown mb-4 show">
       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="true">
-        Filtros Disponibles
+        Filtros
       </button>
       <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton"
         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);"
@@ -52,14 +52,13 @@
 
 
 <div class="row">
-  <div class="col-xl-10 col-md-10 col-sm-10">
+  <div class="col-xl-12 col-md-12 col-sm-12">
     <div class="card shadow mb-4">
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
         <div aria-live="polite" aria-atomic="true" style="position: absolute; min-height: 200px; top: 0; right: 0;">
-          <div id="toast" class="toast" style="position: absolute; top: 0; right: 0; width: 200px;"
-            data-autohide="false">
+          <div id="toast" class="toast" style="position: absolute; top: 0; right: 0; width: 200px;" data-autohide="false">
             <div class="toast-header">
-              <img src="{% static 'img/parcialmente_soleado.svg' %}" class="rounded mr-2" alt="...">
+              <img id="img_prediccion" src="{% static 'img/lluvia.svg' %}" class="rounded mr-2" alt="...">
               <strong class="mr-auto">Informacion</strong>
               <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -71,7 +70,7 @@
             </div>
           </div>
         </div>
-        <h6 class="m-0 font-weight-bold text-primary"> Modelo de Estimación</h6>
+        <h6 class="m-0 font-weight-bold text-primary"> Modelo de Estimacion</h6>
       </div>
       <div class="card-body">
         <canvas id="canvas" style="display: block; width: 600px; height: 350px;"
@@ -146,6 +145,15 @@
       ]
     },
     options: {
+      maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0
+          }
+        },
       legend: {
         display: true,
         position: "bottom"
@@ -184,13 +192,18 @@
         callbacks: {
           title: function (tooltipItems, data) {
             var dia = tooltipItems[0].xLabel.split('/')[0]
-            var mes = meses[tooltipItems[0].xLabel.split('/')[1]]
+            var mes = meses[tooltipItems[0].xLabel.split('/')[1]-1]
             var año = tooltipItems[0].xLabel.split('/')[2]
             return dia + ' de ' + mes + ' de ' + año;
           },
           label: function (tooltipItem, chart) {
             var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-            return datasetLabel + ': ' + tooltipItem.yLabel.toFixed(2) + 'mm';
+            if (datasetLabel.includes('Lluvia')){
+              return datasetLabel + ': ' + tooltipItem.yLabel.toFixed(1) + 'mm';  
+            }
+            else{
+              return datasetLabel + ': ' + tooltipItem.yLabel.toFixed(1) + '°';
+            }
           }
         }
       },
@@ -201,27 +214,36 @@
         borderDash: [2],
         zeroLineBorderDash: [2]
       },
-      onClick: function (evt, activeElements) {
+      onClick: function(evt, activeElements) {
         var elementIndex = activeElements[0]._index;
         this.data.datasets[0].pointBackgroundColor[elementIndex] = 'white';
         agregar_info_prediccion(
-          "lluvia",
+          this.data.datasets[0].label,
           datos_prediccion[elementIndex].x,
-          datos_prediccion[elementIndex].y.toFixed(2),
-          intervalo_alto[elementIndex].y.toFixed(2),
-          intervalo_alto[elementIndex].y.toFixed(2)
+          datos_prediccion[elementIndex].y.toFixed(1),
+          intervalo_bajo[elementIndex].y.toFixed(1),
+          intervalo_alto[elementIndex].y.toFixed(1)
         )
       },
     }
   });
 
 
-  function agregar_info_prediccion(variable_estimada, periodo, valor_estimado, inter_min, inter_max) {
-    $('#info_estimacion').html("La " + variable_estimada + " para " + periodo + " es de " + valor_estimado + " con un minimo de " + inter_min + " y un maximo estimado de " + inter_max)
-    $('.toast').toast('show')
-  }
+  function agregar_info_prediccion(variable_estimada, periodo, valor_estimado, inter_min, inter_max){
+    var año = periodo.split('-')[0]
+    var mes = meses[parseInt(periodo.split('-')[1])-1]
 
-</script>
+    if (variable_estimada == 'Estimacion de Lluvia'){
+      $('#info_estimacion').html("La lluvia estimada para el mes de "+mes+" del "+año+" es de "+ valor_estimado+"mm con un minimo de "+ inter_min + "mm y un maximo estimado de " + inter_max+"mm")      
+      $('.toast').toast('show')
+    }
+    if(variable_estimada == 'Estimacion de Temperatura'){
+      $('#info_estimacion').html("La temperatura estimada para el mes de "+mes+" del "+año+" es de "+ valor_estimado+"° con un minimo de "+ inter_min + "° y un maximo estimado de " + inter_max+"°")      
+      $('#img_prediccion').attr('src',"{% static 'img/soleado.svg' %}")
+      $('.toast').toast('show')
+    }
+  }
+  </script>
 
 
 

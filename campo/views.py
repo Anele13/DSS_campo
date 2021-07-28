@@ -14,10 +14,15 @@ import statistics
 import random
 
 
+def get_nombre_mes(numero_mes):
+    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 
+            'Diciembre']
+    return meses[numero_mes-1]
+
+
 def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
-
     # para el maximo valor es order by con el - adelante.
-
     if query == 'rinde':
         return datos_produccion.values('periodo__year').\
             annotate(rinde_anual=Max('rinde_lana')).\
@@ -127,7 +132,7 @@ def mi_campo(request, query='rinde'):
         # TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
         for mes in list(set(meses)):  # dejo solo los meses que tengan datos
             d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
-            nombre_mes = calendar.month_name[mes]
+            nombre_mes = get_nombre_mes(mes)
             resultado[nombre_mes] = {'dias': [d['periodo__day'] for d in d2],
                                      'temperatura_minima': min([d['temperatura_minima'] if d['temperatura_minima'] is not None else 0 for d in d2]),
                                      'lluvia': [d['mm_lluvia'] if d['mm_lluvia'] is not None else 0 for d in d2],
