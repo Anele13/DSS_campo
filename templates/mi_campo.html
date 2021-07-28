@@ -53,7 +53,7 @@
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'mi_campo' query='pariciones' %}">Cantidad de pariciones</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='hacienda' %}">Cantidad de Hacienda</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' query='hacienda' %}">Cantidad de Ovejas</a>
         <div class="dropdown-divider"></div>
       </div>
     </div>
@@ -300,6 +300,11 @@
 </div>
 <script>
   var rinde_lana_meses = []
+  var finura_lana_meses = []
+  var cant_carne_meses = []
+  var cant_lana_meses = []
+
+
 </script>
 
 {% for mes, value in resultado.items %}
@@ -317,7 +322,15 @@
   var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
   var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
   var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
+  
+
+
+
   rinde_lana_meses.push(JSON.parse("{{value.rinde_lana_meses|safe}}"))
+  finura_lana_meses.push(JSON.parse("{{value.finura_lana_meses|safe}}"))
+  cant_carne_meses.push(JSON.parse("{{value.cant_carne_meses|safe}}"))
+  cant_lana_meses.push(JSON.parse("{{value.cant_lana_meses|safe}}"))
+
 
 
   crear_grafico_lineas(mes, dias, temperatura)
@@ -328,107 +341,26 @@
 
 
 </script>
+
+
 {% endfor %}
 
 <script>
-  var lana = JSON.parse("{{lana|safe}}");
-  var carne = JSON.parse("{{carne|safe}}");
   var meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
-  crear_grafico_barras_lana(lana, meses);
-  crear_grafico_barras_carne(carne, meses);
-  crear_grafico_funnel_lluvia(lluvia, meses);
+  crear_grafico_barras_lana(cant_lana_meses, meses);
+  crear_grafico_barras_carne(cant_carne_meses, meses);
+
+  
+  var ctx_rinde = document.getElementById("canvasRinde");
+  var label_rinde= "Rinde Mensual de Lana"
+  var label_finura= "Finura Mensual de Lana"
+  crear_grafico_barras(ctx_rinde, rinde_lana_meses, finura_lana_meses, meses, label_rinde, label_finura)
+
 
 </script>
 
-<script>
-  const myChart = document.getElementById('canvasRinde').getContext('2d');
-  const label = meses;
-  const datas = rinde_lana_meses;
-  const colorRed = 'rgba(255, 99, 132, 0.3)';
-  const borderRed = 'rgba(255, 99, 132, 1)';
 
-  const iChart = new Chart(myChart, {
-    type: 'boxplot',
-    data: {
-      labels: label,
-      datasets: [{
-        label: 'EQA-Übereinstimmung',
-        data: datas,
-        backgroundColor: colorRed,
-        borderColor: borderRed,
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      title: {
-        display: true,
-        text: 'Test',
-        fontSize: 20,
-      },
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          },
-          gridLines: {
-            color: "rgb(234, 236, 244)",
-            zeroLineColor: "rgb(234, 236, 244)",
-            drawBorder: false,
-            borderDash: [2],
-            zeroLineBorderDash: [2]
-          },
-          scaleLabel: {
-            display: false,
-            labelString: 'kg'
-          }
-        }],
-        xAxes: [{
-          maxBarThickness: 35,
-        }]
-      },
-      layout: {
-        padding: {
-          left: 10,
-          right: 25,
-          top: 25,
-          bottom: 0
-        }
-      },
-
-      legend: false,
-      tooltips: {
-        titleMarginBottom: 10,
-        titleFontColor: '#6e707e',
-        titleFontSize: 14,
-        backgroundColor: "rgb(255,255,255)",
-        bodyFontColor: "#858796",
-        borderColor: '#dddfeb',
-        borderWidth: 1,
-        xPadding: 15,
-        yPadding: 15,
-        displayColors: false,
-        caretPadding: 10,
-        callbacks: {
-          label: function (tooltipItem, chart) {
-            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-            //console.log(tooltipItem.index)
-            console.log(chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats)
-            var min = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.min
-            var max = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.max
-            var media = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.median
-            var bigote_min = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.whiskerMin
-            var bigote_max = chart.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].__stats.whiskerMax
-            return "min:" + min + ", media:" + media + ", max: " + max + ", bigote_min: " + bigote_min + ", bigote_max: " + bigote_max
-          }
-        }
-      },
-    }
-  });
-
-</script>
 
 {% endif %}
 

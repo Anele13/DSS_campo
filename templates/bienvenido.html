@@ -250,7 +250,7 @@
             {
                 label: 'Dataset 1',
                 data: datos,
-                backgroundColor: ['#0B84A5', '#F6C85F8C'],
+                backgroundColor: ['#0B84A5', '#858796'],
             }
         ]
     };
@@ -269,8 +269,30 @@
                     display: false,
                     text: 'Chart.js Doughnut Chart'
                 }
-            }
+            },
+            tooltips: {
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                    
+            },
+            gridLines: {
+                color: "rgb(234, 236, 244)",
+                zeroLineColor: "rgb(234, 236, 244)",
+                drawBorder: false,
+                borderDash: [2],
+                zeroLineBorderDash: [2]
+            },
         },
+        
     };
 
     var canvas_doughnut = document.getElementById('canvas_ocupacion_campo').getContext("2d");

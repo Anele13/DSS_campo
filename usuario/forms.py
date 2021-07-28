@@ -207,7 +207,10 @@ class UpdateForm(forms.Form):
                                )
     fecha_nacimiento = forms.DateField(label='Ingresar fecha nacimiento',
                                        widget=forms.DateInput(format=('%d-%m-%Y'), attrs={
-                                                              "class": "form-control form-control-user", 'firstDay': 1, 'pattern=': '\d{4}-\d{2}-\d{2}', 'lang': 'pl', 'format': 'yyyy-mm-dd', 'type': 'date'})
+                                                              "class": "form-control form-control-user", 
+                                                              'firstDay': 1,
+                                                              'lang': 'pl',
+                                                              'type': 'date'})
 
 
                                        )
@@ -269,7 +272,6 @@ class UpdateForm(forms.Form):
             campo = None
             
         if campo:
-            campo.sonda=None
             campo.nombre=self.cleaned_data['nombre_campo']
             campo.cant_hectareas=self.cleaned_data['cant_hectareas']
             campo.save()

@@ -134,15 +134,15 @@ def mi_campo(request, query='rinde'):
                 [d['cantidad_corderos'] for d in d3])
             resultado[nombre_mes]['cant_carneros'] = sum(
                 [d['cantidad_carneros'] for d in d3])
-            resultado[nombre_mes]['rinde_lana_meses'] = [random.randint(
-                1, 100) for x in range(1, 13)]  # [d['rinde_lana'] for d in d3]
+            
 
-        # [d['cantidad_lana_producida'] for d in d3] TODO aca tambien va sum
-        contexto['lana'] = json.dumps(
-            [random.randint(600, 800) for i in range(1, 13)])
-        # [d['cantidad_carne_producida'] for d in d3]
-        contexto['carne'] = json.dumps(
-            [random.randint(30, 50) for i in range(1, 13)])
+            #En rinde se busca el Max, finura el Min, Carne y Lana Buscas la suma mensual
+            resultado[nombre_mes]['rinde_lana_meses'] = max([random.randint(1, 100) for x in range(1, 13)])  # [d['rinde_lana'] for d in d3]
+            resultado[nombre_mes]['finura_lana_meses'] = min([random.randint(1, 100) for x in range(1, 13)])  # [d['finura_lana'] for d in d3]
+            resultado[nombre_mes]['cant_carne_meses'] = sum([random.randint(1, 100) for x in range(1, 13)])  # [d['cantidad_carne_producida'] for d in d3]
+            resultado[nombre_mes]['cant_lana_meses'] = sum([random.randint(1, 100) for x in range(1, 13)])  # [d['cantidad_lana_producida'] for d in d3]
+
+
         contexto['resultado'] = resultado
         contexto['año'] = mejor_año
         contexto['query'] = query

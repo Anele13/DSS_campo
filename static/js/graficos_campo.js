@@ -399,7 +399,6 @@ function crear_grafico_barras_lana(lana, labels) {
         responsive: true
       }
     });
-
   };
 
 
@@ -456,3 +455,81 @@ function crear_grafico_barras_lana(lana, labels) {
       });
     }
   }
+
+
+
+
+  function crear_grafico_barras(elemento_html, dataset1, dataset2, labels, label1, label2) {
+    var myBarChartLana = new Chart(elemento_html, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: label1,
+          data: dataset1,
+          hoverBackgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+        },{
+          label: label2,
+          data: dataset2,
+          hoverBackgroundColor: 'rgba(153, 102, 255, 0.2)',
+          borderColor: 'rgba(153, 102, 255, 1)',
+        }
+      
+      ],
+      },
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0
+          }
+        },
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            },
+            gridLines: {
+                color: "rgb(234, 236, 244)",
+                zeroLineColor: "rgb(234, 236, 244)",
+                drawBorder: false,
+                borderDash: [2],
+                zeroLineBorderDash: [2]
+              },
+            scaleLabel: {
+              display: false,
+              labelString: 'kg'
+            }
+          }]
+        },
+        tooltips: {
+            titleMarginBottom: 10,
+            titleFontColor: '#6e707e',
+            titleFontSize: 14,
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+            callbacks: {
+              label: function (tooltipItem, chart) {
+                var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                return datasetLabel+': ' + tooltipItem.yLabel;
+              }
+            }
+          },
+        responsive: true
+      }
+    });
+  };
+
+
+  //backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
+//hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],

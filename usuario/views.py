@@ -5,6 +5,7 @@ from .models import Persona
 from django.contrib.auth.models import User
 from campo.models import Campo
 from django.contrib import messages
+from datetime import datetime
 
 def get_persona_campo(user):
     persona = None
@@ -80,7 +81,7 @@ def editar_perfil_view(request):
             datos['documento']= persona.documento
             datos['nombre']= persona.nombre
             datos['apellido']= persona.apellido
-            datos['fecha_nacimiento']= persona.fecha_nacimiento
+            datos['fecha_nacimiento']= persona.fecha_nacimiento.strftime('%Y-%m-%d')
             datos['nombre_campo']= persona.nombre
         if campo:
             datos['nombre_campo']=campo.nombre
