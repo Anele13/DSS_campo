@@ -103,7 +103,7 @@ def estimar(datos_climaticos, variable_estimacion):
     datos_prediccion = format(pred_uc.predicted_mean.to_dict())
 
     #intervalos de confianza
-    pred_ci = pred_uc.conf_int()
+    pred_ci = pred_uc.conf_int()    
     intervalo_bajo = format(pred_ci[['lower '+variable_estimacion]].to_dict()['lower '+variable_estimacion])
     intervalo_alto =format(pred_ci[['upper '+variable_estimacion]].to_dict()['upper '+variable_estimacion])
     
