@@ -118,7 +118,7 @@ def estimar(datos_climaticos, variable_estimacion):
 def estimacion_climatica(request, query='mm_lluvia'):
     contexto = {}
     try:
-        datos_climaticos = Sonda.objects.get(id=1511110).datos_climaticos_set.all().values(
+        datos_climaticos = Sonda.objects.get(id=150).datos_climaticos_set.all().values(
             'periodo', 'mm_lluvia', 'temperatura_maxima')
         datos_sonda, datos_prediccion, intervalo_bajo, intervalo_alto, label_datos, label_estimacion, flag_filtro = estimar(
             datos_climaticos, query)
