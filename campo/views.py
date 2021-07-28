@@ -125,7 +125,6 @@ def mi_campo(request, query='rinde'):
         # TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
         for mes in list(set(meses)):  # dejo solo los meses que tengan datos
             d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
-            print(mes)
             nombre_mes = get_nombre_mes(mes)
             resultado[nombre_mes] = {'dias': [d['periodo__day'] for d in d2],
                                      'temperatura_minima': min([d['temperatura_minima'] for d in d2]),
