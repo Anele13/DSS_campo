@@ -40,7 +40,8 @@ def cargar_datos_climaticos(request):
     else:
         persona, campo = get_persona_campo(user)
         if not (persona and campo):
-            messages.warning(request, "Cargue sus datos personales y de su campo.")
+            messages.warning(
+                request, "Cargue sus datos personales y de su campo.")
         else:
             sondas = Sonda.objects.filter(pertenencia='INTA')
             contexto['sondas'] = Sonda.formatear(sondas)
@@ -60,6 +61,7 @@ def format(dicc):
         resultado.append(resul)
     return resultado
 
+
 def estimar(datos_climaticos, variable_estimacion):
     label_estimacion = None
     label_datos = None
@@ -69,14 +71,14 @@ def estimar(datos_climaticos, variable_estimacion):
     if variable_estimacion == 'mm_lluvia':
         path = staticfiles_storage.path('data/modelo_lluvia.pickle')
         label_datos = 'Lluvia Observada'
-        label_estimacion = 'Estimacion de Lluvia'
+        label_estimacion = 'Estimación de Lluvia'
         flag_filtro = "Mm de Lluvia Anuales"
 
     elif variable_estimacion == 'temperatura_maxima':
         path = staticfiles_storage.path('data/modelo_temperatura.pickle')
         label_datos = 'Temperatura Observada'
-        label_estimacion = 'Estimacion de Temperatura'
-        flag_filtro = "Temperaturas Maximas Anuales"
+        label_estimacion = 'Estimación de Temperatura'
+        flag_filtro = "Temperaturas Máximas Anuales"
     else:
         raise Exception("La variable ingresada no corresponde en el modelo.")
 
@@ -85,36 +87,41 @@ def estimar(datos_climaticos, variable_estimacion):
     df.set_index('periodo', inplace=True)
     df.index.name = None
     if variable_estimacion == 'mm_lluvia':
-        df= df[variable_estimacion].resample('MS').mean()
+        df = df[variable_estimacion].resample('MS').mean()
     else:
-        df= df[variable_estimacion].resample('MS').max()
+        df = df[variable_estimacion].resample('MS').max()
 
-    df= df.fillna(df.bfill())
+    df = df.fillna(df.bfill())
 
-    #cargo el modelo entrenado
-    
+    # cargo el modelo entrenado
+
     results = load_pickle(path)
 
-    #datos originales
+    # datos originales
     datos_sonda = format(df.to_dict())
 
-    #estimacion climatica
+    # estimacion climatica
     pred_uc = results.get_forecast(steps=10)
     datos_prediccion = format(pred_uc.predicted_mean.to_dict())
 
-    #intervalos de confianza
+    # intervalos de confianza
     pred_ci = pred_uc.conf_int()
-    intervalo_bajo = format(pred_ci[['lower '+variable_estimacion]].to_dict()['lower '+variable_estimacion])
-    intervalo_alto =format(pred_ci[['upper '+variable_estimacion]].to_dict()['upper '+variable_estimacion])
-    
-    return datos_sonda, datos_prediccion, intervalo_bajo, intervalo_alto, label_datos, label_estimacion,flag_filtro
+    intervalo_bajo = format(
+        pred_ci[['lower '+variable_estimacion]].to_dict()['lower '+variable_estimacion])
+    intervalo_alto = format(
+        pred_ci[['upper '+variable_estimacion]].to_dict()['upper '+variable_estimacion])
+
+    return datos_sonda, datos_prediccion, intervalo_bajo, intervalo_alto, label_datos, label_estimacion, flag_filtro
+
 
 @login_required(login_url='login')
-def estimacion_climatica(request,query='mm_lluvia'):
-    contexto={}
+def estimacion_climatica(request, query='mm_lluvia'):
+    contexto = {}
     try:
-        datos_climaticos = Sonda.objects.get(id=150).datos_climaticos_set.all().values('periodo', 'mm_lluvia','temperatura_maxima')
-        datos_sonda, datos_prediccion, intervalo_bajo, intervalo_alto,label_datos, label_estimacion,flag_filtro = estimar(datos_climaticos,query)
+        datos_climaticos = Sonda.objects.get(id=150).datos_climaticos_set.all().values(
+            'periodo', 'mm_lluvia', 'temperatura_maxima')
+        datos_sonda, datos_prediccion, intervalo_bajo, intervalo_alto, label_datos, label_estimacion, flag_filtro = estimar(
+            datos_climaticos, query)
         contexto["datos_sonda"] = json.dumps(datos_sonda)
         contexto["datos_prediccion"] = json.dumps(datos_prediccion)
         contexto["intervalo_bajo"] = json.dumps(intervalo_bajo)
@@ -126,5 +133,5 @@ def estimacion_climatica(request,query='mm_lluvia'):
         contexto["flag_filtro"] = flag_filtro
 
     except Exception as e:
-        messages.warning(request,str(e))
+        messages.warning(request, str(e))
     return render(request, "estimacion_climatica.html", contexto)

@@ -15,9 +15,9 @@ import random
 
 
 def get_nombre_mes(numero_mes):
-    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 
-            'Diciembre']
+    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+             'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre',
+             'Diciembre']
     return meses[numero_mes-1]
 
 
@@ -69,6 +69,13 @@ def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
         return datos_produccion.values('periodo__year').\
             annotate(cantidad_ovejas_anual=Max('cantidad_ovejas')).\
             order_by('-cantidad_ovejas_anual')[0]['periodo__year']
+
+
+def validar(valor):
+    if valor is None:
+        return 0
+    else:
+        return valor
 
 
 @login_required(login_url='login')
@@ -127,21 +134,23 @@ def mi_campo(request, query='rinde'):
             d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
             nombre_mes = get_nombre_mes(mes)
             resultado[nombre_mes] = {'dias': [d['periodo__day'] for d in d2],
-                                     'temperatura_minima': min([d['temperatura_minima'] for d in d2]),
-                                     'lluvia': [d['mm_lluvia'] for d in d2],
-                                     'temperatura': [d['temperatura_media'] for d in d2],
-                                     'temperatura_maxima': max([d['temperatura_maxima'] for d in d2]),
-                                     # statistics.mean([d['velocidad_max_viento'] for d in d2]),
-                                     'viento_promedio': 100,
-                                     'humedad_promedio': 100}  # statistics.mean([d['humedad'] for d in d2])}
+                                     'temperatura_minima': min([d['temperatura_minima'] if d['temperatura_minima'] is not None else 0 for d in d2]),
+                                     'lluvia': [d['mm_lluvia'] if d['mm_lluvia'] is not None else 0 for d in d2],
+                                     'temperatura': [d['temperatura_media'] if d['temperatura_media'] is not None else 0 for d in d2],
+                                     'temperatura_maxima': max([d['temperatura_maxima'] if d['temperatura_maxima'] is not None else 0 for d in d2]),
+                                     'viento_promedio': round(statistics.mean([d['velocidad_max_viento'] if d['velocidad_max_viento'] is not None else 0 for d in d2]), 2),
+                                     'humedad_promedio': round(statistics.mean([d['humedad'] if d['humedad'] is not None else 0 for d in d2]), 2)}
+
+            # 'viento_promedio': 100,
+            # 'humedad_promedio': 100}
 
             d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
             resultado[nombre_mes]['cant_ovejas'] = sum(
-                [d['cantidad_ovejas'] for d in d3])
+                [d['cantidad_ovejas'] if d['cantidad_ovejas'] is not None else 0 for d in d3])
             resultado[nombre_mes]['cant_corderos'] = sum(
-                [d['cantidad_corderos'] for d in d3])
+                [d['cantidad_corderos'] if d['cantidad_corderos'] is not None else 0 for d in d3])
             resultado[nombre_mes]['cant_carneros'] = sum(
-                [d['cantidad_carneros'] for d in d3])
+                [d['cantidad_carneros'] if d['cantidad_carneros'] is not None else 0 for d in d3])
 
             # En rinde se busca el Max, finura el Min, Carne y Lana Buscas la suma mensual
             resultado[nombre_mes]['rinde_lana_meses'] = max([
