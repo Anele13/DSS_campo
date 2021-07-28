@@ -26,61 +26,62 @@
   }
 </style>
 
-<div class="row">
-  <div class="col-xl-11 col-md-10 col-sm-12 col-xs-12">
-    <h2 class="m-0"> Estimación de {{flag_filtro}} </h2>
-  </div>
-  <div class="col-xs-12 offset-xs-1 col-xl-1 col-md-2 col-sm-12 offset-sm-9 offset-xl-0 offset-md-0">
-    <div class="dropdown mb-4 show">
-      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="true">
-        Filtros
-      </button>
-      <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton"
-        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);"
-        x-placement="top-start">
-        <div class="dropdown-header">ESTIMACIÓN CLIMÁTICA SEGÚN:</div>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'estimacion_climatica' query='mm_lluvia' %}">Mm. Lluvia</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'estimacion_climatica' query='temperatura_maxima' %}">Temp. Maxima</a>
-        <div class="dropdown-divider"></div>
+{% if datos_sonda %}
+  <div class="row">
+    <div class="col-xl-11 col-md-10 col-sm-12 col-xs-12">
+      <h2 class="m-0"> Estimación de {{flag_filtro}} </h2>
+    </div>
+    <div class="col-xs-12 offset-xs-1 col-xl-1 col-md-2 col-sm-12 offset-sm-9 offset-xl-0 offset-md-0">
+      <div class="dropdown mb-4 show">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="true">
+          Filtros
+        </button>
+        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton"
+          style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);"
+          x-placement="top-start">
+          <div class="dropdown-header">ESTIMACIÓN CLIMÁTICA SEGÚN:</div>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'estimacion_climatica' query='mm_lluvia' %}">Mm. Lluvia</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'estimacion_climatica' query='temperatura_maxima' %}">Temp. Maxima</a>
+          <div class="dropdown-divider"></div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<div class="row">
-  <div class="col-xl-12 col-md-12 col-sm-12">
-    <div class="card shadow mb-4">
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <div aria-live="polite" aria-atomic="true" style="position: absolute; min-height: 200px; top: 0; right: 0;">
-          <div id="toast" class="toast" style="position: absolute; top: 0; right: 0; width: 200px;"
-            data-autohide="false">
-            <div class="toast-header">
-              <img id="img_prediccion" src="{% static 'img/lluvia.svg' %}" class="rounded mr-2" alt="...">
-              <strong class="mr-auto">Informacion</strong>
-              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="toast-body">
-              <p id="info_estimacion">
-              </p>
+  <div class="row">
+    <div class="col-xl-12 col-md-12 col-sm-12">
+      <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <div aria-live="polite" aria-atomic="true" style="position: absolute; min-height: 200px; top: 0; right: 0;">
+            <div id="toast" class="toast" style="position: absolute; top: 0; right: 0; width: 200px;"
+              data-autohide="false">
+              <div class="toast-header">
+                <img id="img_prediccion" src="{% static 'img/lluvia.svg' %}" class="rounded mr-2" alt="...">
+                <strong class="mr-auto">Informacion</strong>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="toast-body">
+                <p id="info_estimacion">
+                </p>
+              </div>
             </div>
           </div>
+          <h6 class="m-0 font-weight-bold text-primary"> Modelo de Estimacion</h6>
         </div>
-        <h6 class="m-0 font-weight-bold text-primary"> Modelo de Estimacion</h6>
-      </div>
-      <div class="card-body">
-        <canvas id="canvas" style="display: block; width: 600px; height: 350px;"
-          class="chartjs-render-monitor"></canvas>
+        <div class="card-body">
+          <canvas id="canvas" style="display: block; width: 600px; height: 350px;"
+            class="chartjs-render-monitor"></canvas>
+        </div>
       </div>
     </div>
   </div>
-</div>
-
+{% endif %}
 
 
 {% autoescape off %}
@@ -234,11 +235,11 @@
     var año = periodo.split('-')[0]
     var mes = meses[parseInt(periodo.split('-')[1]) - 1]
 
-    if (variable_estimada == 'Estimacion de Lluvia') {
+    if (variable_estimada == 'Estimación de Lluvia') {
       $('#info_estimacion').html("La lluvia estimada para el mes de " + mes + " del " + año + " es de " + valor_estimado + "mm con un minimo de " + inter_min + "mm y un maximo estimado de " + inter_max + "mm")
       $('.toast').toast('show')
     }
-    if (variable_estimada == 'Estimacion de Temperatura') {
+    if (variable_estimada == 'Estimación de Temperatura') {
       $('#info_estimacion').html("La temperatura estimada para el mes de " + mes + " del " + año + " es de " + valor_estimado + "° con un minimo de " + inter_min + "° y un maximo estimado de " + inter_max + "°")
       $('#img_prediccion').attr('src', "{% static 'img/soleado.svg' %}")
       $('.toast').toast('show')
