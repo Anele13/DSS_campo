@@ -15,9 +15,9 @@ import random
 
 
 def get_nombre_mes(numero_mes):
-    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 
-            'Diciembre']
+    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+             'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre',
+             'Diciembre']
     return meses[numero_mes-1]
 
 
@@ -138,8 +138,8 @@ def mi_campo(request, query='rinde'):
                                      'lluvia': [d['mm_lluvia'] if d['mm_lluvia'] is not None else 0 for d in d2],
                                      'temperatura': [d['temperatura_media'] if d['temperatura_media'] is not None else 0 for d in d2],
                                      'temperatura_maxima': max([d['temperatura_maxima'] if d['temperatura_maxima'] is not None else 0 for d in d2]),
-                                     'viento_promedio': statistics.mean([d['velocidad_max_viento'] if d['velocidad_max_viento'] is not None else 0 for d in d2]),
-                                     'humedad_promedio': statistics.mean([d['humedad'] if d['humedad'] is not None else 0 for d in d2])}
+                                     'viento_promedio': round(statistics.mean([d['velocidad_max_viento'] if d['velocidad_max_viento'] is not None else 0 for d in d2]), 2),
+                                     'humedad_promedio': round(statistics.mean([d['humedad'] if d['humedad'] is not None else 0 for d in d2]), 2)}
 
             # 'viento_promedio': 100,
             # 'humedad_promedio': 100}
