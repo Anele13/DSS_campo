@@ -5,96 +5,96 @@
 {% block site_content %}
 
 {% if messages %}
-    {% for message in messages %}
-    <div class="container-fluid p-0">
-        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            {{ message }}
-        </div>
+{% for message in messages %}
+<div class="container-fluid p-0">
+    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {{ message }}
     </div>
-    {% endfor %}
+</div>
+{% endfor %}
 {% endif %}
 
 {% if sondas %}
-    <!-- Page Heading -->
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Carga de datos climaticos</h1>
-    </div>
+<!-- Page Heading -->
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Carga de datos climáticos</h1>
+</div>
 
-    <div class="card text-center">
-        <div class="card-header">
-            <ul class="nav nav-tabs card-header-tabs">
-                <li class="nav-item">
-                    <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
-                        aria-controls="pills-home" aria-selected="true">
-                        Desde archivo local
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
-                        aria-controls="pills-profile" aria-selected="false">
-                        Sondas meteorologicas INTA
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="card-body">
-            <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade  " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                    <!--Carga de archivo-->
-                    <div class="card-body">
-                        <div class="text-center">
-                            <img class="img-fluid px-2 px-sm-3 mt-2 mb-3" style="width: 25rem;"
-                                src="{% static 'img/undraw_Weather_re_qsmd.svg' %}" alt="...">
-                        </div>
-                        <form id="form_subir_archivo_climatico" action="{% url 'carga_datos_climaticos' %}" method="POST"
-                            enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="file" name="archivo_csv" id="archivo_csv" required>
-                            <button type="button" class="btn btn-primary" onclick="openModal()">Cargar</button>
-                        </form>
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+                <a class="nav-link " id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+                    aria-controls="pills-home" aria-selected="true">
+                    Desde archivo local
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                    aria-controls="pills-profile" aria-selected="false">
+                    Sondas meteorológicas INTA
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade  " id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                <!--Carga de archivo-->
+                <div class="card-body">
+                    <div class="text-center">
+                        <img class="img-fluid px-2 px-sm-3 mt-2 mb-3" style="width: 25rem;"
+                            src="{% static 'img/undraw_Weather_re_qsmd.svg' %}" alt="...">
                     </div>
+                    <form id="form_subir_archivo_climatico" action="{% url 'carga_datos_climaticos' %}" method="POST"
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" name="archivo_csv" id="archivo_csv" required>
+                        <button type="button" class="btn btn-primary" onclick="openModal()">Cargar</button>
+                    </form>
                 </div>
-                <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
-                    aria-labelledby="pills-profile-tab">
-                    <!--Seleccion de Mapa-->
-                    <div class="card-body">
-                        <div id="map" style="height: 400px;"></div>
-                    </div>
+            </div>
+            <div class="tab-pane fade show active" id="pills-profile" role="tabpanel"
+                aria-labelledby="pills-profile-tab">
+                <!--Seleccion de Mapa-->
+                <div class="card-body">
+                    <div id="map" style="height: 400px;"></div>
                 </div>
             </div>
         </div>
     </div>
-    <form id="form_subir_latitud_longitud" action="{% url 'carga_datos_climaticos' %}" method="POST">
-        {% csrf_token %}
-        <input type="text" name="latitud" id="input_form_latitud" hidden>
-        <input type="text" name="longitud" id="input_form_longitud" hidden>
-    </form>
+</div>
+<form id="form_subir_latitud_longitud" action="{% url 'carga_datos_climaticos' %}" method="POST">
+    {% csrf_token %}
+    <input type="text" name="latitud" id="input_form_latitud" hidden>
+    <input type="text" name="longitud" id="input_form_longitud" hidden>
+</form>
 
-    <!--Modal-->
-    <div id="modal_confirmacion" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="modal-title">
-                        <b>Confirma</b>
-                    </h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="contenido_modal"></p>
-                </div>
-                <div class="modal-footer">
-                    <button id="btn_confirmar_modal" type="button" class="btn btn-primary">Confirmar</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
+<!--Modal-->
+<div id="modal_confirmacion" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    <b>Confirma</b>
+                </h6>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="contenido_modal"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btn_confirmar_modal" type="button" class="btn btn-primary">Confirmar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
+</div>
 
 {% endif %}
 

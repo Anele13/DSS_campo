@@ -30,7 +30,7 @@ def calcular_ocupacion(campo, datos_produccion):
     cantidad_ha_reales = campo.cant_hectareas
     cantidad_ha_libres = cantidad_ha_reales-cantidad_ha_ocupadas
 
-    return 55,14#cantidad_ha_ocupadas, cantidad_ha_libres
+    return cantidad_ha_ocupadas, cantidad_ha_libres
 
 
 def devolver_lluvias_mensuales(campo, datos_produccion, datos_climaticos):
@@ -70,11 +70,11 @@ def inicio(request):
 
     elif not(campo.sonda):
         messages.warning(
-            request, "Debe cargar los datos climaticos de su campo.")
+            request, "Debe cargar los datos climáticos de su campo.")
 
     elif not(campo.datos_produccion_set.all()):
         messages.warning(
-            request, "Debe cargar los datos de produccion de su campo.")
+            request, "Debe cargar los datos de producción de su campo.")
 
     else:
 

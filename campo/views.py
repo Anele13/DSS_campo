@@ -84,11 +84,11 @@ def mi_campo(request, query='rinde'):
 
     elif not(campo.sonda):
         messages.warning(
-            request, "Debe cargar los datos climaticos de su campo.")
+            request, "Debe cargar los datos climáticos de su campo.")
 
     elif not(campo.datos_produccion_set.all()):
         messages.warning(
-            request, "Debe cargar los datos de produccion de su campo.")
+            request, "Debe cargar los datos de producción de su campo.")
 
     else:
         campo = Campo.objects.get(persona=request.user.persona)
@@ -112,13 +112,15 @@ def mi_campo(request, query='rinde'):
                            'velocidad_max_viento',
                            'humedad',
                            'periodo__day')
+
         d_2 = datos_prod.values('periodo__month',
                                 'cantidad_ovejas',
                                 'cantidad_corderos',
                                 'cantidad_carneros',
                                 'cantidad_lana_producida',
                                 'cantidad_carne_producida',
-                                'rinde_lana')
+                                'rinde_lana',
+                                'finura_lana')
 
         # TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
         for mes in list(set(meses)):  # dejo solo los meses que tengan datos
@@ -133,6 +135,7 @@ def mi_campo(request, query='rinde'):
                                      # statistics.mean([d['velocidad_max_viento'] for d in d2]),
                                      'viento_promedio': 100,
                                      'humedad_promedio': 100}  # statistics.mean([d['humedad'] for d in d2])}
+
             d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
             resultado[nombre_mes]['cant_ovejas'] = sum(
                 [d['cantidad_ovejas'] for d in d3])
@@ -140,14 +143,16 @@ def mi_campo(request, query='rinde'):
                 [d['cantidad_corderos'] for d in d3])
             resultado[nombre_mes]['cant_carneros'] = sum(
                 [d['cantidad_carneros'] for d in d3])
-            
 
-            #En rinde se busca el Max, finura el Min, Carne y Lana Buscas la suma mensual
-            resultado[nombre_mes]['rinde_lana_meses'] = max([random.randint(1, 100) for x in range(1, 13)])  # [d['rinde_lana'] for d in d3]
-            resultado[nombre_mes]['finura_lana_meses'] = min([random.randint(1, 100) for x in range(1, 13)])  # [d['finura_lana'] for d in d3]
-            resultado[nombre_mes]['cant_carne_meses'] = sum([random.randint(1, 100) for x in range(1, 13)])  # [d['cantidad_carne_producida'] for d in d3]
-            resultado[nombre_mes]['cant_lana_meses'] = sum([random.randint(1, 100) for x in range(1, 13)])  # [d['cantidad_lana_producida'] for d in d3]
-
+            # En rinde se busca el Max, finura el Min, Carne y Lana Buscas la suma mensual
+            resultado[nombre_mes]['rinde_lana_meses'] = max([
+                d['rinde_lana'] for d in d3])
+            resultado[nombre_mes]['finura_lana_meses'] = min([
+                d['finura_lana'] for d in d3])
+            resultado[nombre_mes]['cant_carne_meses'] = sum([
+                d['cantidad_carne_producida'] for d in d3])
+            resultado[nombre_mes]['cant_lana_meses'] = sum([
+                d['cantidad_lana_producida'] for d in d3])
 
         contexto['resultado'] = resultado
         contexto['año'] = mejor_año

@@ -5,9 +5,6 @@
 <!-- Escribir en este bloque todo lo que haga falta-->
 {% block site_content %}
 
-<link rel="stylesheet" href="boxplot.css">
-<script src='https://unpkg.com/chartjs-chart-box-and-violin-plot@2/build/Chart.BoxPlot.js'></script>
-
 {% if messages %}
 {% for message in messages %}
 <div class="container-fluid p-0">
@@ -35,11 +32,11 @@
       <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton"
         style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);"
         x-placement="top-start">
-        <div class="dropdown-header">MEJOR AÑO SEGUN:</div>
+        <div class="dropdown-header">MEJOR AÑO SEGÚN:</div>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='rinde' %}">Rinde</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' query='rinde' %}">Mejor Rinde</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='finura' %}">Finura</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' query='finura' %}">Mejor Finura</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'mi_campo' query='lluvia' %}">Mayor cantidad de mm de lluvia</a>
         <div class="dropdown-divider"></div>
@@ -51,7 +48,7 @@
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'mi_campo' query='carne' %}">Kg de Carne Producida</a>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="{% url 'mi_campo' query='pariciones' %}">Cantidad de pariciones</a>
+        <a class="dropdown-item" href="{% url 'mi_campo' query='pariciones' %}">Cantidad de Pariciones</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'mi_campo' query='hacienda' %}">Cantidad de Ovejas</a>
         <div class="dropdown-divider"></div>
@@ -76,7 +73,7 @@
   <div class="col-xl-4 col-md-4 col-sm-4">
     <div class="card shadow mb-4">
       <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-0 font-weight-bold text-primary"> RInde</h6>
+        <h6 class="m-0 font-weight-bold text-primary"> Características de la Lana</h6>
       </div>
       <div class="card-body">
         <canvas id="canvasRinde" style="display: block; width: 350px; height: 350px;" width="350" height="350"
@@ -108,7 +105,7 @@
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="sr-only">Previous</span>
         </a>
-        <h6 class="m-0 font-weight-bold text-primary">Datos climaticos y de produccion mensuales para el año {{año}}
+        <h6 class="m-0 font-weight-bold text-primary">Datos climáticos y de producción mensuales para el año {{año}}
         </h6>
         <a class="btn btn-secondary" href="#myCarousel" role="button" data-slide="next">
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
@@ -130,7 +127,7 @@
                 <div class="col-lg-9">
                   <div class="chart-area">
                     <div class="mt-4 text-center medium">
-                      Variacion Mensual de Temperatura {{mes}}
+                      Variación Mensual de Temperatura {{mes}}
                     </div>
                     <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
                       height="320" class="chartjs-render-monitor"></canvas>
@@ -138,7 +135,7 @@
                   <br>
                   <div class="chart-bar pt-4 pb-2">
                     <div class="mt-4 text-center medium">
-                      Variacion Mensual de Lluvias {{mes}}
+                      Variación Mensual de Lluvias {{mes}}
                     </div>
                     <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
                       class="chartjs-render-monitor" width="996" height="320"></canvas>
@@ -156,11 +153,11 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">Temperatura Minima</th>
+                        <th scope="row">Temperatura Mínima</th>
                         <td id="temperatura_min_{{mes}}"> </td>
                       </tr>
                       <tr>
-                        <th scope="row">Temperatura Maxima</th>
+                        <th scope="row">Temperatura Máxima</th>
                         <td id="temperatura_max_{{mes}}"></td>
                       </tr>
                       <tr>
@@ -192,7 +189,7 @@
                   </div>
                   <div class="mt-4 text-center small">
                     <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Capones
+                      <i class="fas fa-circle text-primary"></i> Carneros
                     </span>
                     <span class="mr-2">
                       <i class="fas fa-circle text-success"></i> Corderos
@@ -213,7 +210,7 @@
                 <div class="col-lg-9">
                   <div class="chart-area">
                     <div class="mt-4 text-center medium">
-                      Variacion Mensual de Temperatura {{mes}}
+                      Variación Mensual de Temperatura {{mes}}
                     </div>
                     <canvas id="myAreaChart_{{mes}}" style="display: block; width: 996px; height: 320px;" width="996"
                       height="320" class="chartjs-render-monitor"></canvas>
@@ -221,7 +218,7 @@
                   <br>
                   <div class="chart-bar pt-4 pb-2">
                     <div class="mt-4 text-center medium">
-                      Variacion Mensual de Lluvias {{mes}}
+                      Variación Mensual de Lluvias {{mes}}
                     </div>
                     <canvas id="myBarChart_{{mes}}" style="display: block; width: 996px; height: 320px;"
                       class="chartjs-render-monitor" width="996" height="320"></canvas>
@@ -239,11 +236,11 @@
                     </thead>
                     <tbody>
                       <tr>
-                        <th scope="row">Temperatura Minima</th>
+                        <th scope="row">Temperatura Mínima</th>
                         <td id="temperatura_min_{{mes}}"> </td>
                       </tr>
                       <tr>
-                        <th scope="row">Temperatura Maxima</th>
+                        <th scope="row">Temperatura Máxima</th>
                         <td id="temperatura_max_{{mes}}"></td>
                       </tr>
                       <tr>
@@ -275,7 +272,7 @@
                   </div>
                   <div class="mt-4 text-center small">
                     <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Capones
+                      <i class="fas fa-circle text-primary"></i> Carneros
                     </span>
                     <span class="mr-2">
                       <i class="fas fa-circle text-success"></i> Corderos
@@ -303,8 +300,6 @@
   var finura_lana_meses = []
   var cant_carne_meses = []
   var cant_lana_meses = []
-
-
 </script>
 
 {% for mes, value in resultado.items %}
@@ -322,8 +317,6 @@
   var cant_corderos = JSON.parse("{{value.cant_corderos|safe}}")
   var cant_ovejas = JSON.parse("{{value.cant_ovejas|safe}}")
   var cant_carneros = JSON.parse("{{value.cant_carneros|safe}}")
-  
-
 
 
   rinde_lana_meses.push(JSON.parse("{{value.rinde_lana_meses|safe}}"))
@@ -331,14 +324,10 @@
   cant_carne_meses.push(JSON.parse("{{value.cant_carne_meses|safe}}"))
   cant_lana_meses.push(JSON.parse("{{value.cant_lana_meses|safe}}"))
 
-
-
   crear_grafico_lineas(mes, dias, temperatura)
   crear_grafico_baras(mes, dias, lluvia)
   agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento)
   agregar_grafico_produccion(mes, cant_carneros, cant_corderos, cant_ovejas)
-
-
 
 </script>
 
@@ -351,16 +340,13 @@
   crear_grafico_barras_lana(cant_lana_meses, meses);
   crear_grafico_barras_carne(cant_carne_meses, meses);
 
-  
   var ctx_rinde = document.getElementById("canvasRinde");
-  var label_rinde= "Rinde Mensual de Lana"
-  var label_finura= "Finura Mensual de Lana"
+  var label_rinde = "Rinde Mensual de Lana"
+  var label_finura = "Finura Mensual de Lana"
   crear_grafico_barras(ctx_rinde, rinde_lana_meses, finura_lana_meses, meses, label_rinde, label_finura)
 
 
 </script>
-
-
 
 {% endif %}
 
