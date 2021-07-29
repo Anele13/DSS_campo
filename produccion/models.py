@@ -32,7 +32,12 @@ class DatosProduccion(models.Model):
         if(not all(columna in lista_columnas for columna in df.columns.tolist())):
             raise Exception("El archivo ingresado tiene datos incorrectos.")
 
+        
+        from sqlalchemy import create_engine
+        DATABASE_URL ='postgresql://xgkvwrbclwgnyu:8b379f2bee4fdfefb3e6cfc4d80d302cbde023fdb5ef8043fa824e06bd3e9a85@ec2-34-204-128-77.compute-1.amazonaws.com:5432/debchq0b5cp3jb'
         df.insert(len(df.columns.tolist()), "campo", campo.id)
-        conn = sqlite3.connect(BASE_DIR.as_posix()+'/db.sqlite3')
-        df.to_sql("produccion_datosproduccion", conn, if_exists="append",index=False)
-        conn.close()
+        #conn = sqlite3.connect(BASE_DIR.as_posix()+'/db.sqlite3')
+        engine = create_engine(DATABASE_URL, echo = False)
+        df.to_sql("produccion_datosproduccion", con=engine, if_exists="append",index=False)
+
+        
