@@ -26,11 +26,15 @@ def calcular_ocupacion(campo, datos_produccion):
     animales_reales = ultimo_registro.cantidad_corderos + \
         ultimo_registro.cantidad_ovejas+ultimo_registro.cantidad_carneros
 
+    cantidad_ha_excedida = 0
     cantidad_ha_ocupadas = round(animales_reales/CANT_ANIMALES_HA)
     cantidad_ha_reales = campo.cant_hectareas
     cantidad_ha_libres = cantidad_ha_reales-cantidad_ha_ocupadas
+    if cantidad_ha_libres < 0:
+        cantidad_ha_excedida = abs(cantidad_ha_libres)
+        cantidad_ha_libres = 0
 
-    return cantidad_ha_ocupadas, cantidad_ha_libres
+    return cantidad_ha_ocupadas, cantidad_ha_libres, cantidad_ha_excedida
 
 
 def devolver_lluvias_mensuales(campo, datos_produccion, datos_climaticos):
@@ -84,13 +88,14 @@ def inicio(request):
 
         cantidad_ovejas, cantidad_carneros, cantidad_corderos, mortandad = devolver_hacienda(
             datos_produccion)
-        ha_ocupadas, ha_libres = calcular_ocupacion(campo, datos_produccion)
+        ha_ocupadas, ha_libres, ha_excedidas = calcular_ocupacion(
+            campo, datos_produccion)
         nombres_meses, lluvias_mensuales = devolver_lluvias_mensuales(
             campo, datos_produccion, datos_climaticos)
 
         contexto = {'cantidad_ovejas': cantidad_ovejas, 'cantidad_carneros': cantidad_carneros,
                     'cantidad_corderos': cantidad_corderos, 'mortandad': mortandad, 'ha_ocupadas': ha_ocupadas,
-                    'ha_libres': ha_libres, 'nombres_meses': json.dumps(nombres_meses), 'lluvias_mensuales': json.dumps(lluvias_mensuales)}
+                    'ha_libres': ha_libres, 'ha_excedidas': ha_excedidas, 'nombres_meses': json.dumps(nombres_meses), 'lluvias_mensuales': json.dumps(lluvias_mensuales)}
     return render(request, "bienvenido.html", contexto)
 
 
