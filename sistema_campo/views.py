@@ -11,6 +11,11 @@ import json
 
 CANT_ANIMALES_HA = 15
 
+def get_nombre_mes(numero_mes):
+    meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+             'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre',
+             'Diciembre']
+    return meses[numero_mes-1]
 
 def devolver_hacienda(datos_produccion):
 
@@ -53,9 +58,14 @@ def devolver_lluvias_mensuales(campo, datos_produccion, datos_climaticos):
 
     for mes in list(set(datos_climaticos_meses)):
         d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
-        nombres_meses.append(calendar.month_name[mes])
+        nombres_meses.append(get_nombre_mes(mes))
         lluvia_acumulada = round(sum([d['mm_lluvia'] for d in d2]), 2)
         lluvias_mensuales.append(lluvia_acumulada)
+
+    join = list(zip(nombres_meses, lluvias_mensuales))
+    join.sort(key=lambda tup: tup[1], reverse=True)
+    lluvias_mensuales = [tup[1] for tup in join]
+    nombres_meses = [tup[0] for tup in join]
 
     return nombres_meses, lluvias_mensuales
 
