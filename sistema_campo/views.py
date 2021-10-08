@@ -107,11 +107,3 @@ def inicio(request):
                     'cantidad_corderos': cantidad_corderos, 'mortandad': mortandad, 'ha_ocupadas': ha_ocupadas,
                     'ha_libres': ha_libres, 'ha_excedidas': ha_excedidas, 'nombres_meses': json.dumps(nombres_meses), 'lluvias_mensuales': json.dumps(lluvias_mensuales)}
     return render(request, "bienvenido.html", contexto)
-
-
-@login_required(login_url='login')
-def politica(request):
-    """
-    Vista Politicas de privacidad
-    """
-    return render(request, "politica_privacidad.html")

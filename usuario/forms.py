@@ -137,12 +137,22 @@ class RegisterForm(forms.Form):
             raise ValidationError("Email ya existe")
         return email
 
+
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
         if password1 and password2 and password1 != password2:
             raise ValidationError("Las contraseñas no coinciden")
         return password2
+
+
+    def clean_documento(self):
+        documento = self.cleaned_data['documento']
+        existe_documento = Persona.objects.filter(documento=documento).exists()
+        if existe_documento:
+            raise ValidationError("El documento ya existe")
+        return documento
+
 
     def save(self, crear_usuario=True):
         # Usuario
@@ -170,9 +180,6 @@ class RegisterForm(forms.Form):
             cant_hectareas=self.cleaned_data['cant_hectareas'],
         )
         return user, persona, campo
-
-
-
 
 
 class UpdateForm(forms.Form):
@@ -211,8 +218,6 @@ class UpdateForm(forms.Form):
                                                               'firstDay': 1,
                                                               'lang': 'pl',
                                                               'type': 'date'})
-
-
                                        )
 
     cant_hectareas = forms.IntegerField(label='Ingresar el la cantidad de hectareas',

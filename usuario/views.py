@@ -22,22 +22,19 @@ def get_persona_campo(user):
 
 
 def login_view(request):
+    form = LoginForm()
     msg = None
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
+            username = request.POST.get("username")
+            password = request.POST.get("password")
             user = authenticate(username=username, password=password)
             if user:
                 login(request, user)
                 return redirect('inicio')
             else:
-                msg = 'Credenciales invalidas'
-        else:
-            msg = 'Error en los datos ingresados'
-    else:
-        form = LoginForm()
+                messages.warning(request,'Credenciales inválidas')
     return render(request, "login.html", {"form": form, "msg": msg})
 
 
@@ -47,13 +44,15 @@ def logout_view(request):
 
 
 def registro(request):
+    form = RegisterForm()
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            usuario = form.save()
-            return redirect('login')
-    else:
-        form = RegisterForm()
+        try:
+            form = RegisterForm(request.POST)
+            if form.is_valid():
+                usuario = form.save()
+                return redirect('login')
+        except Exception as e:
+            messages.warning(request,'Error:: '+str(e))        
     return render(request, 'registro.html', {'form': form})
 
 

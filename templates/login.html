@@ -3,6 +3,18 @@
 
 
 {% block body_base %}
+{% if messages %}
+{% for message in messages %}
+<div class="container-fluid p-1">
+  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
 
 <body class="bg-gradient-primary">
 
@@ -32,25 +44,35 @@
                                     </h6>
 
                                     <form method="POST" action="{% url 'login' %}">
-
                                         {% csrf_token %}
-
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="bmd-label-floating">Usuario:</label>
-                                                    {{ form.username }}
+                                                    {{form.username}}
+                                                    {% if form.username.errors %}
+                                                    {% for error in form.username.errors %}
+                                                    <ul>
+                                                        <li><span class="text-danger">{{ error }}</span></li>
+                                                    </ul>
+                                                    {% endfor %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>
-
                                         <br />
-
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label class="bmd-label-floating">Contraseña:</label>
-                                                    {{ form.password }}
+                                                    {{form.password}}
+                                                    {% if form.password.errors %}
+                                                    {% for error in form.password.errors %}
+                                                    <ul>
+                                                        <li><span class="text-danger">{{ error }}</span></li>
+                                                    </ul>
+                                                    {% endfor %}
+                                                    {% endif %}
                                                 </div>
                                             </div>
                                         </div>

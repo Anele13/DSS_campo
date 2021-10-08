@@ -17,12 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 
-from sistema_campo.views import inicio, politica
+from sistema_campo.views import inicio
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', inicio, name="inicio"),
-    path('politica/', politica, name="politica"),
     path('', include('usuario.urls')),
     path('', include('clima.urls')),
     path('', include('campo.urls')),

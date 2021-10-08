@@ -166,3 +166,9 @@ def mi_campo(request, query='rinde'):
         contexto['año'] = mejor_año
         contexto['query'] = query
     return render(request, "mi_campo.html", contexto)
+
+
+@login_required(login_url='login')
+def datos_cargados(request):
+    contexto={}
+    return render(request, "datos_cargados.html", contexto)
