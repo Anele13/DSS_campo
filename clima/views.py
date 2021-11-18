@@ -45,6 +45,12 @@ def cargar_datos_climaticos(request):
         else:
             sondas = Sonda.objects.filter(pertenencia='INTA')
             contexto['sondas'] = Sonda.formatear(sondas)
+            print("--------------")
+            print(contexto['sondas'])
+            print("--------------")
+
+
+            
     return render(request, "alta_datos_climaticos.html", contexto)
 
 

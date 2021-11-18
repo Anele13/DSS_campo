@@ -61,7 +61,7 @@
                 aria-labelledby="pills-profile-tab">
                 <!--Seleccion de Mapa-->
                 <div class="card-body">
-                    <div id="map" style="height: 400px;"></div>
+                    <div id="map" style="height: 700px;"></div>
                 </div>
             </div>
         </div>
@@ -114,10 +114,25 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-
+    var greenIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+    });
     //Agrego al mapa todos los marcadores de sondas del INTA
     $.each(sondas, function (key, valueObj) {
-        marker = L.marker([valueObj.latitud, valueObj.longitud])
+        
+        if(valueObj.nombre == "prueba"){
+            marker = L.marker([valueObj.latitud, valueObj.longitud],{icon: greenIcon})
+        }else{
+            marker = L.marker([valueObj.latitud, valueObj.longitud])
+
+
+        }
+        
         marker.on('mouseover', function (ev) {
             this.openPopup();
             //marker.setIcon(bigIcon);
