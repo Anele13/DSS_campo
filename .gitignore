@@ -7,6 +7,5 @@ idea/
 *.pyc
 *.xls
 *.pdf
-*.txt
 *.xlsx
 *.env
