@@ -160,19 +160,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
 
-from dotenv import load_dotenv
-load_dotenv()
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY  = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET  = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
-
-SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('SOCIAL_AUTH_FACEBOOK_KEY')
-SOCIAL_AUTH_FACEBOOK_SECRET  = os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET')
-
-TELEGRAM_BOT_NAME  = os.getenv('TELEGRAM_BOT_NAME')
-TELEGRAM_BOT_TOKEN  = os.getenv('TELEGRAM_BOT_TOKEN')
-PUBLIC_URL = os.getenv('PUBLIC_URL')
-TELEGRAM_LOGIN_REDIRECT_URL = f'{PUBLIC_URL}/perfil'
 
 # ie if Heroku server
 if 'DATABASE_URL' in os.environ:
