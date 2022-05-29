@@ -9,5 +9,6 @@ urlpatterns = [
     path("logout", logout_view, name="logout"),
     path("registro", registro, name="registro"),
     path('perfil', perfil_view, name="perfil"),
-    path('edicion', editar_perfil_view, name="edicion")
+    path('edicion', editar_perfil_view, name="edicion"),
+    path('telegram_users', telegram_users, name="telegram_users"),
     ]

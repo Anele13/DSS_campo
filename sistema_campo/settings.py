@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'clima',
     'produccion',
     'usuario',
-    'social_django'
+    'social_django',
+    'django_telegram_login',
 ]
 
 MIDDLEWARE = [
@@ -161,8 +162,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1025746383910-2cge8okiu5a8lotliefq0bqae321qf02.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'sv-MBe-420ODPNtQCOwLT4hL'
+from dotenv import load_dotenv
+load_dotenv()
 
-SOCIAL_AUTH_FACEBOOK_KEY='1033953460739803'
-SOCIAL_AUTH_FACEBOOK_SECRET = 'b8d7fce3ff7d568f9be9a545125fa464s'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY  = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET  = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('SOCIAL_AUTH_FACEBOOK_KEY')
+SOCIAL_AUTH_FACEBOOK_SECRET  = os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET')
+
+TELEGRAM_BOT_NAME  = os.getenv('TELEGRAM_BOT_NAME')
+TELEGRAM_BOT_TOKEN  = os.getenv('TELEGRAM_BOT_TOKEN')
+PUBLIC_URL = os.getenv('PUBLIC_URL')
+TELEGRAM_LOGIN_REDIRECT_URL = f'{PUBLIC_URL}/perfil'
