@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-!4koscoro7z6y4627n-#=8hf9%*h8mh(&r5hhmqtrz24!xci8z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['morning-dawn-11160.herokuapp.com','localhost']
+HEROKU_URL = 'morning-dawn-11160.herokuapp.com'
+ALLOWED_HOSTS = [HEROKU_URL,'localhost']
 
 
 # Application definition
@@ -163,16 +164,20 @@ django_heroku.settings(locals())
 #from dotenv import load_dotenv
 #load_dotenv()
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY  = 'SOCIAL_AUTH_GOOGLE_OAUTH2_KEY'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET  = 'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'
 
-SOCIAL_AUTH_FACEBOOK_KEY = 'SOCIAL_AUTH_FACEBOOK_KEY'
-SOCIAL_AUTH_FACEBOOK_SECRET  = 'SOCIAL_AUTH_FACEBOOK_SECRET'
 
-TELEGRAM_BOT_NAME  = 'TELEGRAM_BOT_NAME'
-TELEGRAM_BOT_TOKEN  = 'TELEGRAM_BOT_TOKEN'
-PUBLIC_URL = 'PUBLIC_URL'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1025746383910-2cge8okiu5a8lotliefq0bqae321qf02.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'sv-MBe-420ODPNtQCOwLT4hL'
+
+SOCIAL_AUTH_FACEBOOK_KEY='1033953460739803'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b8d7fce3ff7d568f9be9a545125fa464s'
+
+TELEGRAM_BOT_NAME = 'VoiceNotesCampoBot'
+TELEGRAM_BOT_TOKEN = "5356687027:AAFH9gZwDWnpx_IK5r7fYN8AtDJMuib6pJQ"
+PUBLIC_URL=f'https://{HEROKU_URL}'
 TELEGRAM_LOGIN_REDIRECT_URL = f'{PUBLIC_URL}/perfil'
+
 
 # ie if Heroku server
 if 'DATABASE_URL' in os.environ:
