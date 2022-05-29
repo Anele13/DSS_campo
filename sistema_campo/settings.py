@@ -14,9 +14,6 @@ from pathlib import Path
 import os
 import django_heroku
 
-
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,9 +27,9 @@ SECRET_KEY = 'django-insecure-!4koscoro7z6y4627n-#=8hf9%*h8mh(&r5hhmqtrz24!xci8z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['sensationnel-fromage-53159.herokuapp.com','localhost']
+ALLOWED_HOSTS = ['morning-dawn-11160.herokuapp.com','localhost']
 
-django_heroku.settings(locals())
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -161,7 +158,7 @@ MEDIA_URL = '/img/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
+django_heroku.settings(locals())
 
 from dotenv import load_dotenv
 load_dotenv()
