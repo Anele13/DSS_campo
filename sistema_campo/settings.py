@@ -173,3 +173,8 @@ TELEGRAM_BOT_NAME  = os.getenv('TELEGRAM_BOT_NAME')
 TELEGRAM_BOT_TOKEN  = os.getenv('TELEGRAM_BOT_TOKEN')
 PUBLIC_URL = os.getenv('PUBLIC_URL')
 TELEGRAM_LOGIN_REDIRECT_URL = f'{PUBLIC_URL}/perfil'
+
+# ie if Heroku server
+if 'DATABASE_URL' in os.environ:
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config()}
