@@ -170,5 +170,8 @@ def mi_campo(request, query='rinde'):
 
 @login_required(login_url='login')
 def datos_cargados(request):
+    from datetime import datetime
     contexto={}
+    contexto['campo_id'] = request.user.persona.campo.first().id
+    contexto['fecha'] = str(datetime.now().date())
     return render(request, "datos_cargados.html", contexto)

@@ -24,8 +24,10 @@ def cargar_datos_produccion(request):
             else:
                 form = DatosProduccionForm(request.POST)
                 if form.is_valid():
-                    form.save()
+                    form.save(campo)
                     messages.success(request, "Datos registrados exitosamente")
+                else:
+                    print(form.errors)
         except Exception as e:
             messages.warning(request, str(e))
     else:
