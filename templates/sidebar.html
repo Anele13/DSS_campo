@@ -27,15 +27,10 @@
 
     <!-- Nav Item - Novedades Carga de Datos -->
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'carga_datos_climaticos' %}">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Alta datos climáticos</span>
-        </a>
-        <a class="nav-link" href="{% url 'carga_datos_produccion' %}">
+        <a class="nav-link" href="{% url 'datos_cargados' %}">
             <i class="fas fa-fw fa-cloud-upload-alt"></i>
-            <span>Alta datos de producción</span>
+            <span>Datos cargados</span>
         </a>
-
     </li>
 
     <!-- Divider -->
@@ -49,15 +44,23 @@
             <i class="fa fa-chart-bar"></i>
             <span>¿Cómo está mi campo?</span>
         </a>
-        <a class="nav-link" href="{% url 'datos_cargados' %}">
-            <i class="fas fa-fw fa-cloud-upload-alt"></i>
-            <span>Datos cargados</span>
-        </a>
+    </li>
+
+    <!-- Divider -->
+    <hr class="sidebar-divider my-0">
+    <!-- Heading -->
+    <div class="sidebar-heading"><br>Machine learning</div>
+    <!-- Nav Item - Novedades Mi campo -->
+    <li class="nav-item">
         <a class="nav-link" href="{% url 'estimacion_climatica' %}">
             <i class="fas fa-fw fa-cloud-sun"></i>
             <span>Predicción Climática</span>
         </a>
     </li>
+
+    <hr class="sidebar-divider my-0">
+
+
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
     </div>

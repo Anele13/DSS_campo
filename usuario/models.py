@@ -13,23 +13,14 @@ bot_token = settings.TELEGRAM_BOT_TOKEN
 redirect_url = settings.TELEGRAM_LOGIN_REDIRECT_URL
 
 class Persona(models.Model):
-    documento = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=30, blank=True, null=True)
     apellido = models.CharField(max_length=30, blank=True, null=True)
-    fecha_nacimiento = models.DateField(blank=True, null=True)
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='persona')
-
-
 
     def vinculate_telegram_user(self, data):
         telegram_user = None
         try:
             result = verify_telegram_authentication(bot_token=bot_token, request_data=data)
-            print("................")
-
-            print(result)
-            print("................")
-
             if result and not TelegramUser.objects.filter(id=result['id']).exists():
                 user_data = result.dict()
                 user_data.update({'persona':self})

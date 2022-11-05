@@ -25,6 +25,5 @@ urlpatterns = [
     path('', include('usuario.urls')),
     path('', include('clima.urls')),
     path('', include('campo.urls')),
-    path('', include('produccion.urls')),
     url(r'^social/', include('social_django.urls', namespace='social')),
 ]

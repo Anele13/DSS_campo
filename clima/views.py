@@ -4,14 +4,10 @@ from django.contrib import messages
 import json
 import pandas as pd
 from statsmodels.iolib.smpickle import load_pickle
-
-from .models import DatosClimaticos, Sonda
 from campo.models import Campo
-from usuario.models import Persona
 from usuario.views import get_persona_campo
 import json
 from sistema_campo.settings import BASE_DIR
-from datetime import datetime
 from django.contrib.staticfiles.storage import staticfiles_storage
 
 
@@ -20,11 +16,12 @@ def cargar_datos_climaticos(request):
     contexto = {}
     user = request.user
     if request.method == 'POST':
+        """
         try:
             campo = Campo.objects.get(persona=user.persona)
             if 'archivo_csv' in request.FILES:
                 archivo_climatico = request.FILES['archivo_csv']
-                campo.get_or_create_sonda().agregar_datos_climaticos(archivo_climatico)
+                #campo.get_or_create_sonda().agregar_datos_climaticos(archivo_climatico)
                 messages.success(request, "Datos registrados exitosamente")
             else:
                 latitud = request.POST.get('latitud')
@@ -37,18 +34,22 @@ def cargar_datos_climaticos(request):
                 messages.success(request, "Sonda cargada exitosamente")
         except Exception as e:
             messages.warning(request, str(e))
+        """
+        pass 
     else:
         persona, campo = get_persona_campo(user)
         if not (persona and campo):
             messages.warning(
                 request, "Cargue sus datos personales y de su campo.")
         else:
+            """
             sondas = Sonda.objects.filter(pertenencia='INTA')
             contexto['sondas'] = Sonda.formatear(sondas)
             print("--------------")
             print(contexto['sondas'])
             print("--------------")
-
+            """
+            pass
 
             
     return render(request, "alta_datos_climaticos.html", contexto)
@@ -124,8 +125,7 @@ def estimar(datos_climaticos, variable_estimacion):
 def estimacion_climatica(request, query='mm_lluvia'):
     contexto = {}
     try:
-        datos_climaticos = Sonda.objects.get(id=150).datos_climaticos_set.all().values(
-            'periodo', 'mm_lluvia', 'temperatura_maxima')
+        datos_climaticos = None
         datos_sonda, datos_prediccion, intervalo_bajo, intervalo_alto, label_datos, label_estimacion, flag_filtro = estimar(
             datos_climaticos, query)
         contexto["datos_sonda"] = json.dumps(datos_sonda)

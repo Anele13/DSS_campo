@@ -82,6 +82,26 @@
                                 {% endfor %}
                                 {% endif %}
                             </div>
+                            <div class="form-group">
+                                {{form.latitud}}
+                                {% if form.latitud.errors %}
+                                {% for error in form.latitud.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group">
+                                {{form.longitud}}
+                                {% if form.longitud.errors %}
+                                {% for error in form.longitud.errors %}
+                                <ul>
+                                    <li><span class="text-danger">{{ error }}</span></li>
+                                </ul>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
                             <br>
                             <button class="btn btn-primary btn-user btn-block">
                                 Guardar
