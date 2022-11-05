@@ -10,29 +10,45 @@
 {% block site_content %}
 
 {% if messages %}
-{% for message in messages %}
-<div class="container-fluid p-0">
-    <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        {{ message }}
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            {{ message }}
+        </div>
     </div>
-</div>
-{% endfor %}
+    {% endfor %}
 {% endif %}
 
-{% if nombres_meses %}
+
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Hola {{user}}</h1>
 </div>
+
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h5 mb-0 text-gray-800">Infomación del último registro</h1>
 </div>
 
+
+
+
+
+
+
+
 <!-- Content Row -->
 <div class="row">
+
+    
+
+
+
+
+
+
     <!-- Earnings (Monthly) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card border-left-primary shadow h-100 py-2">
@@ -40,74 +56,8 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Ovejas
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{cantidad_ovejas}}
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <img src="{% static 'img/oveja.png' %}" class="img-responsive" width="45" height="45" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Corderos
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{cantidad_corderos}}
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <img src="{% static 'img/cordero.png' %}" class="img-responsive" width="55" height="55" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pending Requests Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Carneros
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{cantidad_carneros}}
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <img src="{% static 'img/carnero.png' %}" class="img-responsive" width="45" height="45" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-danger shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                            Mortandad
-                        </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">
-                            {{mortandad}}
-                        </div>
+                            Muertes</div>
+                        <div id="div_muertes" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
                     </div>
                     <div class="col-auto">
                         <img src="{% static 'img/muerte.png' %}" class="img-responsive" width="55" height="55" alt="">
@@ -116,12 +66,86 @@
             </div>
         </div>
     </div>
+
+    <!-- Earnings (Annual) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Nacimientos</div>
+                        <div id="div_nacimientos" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Pending Requests Card Example -->
+     <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                            Ventas</div>
+                        <div id='div_ventas' class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-8 col-lg-6 col-xl-4">
+            <div class="card" style="color: #4B515D; border-radius: 35px;">
+            <div class="card-body p-4">
+                <div class="d-flex">
+                <h6 class="flex-grow-1">{{localidad}}</h6>
+                <h6>{{timestamp}}</h6>
+                </div>
+                <div class="d-flex flex-column text-center mt-5 mb-4">
+                <h6 class="display-4 mb-0 font-weight-bold" style="color: #1C2331;"> {{temperatura}}°C </h6>
+                <span class="small" style="color: #868B94">Stormy</span>
+                </div>
+                <div class="d-flex align-items-center">
+                <div class="flex-grow-1" style="font-size: 1rem;">
+                    <div><i class="fas fa-wind fa-fw" style="color: #868B94;"></i> <span class="ms-1"> {{viento}} m/s
+                    </span></div>
+                    <div><i class="fas fa-tint fa-fw" style="color: #868B94;"></i> <span class="ms-1"> {{humedad}}% </span>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+
+
 </div>
 
-<!-- Content Row -->
 
+
+
+<!-- GRAFICOS LLUVIA Y CAMPO OCUPADO -->
 <div class="row">
-    <!-- Area Chart -->
     <div class="col-xl-8 col-lg-7">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -306,6 +330,35 @@
     window.myDoughnut = new Chart(canvas_doughnut, config);
 </script>
 
-{%endif%}
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+    import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+    var campo_id = '{{campo_id}}'
+    var fecha = '{{fecha}}'
+    
+    var firebaseConfig = {
+      'apiKey': 'AIzaSyCtmZkZYXrhbihvJiQC4gjvJAIM27eDpvM',
+      'authDomain': 'dss-campo.firebaseapp.com',
+      'databaseURL': 'https://dss-campo-default-rtdb.firebaseio.com',
+      'projectId': 'dss-campo',
+      'storageBucket': 'dss-campo.appspot.com',
+      'messagingSenderId': '371707726278',
+      'appId': '1:371707726278:web:6e7053e506f660139bcac7'
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase();
+    console.log(fecha)
+    console.log(campo_id)
+    const campoRef = ref(db, 'campo/'+campo_id+'/'+fecha);
+    onValue(campoRef, (snapshot) => {
+
+        const data = snapshot.val();
+        $('#div_muertes').html(data.MUERTES);
+        $('#div_nacimientos').html(data.NACIMIENTOS);
+        $('#div_ventas').html(data.VENTAS);
+    });
+  </script>
 
 {% endblock %}

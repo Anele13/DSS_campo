@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'campo',
     'clima',
-    'produccion',
     'usuario',
     'social_django',
     'django_telegram_login',
@@ -147,7 +146,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'img')
@@ -159,7 +158,7 @@ MEDIA_URL = '/img/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())
 
 #from dotenv import load_dotenv
 #load_dotenv()
@@ -179,7 +178,9 @@ PUBLIC_URL=f'https://{HEROKU_URL}'
 TELEGRAM_LOGIN_REDIRECT_URL = f'{PUBLIC_URL}/perfil'
 
 
+"""
 # ie if Heroku server
 if 'DATABASE_URL' in os.environ:
     import dj_database_url
     DATABASES = {'default': dj_database_url.config()}
+"""

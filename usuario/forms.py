@@ -24,15 +24,6 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    documento = forms.IntegerField(label='Ingresar el documento',
-                                   widget=forms.TextInput(attrs={
-                                       "class": "form-control form-control-user",
-                                       "placeholder": "Documento",
-                                       "required": 'required'
-                                   }
-                                   )
-                                   )
-
     nombre = forms.CharField(label='Ingresar el nombre',
                              min_length=4,
                              max_length=150,
@@ -53,12 +44,6 @@ class RegisterForm(forms.Form):
                                }
                                )
                                )
-    fecha_nacimiento = forms.DateField(label='Ingresar fecha nacimiento',
-                                       widget=forms.DateInput(format=('%d-%m-%Y'), attrs={
-                                                              "class": "form-control form-control-user", 'firstDay': 1, 'pattern=': '\d{4}-\d{2}-\d{2}', 'lang': 'pl', 'format': 'yyyy-mm-dd', 'type': 'date'})
-
-
-                                       )
 
     username = forms.CharField(label='Ingresar el nombre de usuario',
                                min_length=4,
@@ -116,6 +101,24 @@ class RegisterForm(forms.Form):
                                    )
                                    )
 
+    latitud =  forms.FloatField(label='Latitud',
+                                widget=forms.TextInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Latitud",
+                                                            "required":'required'
+                                                            }
+                                                        )
+                                )
+
+    longitud = forms.FloatField(label='Longitud',
+                                widget=forms.TextInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Longitud",
+                                                            "required":'required'
+                                                            }
+                                                        )
+                                )
+
     def clean_cant_hectareas(self):
         cant_hectareas = self.cleaned_data['cant_hectareas']
         if int(cant_hectareas) <= 0:
@@ -146,14 +149,6 @@ class RegisterForm(forms.Form):
         return password2
 
 
-    def clean_documento(self):
-        documento = self.cleaned_data['documento']
-        existe_documento = Persona.objects.filter(documento=documento).exists()
-        if existe_documento:
-            raise ValidationError("El documento ya existe")
-        return documento
-
-
     def save(self, crear_usuario=True):
         # Usuario
         if crear_usuario:
@@ -165,33 +160,23 @@ class RegisterForm(forms.Form):
 
         # Persona
         persona = Persona.objects.create(
-            documento=self.cleaned_data['documento'],
             nombre=self.cleaned_data['nombre'],
             apellido=self.cleaned_data['apellido'],
-            fecha_nacimiento=self.cleaned_data['fecha_nacimiento'],
             usuario=user
         )
 
         # Campo
         campo = Campo.objects.create(
             persona=persona,
-            sonda=None,
             nombre=self.cleaned_data['nombre_campo'],
             cant_hectareas=self.cleaned_data['cant_hectareas'],
+            latitud=self.cleaned_data['latitud'],
+            longitud=self.cleaned_data['longitud'],
         )
         return user, persona, campo
 
 
 class UpdateForm(forms.Form):
-    documento = forms.IntegerField(label='Ingresar el documento',
-                                   widget=forms.TextInput(attrs={
-                                       "class": "form-control form-control-user",
-                                       "placeholder": "Documento",
-                                       "required": 'required'
-                                   }
-                                   )
-                                   )
-
     nombre = forms.CharField(label='Ingresar el nombre',
                              min_length=4,
                              max_length=150,
@@ -212,14 +197,6 @@ class UpdateForm(forms.Form):
                                }
                                )
                                )
-    fecha_nacimiento = forms.DateField(label='Ingresar fecha nacimiento',
-                                       widget=forms.DateInput(format=('%d-%m-%Y'), attrs={
-                                                              "class": "form-control form-control-user", 
-                                                              'firstDay': 1,
-                                                              'lang': 'pl',
-                                                              'type': 'date'})
-                                       )
-
     cant_hectareas = forms.IntegerField(label='Ingresar el la cantidad de hectareas',
                                         widget=forms.TextInput(attrs={
                                             "class": "form-control form-control-user",
@@ -240,6 +217,20 @@ class UpdateForm(forms.Form):
                                    )
                                    )
 
+    latitud =  forms.FloatField(label='Latitud',
+                                widget=forms.NumberInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Latitud",
+                                                            "required":'required'
+                                                            })) 
+
+    longitud = forms.FloatField(label='Longitud',
+                                widget=forms.NumberInput(attrs={
+                                                            "class": "form-control form-control-user",
+                                                            "placeholder":"Latitud",
+                                                            "required":'required'
+                                                            })) 
+
     def clean_cant_hectareas(self):
         cant_hectareas = self.cleaned_data['cant_hectareas']
         if int(cant_hectareas) <= 0:
@@ -256,18 +247,14 @@ class UpdateForm(forms.Form):
             persona = None
 
         if persona:
-            persona.documento=self.cleaned_data['documento']
             persona.nombre=self.cleaned_data['nombre']
             persona.apellido=self.cleaned_data['apellido']
-            persona.fecha_nacimiento=self.cleaned_data['fecha_nacimiento']
             persona.save()
 
         else:
             persona = Persona.objects.create(
-                documento=self.cleaned_data['documento'],
                 nombre=self.cleaned_data['nombre'],
                 apellido=self.cleaned_data['apellido'],
-                fecha_nacimiento=self.cleaned_data['fecha_nacimiento'],
                 usuario=user
             )
         
@@ -279,12 +266,17 @@ class UpdateForm(forms.Form):
         if campo:
             campo.nombre=self.cleaned_data['nombre_campo']
             campo.cant_hectareas=self.cleaned_data['cant_hectareas']
+            data1 = self.cleaned_data['latitud']
+            data2 = self.cleaned_data['longitud']
+            campo.latitud=data1
+            campo.longitud=data2
             campo.save()
         else:
             campo = Campo.objects.create(
                 persona=persona,
-                sonda=None,
                 nombre=self.cleaned_data['nombre_campo'],
                 cant_hectareas=self.cleaned_data['cant_hectareas'],
+                latitud=self.cleaned_data['latitud'],
+                longitud=self.cleaned_data['longitud'],
             )
         return user, persona, campo

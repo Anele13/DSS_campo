@@ -59,8 +59,10 @@ def registro(request):
         try:
             form = RegisterForm(request.POST)
             if form.is_valid():
-                usuario = form.save()
+                form.save()
                 return redirect('login')
+            else:
+                print(form.errors)
         except Exception as e:
             messages.warning(request,'Error:: '+str(e))        
     return render(request, 'registro.html', {'form': form})
@@ -79,17 +81,10 @@ def perfil_view(request):
     context['campo']=campo
     context['telegram_user']=persona.telegramuser_set.all().first()
     context['telegram_login_widget']=create_redirect_login_widget(redirect_url, bot_name, size=MEDIUM, user_photo=DISABLE_USER_PHOTO)
-
-    print(":...............................")
-    print(request.COOKIES)
-    print(":...............................")
-
-    
     return render(request, 'mi_perfil.html', context)
 
 
 def editar_perfil_view(request):
-    contexto = {}
     user = request.user
     datos = {}
     if request.method == 'POST':
@@ -100,14 +95,14 @@ def editar_perfil_view(request):
     else:
         persona, campo = get_persona_campo(user)
         if persona:
-            datos['documento']= persona.documento
             datos['nombre']= persona.nombre
             datos['apellido']= persona.apellido
-            datos['fecha_nacimiento']= persona.fecha_nacimiento.strftime('%Y-%m-%d')
             datos['nombre_campo']= persona.nombre
         if campo:
             datos['nombre_campo']=campo.nombre
             datos['cant_hectareas']=campo.cant_hectareas
+            datos['latitud']=campo.latitud
+            datos['longitud']=campo.longitud
         form = UpdateForm(initial=datos)
     return render(request, 'editar_perfil.html', {'form': form})
 

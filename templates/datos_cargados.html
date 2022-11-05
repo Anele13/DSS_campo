@@ -19,73 +19,200 @@
 {% endif %}
 
 
+<link href="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.css" rel="stylesheet">
 
+<script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/bootstrap-table-locale-all.min.js"></script>
+<script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="extensions/editable/bootstrap-table-editable.js"></script>
 
+<style>
+  .select,
+  #locale {
+    width: 100%;
+  }
+  .like {
+    margin-right: 10px;
+  }
+</style>
 
-<div class="row">
-
-    <!-- Earnings (Monthly) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-primary shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Muertes</div>
-                        <div id="div_muertes" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Earnings (Annual) Card Example -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Nacimientos</div>
-                        <div id="div_nacimientos" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-     <!-- Pending Requests Card Example -->
-     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
-            <div class="card-body">
-                <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Ventas</div>
-                        <div id='div_ventas' class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<div class="select">
+  <select class="form-control" id="locale">
+    <option value="af-ZA">af-ZA</option>
+    <option value="ar-SA">ar-SA</option>
+    <option value="ca-ES">ca-ES</option>
+    <option value="cs-CZ">cs-CZ</option>
+    <option value="da-DK">da-DK</option>
+    <option value="de-DE">de-DE</option>
+    <option value="el-GR">el-GR</option>
+    <option value="en-US" selected>en-US</option>
+    <option value="es-AR">es-AR</option>
+    <option value="es-CL">es-CL</option>
+    <option value="es-CR">es-CR</option>
+    <option value="es-ES">es-ES</option>
+    <option value="es-MX">es-MX</option>
+    <option value="es-NI">es-NI</option>
+    <option value="es-SP">es-SP</option>
+    <option value="et-EE">et-EE</option>
+    <option value="eu-EU">eu-EU</option>
+    <option value="fa-IR">fa-IR</option>
+    <option value="fi-FI">fi-FI</option>
+    <option value="fr-BE">fr-BE</option>
+    <option value="fr-FR">fr-FR</option>
+    <option value="he-IL">he-IL</option>
+    <option value="hr-HR">hr-HR</option>
+    <option value="hu-HU">hu-HU</option>
+    <option value="id-ID">id-ID</option>
+    <option value="it-IT">it-IT</option>
+    <option value="ja-JP">ja-JP</option>
+    <option value="ka-GE">ka-GE</option>
+    <option value="ko-KR">ko-KR</option>
+    <option value="ms-MY">ms-MY</option>
+    <option value="nb-NO">nb-NO</option>
+    <option value="nl-NL">nl-NL</option>
+    <option value="pl-PL">pl-PL</option>
+    <option value="pt-BR">pt-BR</option>
+    <option value="pt-PT">pt-PT</option>
+    <option value="ro-RO">ro-RO</option>
+    <option value="ru-RU">ru-RU</option>
+    <option value="sk-SK">sk-SK</option>
+    <option value="sv-SE">sv-SE</option>
+    <option value="th-TH">th-TH</option>
+    <option value="tr-TR">tr-TR</option>
+    <option value="uk-UA">uk-UA</option>
+    <option value="ur-PK">ur-PK</option>
+    <option value="uz-Latn-UZ">uz-Latn-UZ</option>
+    <option value="vi-VN">vi-VN</option>
+    <option value="zh-CN">zh-CN</option>
+    <option value="zh-TW">zh-TW</option>
+  </select>
 </div>
 
+<div id="toolbar">
+  <button id="remove" class="btn btn-danger" disabled>
+    <i class="fa fa-trash"></i> Delete
+  </button>
+</div>
+<table
+  id="table"
+  data-toolbar="#toolbar"
+  data-search="true"
+  data-show-refresh="true"
+  data-show-toggle="true"
+  data-show-fullscreen="true"
+  data-show-columns="true"
+  data-show-columns-toggle-all="true"
+  data-detail-view="true"
+  data-show-export="true"
+  data-click-to-select="true"
+  data-detail-formatter="detailFormatter"
+  data-minimum-count-columns="2"
+  data-show-pagination-switch="true"
+  data-pagination="true"
+  data-id-field="periodo"
+  data-page-list="[10, 25, 50, 100, all]"
+  data-show-footer="true"
+  data-response-handler="responseHandler"
+  class= 'table table-striped'
+  data-show-checkbox="true"
+  >
+</table>
+
+
 <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
-    import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
-    var campo_id = '{{campo_id}}'
-    var fecha = '{{fecha}}'
     
+
+  var $table = $('#table')
+  var $remove = $('#remove')
+  var selections = []
+
+  function getIdSelections() {
+    return $.map($table.bootstrapTable('getSelections'), function (row) {
+      return row.id
+    })
+  }
+
+  function responseHandler(res) {
+    $.each(res.rows, function (i, row) {
+      row.state = $.inArray(row.id, selections) !== -1
+    })
+    return res
+  }
+
+  function detailFormatter(index, row) {
+    var html = []
+    $.each(row, function (key, value) {
+      html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+    })
+    return html.join('')
+  }
+
+  function checkboxFormatter(index, row){
+    return false
+  }
+
+ 
+
+  function initTable() {
+    $table.bootstrapTable('destroy').bootstrapTable({
+      height: 550,
+      locale: $('#locale').val(),
+      columns: [{title: 'periodo', field:'periodo', checkbox: 'true',  formatter: checkboxFormatter},
+                {title: 'temperatura_minima', field:'temperatura_minima'},
+                {title: 'temperatura_maxima', field:'temperatura_maxima'},
+                {title: 'temperatura', field:'temperatura'},
+                {title: 'humedad', field:'humedad'},
+                {title: 'velocidad_viento', field:'velocidad_viento'},
+                {title: 'direccion_viento', field:'direccion_viento'},
+                {title: 'mm_lluvia', field:'mm_lluvia'},
+                {title: 'localidad', field:'localidad'},
+                {title: 'corderos', field:'corderos'},
+                {title: 'ovejas', field:'ovejas'},
+                {title: 'carneros', field:'carneros'},
+                {title: 'pariciones', field:'pariciones'},
+                {title: 'muertes_corderos', field:'muertes_corderos'},
+                {title: 'lana_producida', field:'lana_producida'},
+                {title: 'carne_producida', field:'carne_producida'},
+                {title: 'rinde_lana', field:'rinde_lana'},
+                {title: 'finura_lana', field:'finura_lana'}]
+          })
+      
+          $table.on('check.bs.table uncheck.bs.table ' +
+      'check-all.bs.table uncheck-all.bs.table',
+    function () {
+      $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+
+      // save your data, here just save the current page
+      selections = getIdSelections()
+      // push or splice the selections if you want to save all data selections
+    })
+    $table.on('all.bs.table', function (e, name, args) {
+      console.log(name, args)
+    })
+    $remove.click(function () {
+      var ids = getIdSelections()
+      $table.bootstrapTable('remove', {
+        field: 'id',
+        values: ids
+      })
+      $remove.prop('disabled', true)
+    })
+          
+
+
+  }
+
+  $(function() {
+    initTable()
+    $('#locale').change(initTable)
+  })
+
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+  import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+
+
     var firebaseConfig = {
       'apiKey': 'AIzaSyCtmZkZYXrhbihvJiQC4gjvJAIM27eDpvM',
       'authDomain': 'dss-campo.firebaseapp.com',
@@ -95,19 +222,28 @@
       'messagingSenderId': '371707726278',
       'appId': '1:371707726278:web:6e7053e506f660139bcac7'
     };
-
+    var campo_id = '10'
     const app = initializeApp(firebaseConfig);
     const db = getDatabase();
-    console.log(fecha)
-    console.log(campo_id)
-    const campoRef = ref(db, 'campo/'+campo_id+'/'+fecha);
+    const campoRef = ref(db, 'campo/'+campo_id);
     onValue(campoRef, (snapshot) => {
-
+        var data_list = []
         const data = snapshot.val();
-        $('#div_muertes').html(data.MUERTES);
-        $('#div_nacimientos').html(data.NACIMIENTOS);
-        $('#div_ventas').html(data.VENTAS);
+        for(var key in data) {
+          var data_dict = {}
+          data_dict['periodo'] = key
+          var dict2 = data[key]
+          for(var dato in dict2) {
+            data_dict[dato] = dict2[dato]
+          }
+          data_list.push(data_dict)
+        }
+        console.log(data_list)
+        $table.bootstrapTable('load', data_list)
     });
-  </script>
+</script>
+
+
+
 
 {% endblock %}

@@ -17,10 +17,28 @@
     {% endfor %}
 {% endif %}
 
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Elija su ubicacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <!--MAPAA-->
+            <div id="map" style="height: 200px;"></div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
 <body class="bg-gradient-info">
-
     <div class="container">
-
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
                 <!-- Nested Row within Card Body -->
@@ -31,7 +49,7 @@
                     <div class="col-lg-7">
                         <div class="p-5">
                             <div class="text-center">
-                                <h1 class="h4 text-gray-900 mb-4">Crear nueva cuenta</h1>
+                                <h1 class="h4 text-gray-900 mb-4">Nuevo usuario</h1>
                             </div>
                             <form class="user" method='POST' action="{% url 'registro' %}">
                                 {% csrf_token %}
@@ -58,28 +76,6 @@
                                     {% endif %}
                                 </div>
 
-                                <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        {{form.documento}}
-                                        {% if form.documento.errors %}
-                                        {% for error in form.documento.errors %}
-                                        <ul>
-                                            <li><span class="text-danger">{{ error }}</span></li>
-                                        </ul>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-sm-6 mb-3 mb-sm-0">
-                                        {{form.fecha_nacimiento}}
-                                        {% if form.fecha_nacimiento.errors %}
-                                        {% for error in form.fecha_nacimiento.errors %}
-                                        <ul>
-                                            <li><span class="text-danger">{{ error }}</span></li>
-                                        </ul>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                </div>
 
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -144,7 +140,33 @@
                                         {% endif %}
                                     </div>
                                 </div>
-
+                                <div class="form-group row">
+                                    <div class="col-sm-3 mb-3 mb-sm-0">
+                                        {{form.latitud}}
+                                        {% if form.latitud.errors %}
+                                            {% for error in form.latitud.errors %}
+                                            <ul>
+                                                <li><span class="text-danger">{{ error }}</span></li>
+                                            </ul>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-3 mb-3 mb-sm-0">
+                                        {{form.longitud}}
+                                        {% if form.longitud.errors %}
+                                            {% for error in form.longitud.errors %}
+                                            <ul>
+                                                <li><span class="text-danger">{{ error }}</span></li>
+                                            </ul>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-sm-2 mb-3 mb-sm-0">
+                                        <button type="button" class="btn btn-primary btn-sm btn-user"  data-toggle="modal" data-target="#exampleModal">
+                                            ver mapa    
+                                        </button>
+                                    </div>
+                                </div>
                                 <br>
                                 <button class="btn btn-primary btn-user btn-block">
                                     Registrarse
@@ -161,6 +183,24 @@
                 </div>
             </div>
         </div>
-
     </div>
+
+    <!--Mapas-->
+    <script>
+        //Creo un mapa
+        var map = L.map('map').setView([-43.36, -68.58], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        map.on('click', function(e){
+            var coord = e.latlng;
+            var lat = coord.lat;
+            var lng = coord.lng;
+            $('#id_latitud').val(lat.toFixed(3))
+            $('#id_longitud').val(lng.toFixed(3))
+            $('#exampleModal').modal('hide')
+        });
+    </script>
+
     {% endblock %}

@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from usuario.views import get_persona_campo
 from django.contrib import messages
 from campo.models import Campo
+from datetime import datetime
 
 import calendar
 import json
@@ -75,35 +76,15 @@ def inicio(request):
     """
     Vista Inicio
     """
-    contexto = {}
-    user = request.user
-    persona, campo = get_persona_campo(user)
-
-    if not (persona and campo):
-        messages.warning(request, "Cargue sus datos personales y de su campo.")
-
-    elif not(campo.sonda):
-        messages.warning(
-            request, "Debe cargar los datos climáticos de su campo.")
-
-    elif not(campo.datos_produccion_set.all()):
-        messages.warning(
-            request, "Debe cargar los datos de producción de su campo.")
-
-    else:
-
-        campo = Campo.objects.get(persona=request.user.persona)
-        datos_climaticos = campo.sonda.datos_climaticos_set.all()
-        datos_produccion = campo.datos_produccion_set.all()
-
-        cantidad_ovejas, cantidad_carneros, cantidad_corderos, mortandad = devolver_hacienda(
-            datos_produccion)
-        ha_ocupadas, ha_libres, ha_excedidas = calcular_ocupacion(
-            campo, datos_produccion)
-        nombres_meses, lluvias_mensuales = devolver_lluvias_mensuales(
-            campo, datos_produccion, datos_climaticos)
-
-        contexto = {'cantidad_ovejas': cantidad_ovejas, 'cantidad_carneros': cantidad_carneros,
-                    'cantidad_corderos': cantidad_corderos, 'mortandad': mortandad, 'ha_ocupadas': ha_ocupadas,
-                    'ha_libres': ha_libres, 'ha_excedidas': ha_excedidas, 'nombres_meses': json.dumps(nombres_meses), 'lluvias_mensuales': json.dumps(lluvias_mensuales)}
+    campo = Campo.objects.get(persona=request.user.persona)
+    datos_climaticos = campo.clima_actual()
+    contexto={
+        'campo_id': campo.id, 
+        'localidad': datos_climaticos.get('localidad'),
+        'temperatura': datos_climaticos.get('temperatura'),
+        'viento': datos_climaticos.get('velocidad_viento'),
+        'humedad': datos_climaticos.get('humedad'),
+        'timestamp': str(datetime.now().strftime('%H:%M'))
+    }
+    print(datos_climaticos)
     return render(request, "bienvenido.html", contexto)
