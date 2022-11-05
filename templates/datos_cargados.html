@@ -110,7 +110,6 @@
   data-minimum-count-columns="2"
   data-show-pagination-switch="true"
   data-pagination="true"
-  data-id-field="periodo"
   data-page-list="[10, 25, 50, 100, all]"
   data-show-footer="true"
   data-response-handler="responseHandler"
@@ -121,6 +120,26 @@
 
 
 <script type="module">
+
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
+  import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
+
+
+    var firebaseConfig = {
+      'apiKey': 'AIzaSyCtmZkZYXrhbihvJiQC4gjvJAIM27eDpvM',
+      'authDomain': 'dss-campo.firebaseapp.com',
+      'databaseURL': 'https://dss-campo-default-rtdb.firebaseio.com',
+      'projectId': 'dss-campo',
+      'storageBucket': 'dss-campo.appspot.com',
+      'messagingSenderId': '371707726278',
+      'appId': '1:371707726278:web:6e7053e506f660139bcac7'
+    };
+    var campo_id = '10'
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase();
+    const campoRef = ref(db, 'campo/'+campo_id);
+
     
 
   var $table = $('#table')
@@ -129,7 +148,7 @@
 
   function getIdSelections() {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
-      return row.id
+      return row.periodo
     })
   }
 
@@ -158,7 +177,8 @@
     $table.bootstrapTable('destroy').bootstrapTable({
       height: 550,
       locale: $('#locale').val(),
-      columns: [{title: 'periodo', field:'periodo', checkbox: 'true',  formatter: checkboxFormatter},
+      columns: [{title: 'state', field:'state', checkbox: 'true',  formatter: checkboxFormatter},
+                {title: 'periodo', field:'periodo'},
                 {title: 'temperatura_minima', field:'temperatura_minima'},
                 {title: 'temperatura_maxima', field:'temperatura_maxima'},
                 {title: 'temperatura', field:'temperatura'},
@@ -178,27 +198,26 @@
                 {title: 'finura_lana', field:'finura_lana'}]
           })
       
-          $table.on('check.bs.table uncheck.bs.table ' +
-      'check-all.bs.table uncheck-all.bs.table',
-    function () {
-      $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
 
-      // save your data, here just save the current page
-      selections = getIdSelections()
-      // push or splice the selections if you want to save all data selections
-    })
-    $table.on('all.bs.table', function (e, name, args) {
-      console.log(name, args)
-    })
-    $remove.click(function () {
-      var ids = getIdSelections()
-      $table.bootstrapTable('remove', {
-        field: 'id',
-        values: ids
-      })
-      $remove.prop('disabled', true)
-    })
-          
+
+          $table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table',
+          function () {
+            $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+          })
+          $remove.click(function () {
+            var ids = getIdSelections()
+              $table.bootstrapTable('remove', {
+              field: 'periodo',
+              values: ids
+            })
+            for(var index in ids) {
+              var url = 'campo/'+campo_id+'/'+ids[index]
+              var dbRef = ref(db, url);
+              remove(dbRef).then(() => console.log("Deleted"))
+            }
+            $remove.prop('disabled', true)
+          })
+      
 
 
   }
@@ -209,23 +228,7 @@
   })
 
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
-  import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
-
-
-    var firebaseConfig = {
-      'apiKey': 'AIzaSyCtmZkZYXrhbihvJiQC4gjvJAIM27eDpvM',
-      'authDomain': 'dss-campo.firebaseapp.com',
-      'databaseURL': 'https://dss-campo-default-rtdb.firebaseio.com',
-      'projectId': 'dss-campo',
-      'storageBucket': 'dss-campo.appspot.com',
-      'messagingSenderId': '371707726278',
-      'appId': '1:371707726278:web:6e7053e506f660139bcac7'
-    };
-    var campo_id = '10'
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase();
-    const campoRef = ref(db, 'campo/'+campo_id);
+  
     onValue(campoRef, (snapshot) => {
         var data_list = []
         const data = snapshot.val();
