@@ -174,4 +174,17 @@ def datos_cargados(request):
     contexto={}
     contexto['campo_id'] = request.user.persona.campo.first().id
     contexto['fecha'] = str(datetime.now().date())
+    columnas1 = [
+    'corderos',
+    'ovejas',
+    'carneros',
+    'pariciones']
+    columnas2=[
+    'muertes_corderos',
+    'lana_producida',
+    'carne_producida',
+    'rinde_lana',
+    'finura_lana']
+    contexto['columnas1'] = columnas1
+    contexto['columnas2'] = columnas2
     return render(request, "datos_cargados.html", contexto)
