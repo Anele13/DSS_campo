@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-!4koscoro7z6y4627n-#=8hf9%*h8mh(&r5hhmqtrz24!xci8z
 DEBUG = True
 
 HEROKU_URL = 'morning-dawn-11160.herokuapp.com'
-ALLOWED_HOSTS = [HEROKU_URL,'localhost']
+ALLOWED_HOSTS = [HEROKU_URL,'localhost','*']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'usuario',
     'social_django',
     'django_telegram_login',
+    'prediccion'
 ]
 
 MIDDLEWARE = [
