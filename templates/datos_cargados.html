@@ -27,10 +27,7 @@
 
 
 <style>
-  .select,
-  #locale {
-    width: 100%;
-  }
+
   .like {
     margin-right: 10px;
   }
@@ -73,11 +70,6 @@
               {% endfor %}
               </div>
           </div>
-
-
-
-
-
       </div>
       <div class="modal-footer">
         <button id="alta" class="btn btn-sm btn-primary" data-dismiss="modal">Guardar</button>
@@ -92,110 +84,159 @@
 
 
 
+<div class="card border-left-info shadow h-100 py-2">
+  <div class="card-body">
+      <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Informacion Actual: {{fecha}}</div>
+              <div class="row align-items-center">
+                  
 
-<div class="select">
-  <select class="form-control" id="locale">
-    <option value="af-ZA">af-ZA</option>
-    <option value="ar-SA">ar-SA</option>
-    <option value="ca-ES">ca-ES</option>
-    <option value="cs-CZ">cs-CZ</option>
-    <option value="da-DK">da-DK</option>
-    <option value="de-DE">de-DE</option>
-    <option value="el-GR">el-GR</option>
-    <option value="en-US" selected>en-US</option>
-    <option value="es-AR">es-AR</option>
-    <option value="es-CL">es-CL</option>
-    <option value="es-CR">es-CR</option>
-    <option value="es-ES">es-ES</option>
-    <option value="es-MX">es-MX</option>
-    <option value="es-NI">es-NI</option>
-    <option value="es-SP">es-SP</option>
-    <option value="et-EE">et-EE</option>
-    <option value="eu-EU">eu-EU</option>
-    <option value="fa-IR">fa-IR</option>
-    <option value="fi-FI">fi-FI</option>
-    <option value="fr-BE">fr-BE</option>
-    <option value="fr-FR">fr-FR</option>
-    <option value="he-IL">he-IL</option>
-    <option value="hr-HR">hr-HR</option>
-    <option value="hu-HU">hu-HU</option>
-    <option value="id-ID">id-ID</option>
-    <option value="it-IT">it-IT</option>
-    <option value="ja-JP">ja-JP</option>
-    <option value="ka-GE">ka-GE</option>
-    <option value="ko-KR">ko-KR</option>
-    <option value="ms-MY">ms-MY</option>
-    <option value="nb-NO">nb-NO</option>
-    <option value="nl-NL">nl-NL</option>
-    <option value="pl-PL">pl-PL</option>
-    <option value="pt-BR">pt-BR</option>
-    <option value="pt-PT">pt-PT</option>
-    <option value="ro-RO">ro-RO</option>
-    <option value="ru-RU">ru-RU</option>
-    <option value="sk-SK">sk-SK</option>
-    <option value="sv-SE">sv-SE</option>
-    <option value="th-TH">th-TH</option>
-    <option value="tr-TR">tr-TR</option>
-    <option value="uk-UA">uk-UA</option>
-    <option value="ur-PK">ur-PK</option>
-    <option value="uz-Latn-UZ">uz-Latn-UZ</option>
-    <option value="vi-VN">vi-VN</option>
-    <option value="zh-CN">zh-CN</option>
-    <option value="zh-TW">zh-TW</option>
-  </select>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                          <div class="card  shadow h-100 py-2">
+                              <div class="card-body">
+                                  <div class="row no-gutters align-items-center">
+                                      <div class="col mr-2">
+                                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                              Corderos 
+                                          </div>
+                                          <div id="diaria_corderos" class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="spinner-border" role="status">
+                                              <span class="sr-only">Loading...</span>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-auto">
+                                        <img src="{% static 'img/cordero.png' %}" class="img-responsive" width="55" height="55" alt="">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- Earnings (Monthly) Card Example -->
+                      <div class="col-xl-3 col-md-6 mb-4">
+                          <div class="card  shadow h-100 py-2">
+                              <div class="card-body">
+                                  <div class="row no-gutters align-items-center">
+                                      <div class="col mr-2">
+                                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                              Capones</div>
+                                          <div id="diaria_carneros" class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="spinner-border" role="status">
+                                              <span class="sr-only">Loading...</span>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-auto">
+                                        <img src="{% static 'img/carnero.png' %}" class="img-responsive" width="55" height="55" alt="">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+
+                      <!-- Pending Requests Card Example -->
+                      <div class="col-xl-3 col-md-6 mb-4">
+                          <div class="card  shadow h-100 py-2">
+                              <div class="card-body">
+                                  <div class="row no-gutters align-items-center">
+                                      <div class="col mr-2">
+                                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                              Ovejas</div>
+                                          
+                                          <div id="diaria_ovejas" class="h5 mb-0 font-weight-bold text-gray-800">
+                                            <div class="spinner-border" role="status">
+                                              <span class="sr-only">Loading...</span>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-auto">
+                                        <img src="{% static 'img/oveja.png' %}" class="img-responsive" width="55" height="55" alt="">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  
+
+
+              </div>
+          </div>
+          <div class="col-auto">
+              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+          </div>
+      </div>
+  </div>
 </div>
 
-<div id="toolbar">
-  <button id="remove" class="btn btn-sm btn-danger" disabled>
-    <i class="fa fa-trash"></i> Borrar
-  </button>
-  <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalAltaDatos">Nuevo registro</button>
+
+<br>
+<br>
+
+
+<div class="card border-left-secondary shadow h-100 py-2">
+  <div class="card-body">
+          
+        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Informacion Historica</div>
+        <div id="toolbar">
+          <button id="remove" class="btn btn-sm btn-danger" disabled>
+            <i class="fa fa-trash"></i> Borrar
+          </button>
+          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalAltaDatos">Nuevo registro</button>
+        </div>
+        <table
+          id="table"
+          data-toolbar="#toolbar"
+          data-search="true"
+          data-show-refresh="true"
+          data-show-toggle="true"
+          data-show-fullscreen="true"
+          data-show-columns="true"
+          data-show-columns-toggle-all="true"
+          data-show-export="true"
+          data-detail-formatter="detailFormatter"
+          data-minimum-count-columns="2"
+          data-show-pagination-switch="true"
+          data-pagination="true"
+          data-page-list="[10, 25, 50, 100, all]"
+          data-show-footer="true"
+          data-response-handler="responseHandler"
+          class= 'table table-striped'
+          data-show-checkbox="true"
+          data-remember-order="true"
+          >
+        </table>
+
+
+  </div>
 </div>
-<table
-  id="table"
-  data-toolbar="#toolbar"
-  data-search="true"
-  data-show-refresh="true"
-  data-show-toggle="true"
-  data-show-fullscreen="true"
-  data-show-columns="true"
-  data-show-columns-toggle-all="true"
-  data-show-export="true"
-  data-detail-formatter="detailFormatter"
-  data-minimum-count-columns="2"
-  data-show-pagination-switch="true"
-  data-pagination="true"
-  data-page-list="[10, 25, 50, 100, all]"
-  data-show-footer="true"
-  data-response-handler="responseHandler"
-  class= 'table table-striped'
-  data-show-checkbox="true"
-  data-remember-order="true"
-  >
-</table>
+
+
+
+
 
 
 
 <script type="module">
-
-
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
   import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
-
-
-    var firebaseConfig = {
-      'apiKey': 'AIzaSyCtmZkZYXrhbihvJiQC4gjvJAIM27eDpvM',
-      'authDomain': 'dss-campo.firebaseapp.com',
-      'databaseURL': 'https://dss-campo-default-rtdb.firebaseio.com',
-      'projectId': 'dss-campo',
-      'storageBucket': 'dss-campo.appspot.com',
-      'messagingSenderId': '371707726278',
-      'appId': '1:371707726278:web:6e7053e506f660139bcac7'
-    };
-    var campo_id = '10'
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase();
-    const campoRef = ref(db, 'campo/'+campo_id);
+  var firebaseConfig = {
+    'apiKey': 'AIzaSyCtmZkZYXrhbihvJiQC4gjvJAIM27eDpvM',
+    'authDomain': 'dss-campo.firebaseapp.com',
+    'databaseURL': 'https://dss-campo-default-rtdb.firebaseio.com',
+    'projectId': 'dss-campo',
+    'storageBucket': 'dss-campo.appspot.com',
+    'messagingSenderId': '371707726278',
+    'appId': '1:371707726278:web:6e7053e506f660139bcac7'
+  };
+  var campo_id = '10'
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase();
+  const campoRef = ref(db, 'campo/'+campo_id);
 
     
 
@@ -229,12 +270,10 @@
     return false
   }
 
- 
-
   function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
       height: 550,
-      locale: $('#locale').val(),
+      locale: 'es-AR',
       columns: [{title: 'state', field:'state', checkbox: 'true',  formatter: checkboxFormatter},
                 {title: 'periodo', field:'periodo', editable:true},
                 {title: 'corderos', field:'corderos'},
@@ -248,84 +287,88 @@
                 {title: 'finura_lana', field:'finura_lana'}],
       sortName:'periodo',
       sortOrder:"desc"
-      })
+      }
+    )
       
-
-
-          $table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table',
-          function () {
-            $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
-          })
-
-
-
-          $remove.click(function () {
-            var ids = getIdSelections()
-              $table.bootstrapTable('remove', {
-              field: 'periodo',
-              values: ids
-            })
-            for(var index in ids) {
-              var url = 'campo/'+campo_id+'/'+ids[index]
-              var dbRef = ref(db, url);
-              remove(dbRef).then(() => console.log("Deleted"))
-            }
-            $remove.prop('disabled', true)
-          })
-
-
-          $alta.click(function () {
-            var fecha = $('#selector_periodo').val()
-            if (!fecha){
-              alert("debe ingresar un periodo")
-            }
-            else{
-              var data = {
-                'corderos': $('#corderos').val(),
-                'ovejas': $('#ovejas').val(),
-                'carneros': $('#carneros').val(),
-                'pariciones': $('#pariciones').val(),
-                'muertes_corderos': $('#muertes_corderos').val(),
-                'lana_producida': $('#lana_producida').val(),
-                'carne_producida': $('#carne_producida').val(),
-                'rinde_lana': $('#rinde_lana').val(),
-                'finura_lana': $('#finura_lana').val(),
-              }
-              var url = 'campo/'+campo_id+'/'+fecha
-              var dbRef = ref(db, url);
-              update(dbRef, data)
-            }
-
-          })
+    $table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table',
+      function () {
+        $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+      }
+    )
 
 
 
+    $remove.click(function () {
+      var ids = getIdSelections()
+        $table.bootstrapTable('remove', {
+        field: 'periodo',
+        values: ids
+      })
+      for(var index in ids) {
+        var url = 'campo/'+campo_id+'/historico/'+ids[index]
+        var dbRef = ref(db, url);
+        remove(dbRef).then(() => console.log("Deleted"))
+      }
+      $remove.prop('disabled', true)
+    })
+
+
+    $alta.click(function () {
+      var corderos = $('#diaria_corderos').html()
+      var ovejas = $('#diaria_ovejas').html()
+      var carneros = $('#diaria_carneros').html()
+      var fecha = $('#selector_periodo').val()
+      if (!fecha){
+        alert("debe ingresar un periodo")
+      }
+      else{
+        var data = {
+          'corderos': corderos,
+          'ovejas': ovejas,
+          'carneros': carneros,
+          'pariciones': $('#pariciones').val(),
+          'muertes_corderos': $('#muertes_corderos').val(),
+          'lana_producida': $('#lana_producida').val(),
+          'carne_producida': $('#carne_producida').val(),
+          'rinde_lana': $('#rinde_lana').val(),
+          'finura_lana': $('#finura_lana').val(),
+        }
+        var url = 'campo/'+campo_id+'/historico/'+fecha
+        var dbRef = ref(db, url);
+        update(dbRef, data)
+        }
+      }
+    )
   }
 
   $(function() {
     initTable()
-    $('#locale').change(initTable)
     $table.bootstrapTable('showLoading')
   })
 
 
   
-    onValue(campoRef, (snapshot) => {
-        var data_list = []
-        const data = snapshot.val();
-        for(var key in data) {
-          var data_dict = {}
-          data_dict['periodo'] = key
-          var dict2 = data[key]
-          for(var dato in dict2) {
-            data_dict[dato] = dict2[dato]
-          }
-          data_list.push(data_dict)
-        }
-        $table.bootstrapTable('load', data_list)
-        $table.bootstrapTable('hideLoading')
+  onValue(campoRef, (snapshot) => {
+      const data_diaria = snapshot.child('diaria').val();
+      $('#diaria_corderos').html(data_diaria.corderos);
+      $('#diaria_ovejas').html(data_diaria.ovejas);
+      $('#diaria_carneros').html(data_diaria.carneros);
 
-    });
+
+      var data_list = []
+      const data_historico = snapshot.child('historico').val();
+      for(var key in data_historico) {
+        var data_dict = {}
+        data_dict['periodo'] = key
+        var dict2 = data_historico[key]
+        for(var dato in dict2) {
+          data_dict[dato] = dict2[dato]
+        }
+        data_list.push(data_dict)
+      }
+      $table.bootstrapTable('load', data_list)
+      $table.bootstrapTable('hideLoading')
+  });
 </script>
 
 

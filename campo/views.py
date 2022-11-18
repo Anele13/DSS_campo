@@ -12,6 +12,15 @@ import calendar
 import locale
 import statistics
 import random
+import pandas as pd
+from datetime import datetime
+
+import firebase_admin
+from firebase_admin import db
+if not firebase_admin._apps:
+    DATABASE_URL = 'https://dss-campo-default-rtdb.firebaseio.com/'
+    CREDENTIALS = 'dss-campo-firebase-adminsdk-3mpy4-19ac4df912.json'
+    firebase_admin.initialize_app(firebase_admin.credentials.Certificate(CREDENTIALS), {'databaseURL':DATABASE_URL})
 
 
 def get_nombre_mes(numero_mes):
@@ -66,7 +75,7 @@ def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
             order_by('-pariciones_anual')[0]['periodo__year']
 
     if query == 'hacienda':
-        return datos_produccion.values('periodo__year').\
+        return datos_produccion.values('periodo__yeobjectar').\
             annotate(cantidad_ovejas_anual=Max('cantidad_ovejas')).\
             order_by('-cantidad_ovejas_anual')[0]['periodo__year']
 
@@ -78,89 +87,106 @@ def validar(valor):
         return valor
 
 
+def datos_firebase(campo_id):
+    #TODO no harcodear el id de campo!
+    campo_data = db.reference(f"campo/10/historico").get()
+    resul = []
+    for k, v in campo_data.items():
+        v.update({'periodo': datetime.strptime(k, '%Y-%m-%d')})
+        resul.append(v)
+    if resul:
+        return pd.DataFrame(resul)
+    return None 
+
+
 @login_required(login_url='login')
 def mi_campo(request, query='rinde'):
-    user = request.user
-    persona, campo = get_persona_campo(user)
+    campo = Campo.objects.get(persona=request.user.persona)
+    df = datos_firebase(campo.id)
     resultado = {}
-    produccion = {}
     contexto = {}
 
-    if not (persona and campo):
-        messages.warning(request, "Cargue sus datos personales y de su campo.")
-
-    elif not(campo.sonda):
-        messages.warning(
-            request, "Debe cargar los datos climáticos de su campo.")
-
-    elif not(campo.datos_produccion_set.all()):
-        messages.warning(
-            request, "Debe cargar los datos de producción de su campo.")
+    if (not campo) or (df.empty):
+        messages.warning(request, "Debe cargar los datos climáticos de su campo.")
 
     else:
-        campo = Campo.objects.get(persona=request.user.persona)
-        datos_produccion = campo.datos_produccion_set.all()
-        datos_climaticos = campo.sonda.datos_climaticos_set.all()
+        datos_produccion = df[['periodo','corderos','ovejas','carneros','pariciones','muertes','lana_producida','carne_producida','rinde_lana','finura_lana']]
+        datos_climaticos = df[['periodo','temperatura_minima','temperatura_maxima','humedad','velocidad_viento','direccion_viento','mm_lluvia','localidad']]
 
-        mejor_año = get_mejor_año_por_condicion(
-            query, datos_produccion, datos_climaticos)
-        datos = datos_climaticos.filter(
-            periodo__year=mejor_año).order_by('periodo')
-        datos_prod = datos_produccion.filter(
-            periodo__year=mejor_año).order_by('periodo')
-        meses = sorted(datos.annotate(month=ExtractMonth(
-            'periodo')).values_list('month', flat=True).distinct())
+        #mejor_año = get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos)
+        mejor_año = 2010 #TODO esto no va. solucionar funcion de arriba
+        
+        #datos = datos_climaticos.filter(periodo__year=mejor_año).order_by('periodo')
+        #datos_prod = datos_produccion.filter(periodo__year=mejor_año).order_by('periodo')
+        datos = datos_climaticos[datos_climaticos.periodo.dt.year == mejor_año]
+        datos['day'] = datos.periodo.apply(lambda row:  row.day)
+        datos['month'] = datos.periodo.apply(lambda row:  row.month)
 
+
+
+        datos_prod = datos_produccion[datos_produccion.periodo.dt.year == mejor_año]
+        datos_prod['month'] = datos_prod.periodo.apply(lambda row:  row.month)
+        datos_prod['day'] = datos_prod.periodo.apply(lambda row:  row.day)
+
+
+        meses = sorted(list(set([d for d in datos.periodo.dt.month])))
+
+
+        #renombre velocidad_max_viento por velocidad_viento
+        #falta temperatura_media 
+        # ovejas
+        # cantidad_corderos
+        # cantidad_carneros
+        # cantidad_lana_producida
+        # cantidad_carne_producida
+        """
         d_1 = datos.values('periodo__month',
                            'temperatura_minima',
                            'mm_lluvia',
                            'temperatura_media',
                            'temperatura_maxima',
-                           'velocidad_max_viento',
+                           'velocidad_viento',
                            'humedad',
                            'periodo__day')
 
         d_2 = datos_prod.values('periodo__month',
-                                'cantidad_ovejas',
-                                'cantidad_corderos',
-                                'cantidad_carneros',
-                                'cantidad_lana_producida',
-                                'cantidad_carne_producida',
+                                'ovejas',
+                                'corderos',
+                                'carneros',
+                                'lana_producida',
+                                'carne_producida',
                                 'rinde_lana',
                                 'finura_lana')
-
+        """
+        d_1 = datos
+        d_2 = datos_prod
+        
         # TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
-        for mes in list(set(meses)):  # dejo solo los meses que tengan datos
-            d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
+        for mes in meses:  # dejo solo los meses que tengan datos
+            #d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
+            d2 = d_1[d_1.month == mes]
             nombre_mes = get_nombre_mes(mes)
-            resultado[nombre_mes] = {'dias': [d['periodo__day'] for d in d2],
-                                     'temperatura_minima': min([d['temperatura_minima'] if d['temperatura_minima'] is not None else 0 for d in d2]),
-                                     'lluvia': [d['mm_lluvia'] if d['mm_lluvia'] is not None else 0 for d in d2],
-                                     'temperatura': [d['temperatura_media'] if d['temperatura_media'] is not None else 0 for d in d2],
-                                     'temperatura_maxima': max([d['temperatura_maxima'] if d['temperatura_maxima'] is not None else 0 for d in d2]),
-                                     'viento_promedio': round(statistics.mean([d['velocidad_max_viento'] if d['velocidad_max_viento'] is not None else 0 for d in d2]), 2),
-                                     'humedad_promedio': round(statistics.mean([d['humedad'] if d['humedad'] is not None else 0 for d in d2]), 2)}
+            resultado[nombre_mes] = {'dias': list(d2.day.to_list()),
+                                     'temperatura_minima': min(d2.temperatura_minima.to_list()), #min([d['temperatura_minima'] if d['temperatura_minima'] is not None else 0 for d in d2]),
+                                     'lluvia': list(d2.mm_lluvia.to_list()), #[d['mm_lluvia'] if d['mm_lluvia'] is not None else 0 for d in d2],
+                                     'temperatura': list(d2.temperatura_minima.to_list()), #[d['temperatura_media'] if d['temperatura_media'] is not None else 0 for d in d2],
+                                     'temperatura_maxima': max(list(d2.temperatura_maxima.to_list())), #max([d['temperatura_maxima'] if d['temperatura_maxima'] is not None else 0 for d in d2]),
+                                     'viento_promedio': round(statistics.mean(list(d2.velocidad_viento.to_list()))), #round(statistics.mean([d['velocidad_max_viento'] if d['velocidad_max_viento'] is not None else 0 for d in d2]), 2),
+                                     'humedad_promedio': round(statistics.mean(list(d2.humedad.to_list())))} #round(statistics.mean([d['humedad'] if d['humedad'] is not None else 0 for d in d2]), 2)}
 
-            # 'viento_promedio': 100,
-            # 'humedad_promedio': 100}
 
-            d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
-            resultado[nombre_mes]['cant_ovejas'] = sum(
-                [d['cantidad_ovejas'] if d['cantidad_ovejas'] is not None else 0 for d in d3])
-            resultado[nombre_mes]['cant_corderos'] = sum(
-                [d['cantidad_corderos'] if d['cantidad_corderos'] is not None else 0 for d in d3])
-            resultado[nombre_mes]['cant_carneros'] = sum(
-                [d['cantidad_carneros'] if d['cantidad_carneros'] is not None else 0 for d in d3])
+            #d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
+            d3 = d_2[d_2.month == mes]
+            resultado[nombre_mes]['cant_ovejas'] = sum(list(d3.ovejas.to_list()))
+            resultado[nombre_mes]['cant_corderos'] = sum(list(d3.corderos.to_list()))
+            resultado[nombre_mes]['cant_carneros'] = sum(list(d3.corderos.to_list()))
+
 
             # En rinde se busca el Max, finura el Min, Carne y Lana Buscas la suma mensual
-            resultado[nombre_mes]['rinde_lana_meses'] = max([
-                d['rinde_lana'] for d in d3])
-            resultado[nombre_mes]['finura_lana_meses'] = min([
-                d['finura_lana'] for d in d3])
-            resultado[nombre_mes]['cant_carne_meses'] = sum([
-                d['cantidad_carne_producida'] for d in d3])
-            resultado[nombre_mes]['cant_lana_meses'] = sum([
-                d['cantidad_lana_producida'] for d in d3])
+            resultado[nombre_mes]['rinde_lana_meses'] = max(list(d3.rinde_lana.to_list()))
+            resultado[nombre_mes]['finura_lana_meses'] = min(list(d3.finura_lana.to_list()))
+            resultado[nombre_mes]['cant_carne_meses'] = sum(list(d3.carne_producida.to_list()))
+            resultado[nombre_mes]['cant_lana_meses'] = sum(list(d3.lana_producida.to_list()))
 
         contexto['resultado'] = resultado
         contexto['año'] = mejor_año
