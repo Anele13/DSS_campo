@@ -1,1 +1,44 @@
-{{msg}}
+{% extends 'site_content.html' %}
+{% load static %}
+
+<!-- Escribir en este bloque todo lo que haga falta-->
+{% block site_content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="row">
+    <div class="col-xl-11 col-md-10 col-sm-12 col-xs-12">
+      <h2 class="m-0"> Estimación de {{flag_filtro}} </h2>
+    </div>
+    <div class="col-xs-12 offset-xs-1 col-xl-1 col-md-2 col-sm-12 offset-sm-9 offset-xl-0 offset-md-0">
+      <div class="dropdown mb-4 show">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="true">
+          Filtros
+        </button>
+        <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton"
+          style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);"
+          x-placement="top-start">
+          <div class="dropdown-header">PREDICCIÓN DE:</div>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'predecir' query='lana' %}">Kg de lana</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{% url 'predecir' query='corderos' %}">Cantidad de corderos</a>
+          <div class="dropdown-divider"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
