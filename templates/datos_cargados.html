@@ -39,7 +39,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalAltaDatosLabel">Alta de datos de produccion</h5>
+        <h5 class="modal-title" action="alta" id="modalAltaDatosLabel"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -57,7 +57,7 @@
                 {% for columna in columnas1 %}
                 <div class="form-group">
                   <label for="">{{columna}}</label>
-                  <input type="number" placeholder="{{columna}}" value=0 name="{{columna}}" id="{{columna}}" class="form-control form-control-user">
+                  <input type="number" value=0 name="{{columna}}" id="{{columna}}" class="form-control">
                 </div>
                 {% endfor %}
               </div>
@@ -65,7 +65,7 @@
                 {% for columna in columnas2 %}
                 <div class="form-group">
                   <label for="">{{columna}}</label>
-                  <input type="number" placeholder="{{columna}}" value=0 name="{{columna}}" id="{{columna}}" class="form-control form-control-user">
+                  <input type="number" value=0 name="{{columna}}" id="{{columna}}" class="form-control">
                 </div>
               {% endfor %}
               </div>
@@ -186,7 +186,7 @@
           <button id="remove" class="btn btn-sm btn-danger" disabled>
             <i class="fa fa-trash"></i> Borrar
           </button>
-          <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modalAltaDatos">Nuevo registro</button>
+          <button id="openModal" class="btn btn-sm btn-primary" data-toggle="modal" >Nuevo registro</button>
         </div>
         <table
           id="table"
@@ -243,6 +243,7 @@
   var $table = $('#table')
   var $remove = $('#remove')
   var $alta = $('#alta')
+  var $openModal = $('#openModal')
   var selections = []
 
   function getIdSelections() {
@@ -296,6 +297,25 @@
       }
     )
 
+    $table.on('click-row.bs.table',
+      function(row, $element, field){
+        $('.modal-title').html('Actualice sus datos') 
+        $('.modal-title').attr('action','actualizar') 
+        $('#corderos').val($element.corderos)
+        $('#ovejas').val($element.ovejas)
+        $('#carneros').val($element.carneros)
+        $('#pariciones').val($element.pariciones)
+        $('#muertes_corderos').val($element.muertes)
+        $('#lana_producida').val($element.lana_producida)
+        $('#carne_producida').val($element.carne_producida)
+        $('#rinde_lana').val($element.rinde_lana)
+        $('#finura_lana').val($element.finura_lana)
+        $('#selector_periodo').val($element.periodo)
+        $('#modalAltaDatos').modal('show')
+      }
+    )
+
+
 
 
     $remove.click(function () {
@@ -312,12 +332,33 @@
       $remove.prop('disabled', true)
     })
 
+    $openModal.click(function () {
+      $('.modal-title').html('Alta de datos de produccion') 
+      $('.modal-title').attr('action','alta') 
+      $('#corderos').val(0)
+      $('#ovejas').val(0)
+      $('#carneros').val(0)
+      $('#pariciones').val(0)
+      $('#muertes_corderos').val(0)
+      $('#lana_producida').val(0)
+      $('#carne_producida').val(0)
+      $('#rinde_lana').val(0)
+      $('#finura_lana').val(0)
+      $('#selector_periodo').val(null)
+      $('#modalAltaDatos').modal('show')
+    })
+
 
     $alta.click(function () {
       var corderos = $('#diaria_corderos').html()
       var ovejas = $('#diaria_ovejas').html()
       var carneros = $('#diaria_carneros').html()
       var fecha = $('#selector_periodo').val()
+      if ($('.modal-title').attr('action') == 'actualizar'){
+        corderos = $('#corderos').val()
+        ovejas = $('#ovejas').val()
+        carneros = $('#carneros').val()
+      }
       if (!fecha){
         alert("debe ingresar un periodo")
       }
