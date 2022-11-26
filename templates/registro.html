@@ -187,19 +187,20 @@
 
     <!--Mapas-->
     <script>
-        //Creo un mapa
-        var map = L.map('map').setView([-43.36, -68.58], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+        $('#exampleModal').on('shown.bs.modal', function(event) {
+            var map = L.map('map').setView([-43.36, -68.58], 6);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-        map.on('click', function(e){
-            var coord = e.latlng;
-            var lat = coord.lat;
-            var lng = coord.lng;
-            $('#id_latitud').val(lat.toFixed(3))
-            $('#id_longitud').val(lng.toFixed(3))
-            $('#exampleModal').modal('hide')
+            map.on('click', function(e){
+                var coord = e.latlng;
+                var lat = coord.lat;
+                var lng = coord.lng;
+                $('#id_latitud').val(lat.toFixed(3))
+                $('#id_longitud').val(lng.toFixed(3))
+                $('#exampleModal').modal('hide')
+            });
         });
     </script>
 
