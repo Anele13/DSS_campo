@@ -79,6 +79,20 @@
             <table class="table">
               <tbody>
                 <tr>
+                  <th scope="row">Telegram</th>
+                  <td>
+                    {% if telegram_user %}
+                      <div>
+                        {{telegram_user.first_name}}
+                        <img class="img-profile rounded-circle mr-3" src="{{telegram_user.photo_url}}" style="height: 2rem; width: 2rem;">
+                        <button type="button" class="btn btn-primary" onclick="openModal()">Ver</button>
+                      </div>
+                    {% else %}
+                      {% autoescape off %}{{ telegram_login_widget }}{% endautoescape %}
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
                   <th scope="row">DNI</th>
                   <td>{{persona.documento}}</td>
                 </tr>
@@ -94,20 +108,7 @@
                   <th scope="row">Fecha Nacimiento</th>
                   <td>{{persona.fecha_nacimiento}}</td>
                 </tr>
-                <tr>
-                  <th scope="row">Telegram</th>
-                  <td>
-                    {% if telegram_user %}
-                      <div>
-                        {{telegram_user.first_name}}
-                        <img class="img-profile rounded-circle mr-3" src="{{telegram_user.photo_url}}" style="height: 2rem; width: 2rem;">
-                        <button type="button" class="btn btn-primary" onclick="openModal()">Ver</button>
-                      </div>
-                    {% else %}
-                      {% autoescape off %}{{ telegram_login_widget }}{% endautoescape %}
-                    {% endif %}
-                  </td>
-                </tr>
+                
               </tbody>
             </table>
           </div>
@@ -129,6 +130,12 @@
                   <th scope="row">Cantidad de Hectáreas</th>
                   <td>{{campo.cant_hectareas}}</td>
                 </tr>
+                <tr>
+
+                  <!--MAPAA-->
+                  <div id="map" style="height: 200px;"></div>
+
+                </tr>
               </tbody>
             </table>
           </div>
@@ -149,6 +156,36 @@
        $('#contenido_modal').html("Confirma los datos ingresados?")
        $('#modal_confirmacion').modal('show');
    }
+
+
+   //Creo un mapa
+   var lat = '{{campo.latitud}}'
+   var lon = '{{campo.longitud}}'
+   var nombre_campo = '{{campo.nombre}}'
+   lat = parseFloat(lat.replace(",", "."))
+   lon = parseFloat(lon.replace(",", "."))
+
+   var redIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+    });
+
+
+   var map = L.map('map').setView([lat, lon], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    
+    marker = L.marker([lat, lon],{icon: redIcon})
+    marker.addTo(map)
+    .bindPopup('<div> Nombre: <b>' + nombre_campo + '</b>'
+                + '<br> Latitud: <b>' + lat + '</b>'
+                + '<br> Longitud: <b>' + lon + '</b>'
+                + '</div>')
 </script>
 
 {% endblock %}
