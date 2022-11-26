@@ -238,6 +238,15 @@ def mi_campo(request, query='rinde'):
 
             #d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
             d3 = d_2[d_2.month == mes]
+            d3.ovejas = d3.ovejas.astype(int)
+            d3.corderos = d3.corderos.astype(int)
+
+            d3.rinde_lana = d3.rinde_lana.astype(int)
+            d3.finura_lana = d3.finura_lana.astype(int)
+            d3.carne_producida = d3.carne_producida.astype(int)
+            d3.lana_producida = d3.lana_producida.astype(int)
+
+
             resultado[nombre_mes]['cant_ovejas'] = sum(list(d3.ovejas.to_list()))
             resultado[nombre_mes]['cant_corderos'] = sum(list(d3.corderos.to_list()))
             resultado[nombre_mes]['cant_carneros'] = sum(list(d3.corderos.to_list()))

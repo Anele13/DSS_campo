@@ -34,6 +34,46 @@
 </style>
 
 
+<!-- Modal edicion ovejas, carneros, corderos -->
+<div class="modal fade bd-example-modal-lg" id="modalAltaDatosIniciales" tabindex="-1" role="dialog" aria-labelledby="modalAltaDatosInicialesLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" action="alta" id="modalAltaDatosInicialesLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       
+        <div class="form-group">
+          <div class="form-group row">
+            
+          <div class="col-sm-4 mb-4 mb-sm-0">
+            <label for="">Corderos</label>
+            <input type="number" value=0 name="ovejas" id="corderos_editable" class="form-control">
+          </div>
+          <div class="col-sm-4 mb-4 mb-sm-0">
+            <label for="">Carneros</label>
+            <input type="number" value=0 name="ovejas" id="carneros_editable" class="form-control">
+          </div>
+          <div class="col-sm-4 mb-4 mb-sm-0">
+            <label for="">Ovejas</label>
+            <input type="number" value=0 name="ovejas" id="ovejas_editable" class="form-control">
+          </div>
+        </div>
+
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button id="alta_datos_iniciales" class="btn btn-sm btn-primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" id="modalAltaDatos" tabindex="-1" role="dialog" aria-labelledby="modalAltaDatosLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -46,6 +86,12 @@
       </div>
       <div class="modal-body">
        
+        <div class="alert alert-warning alert-dismissible fade" role="alert">
+          <div id="alert-body"></div>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         
 
             <div class="form-group row">
@@ -72,7 +118,7 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button id="alta" class="btn btn-sm btn-primary" data-dismiss="modal">Guardar</button>
+        <button id="alta" class="btn btn-sm btn-primary">Guardar</button>
       </div>
     </div>
   </div>
@@ -86,13 +132,12 @@
 
 <div class="card border-left-info shadow h-100 py-2">
   <div class="card-body">
-      <div class="row no-gutters align-items-center">
+      <div class="row no-gutters">
           <div class="col mr-2">
               <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Informacion Actual: {{fecha}}</div>
-              <div class="row align-items-center">
-                  
-
-
+                
+                
+                <div class="row align-items-center">
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                           <div class="card  shadow h-100 py-2">
@@ -123,7 +168,7 @@
                                   <div class="row no-gutters align-items-center">
                                       <div class="col mr-2">
                                           <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
-                                              Capones</div>
+                                              Carneros</div>
                                           <div id="diaria_carneros" class="h5 mb-0 font-weight-bold text-gray-800">
                                             <div class="spinner-border" role="status">
                                               <span class="sr-only">Loading...</span>
@@ -167,7 +212,9 @@
               </div>
           </div>
           <div class="col-auto">
-              <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+              <button id="btn_editar" class="pull-right btn btn-sm btn-secondary">
+                <i class="fas fa-edit"></i>
+              </button>
           </div>
       </div>
   </div>
@@ -244,6 +291,8 @@
   var $remove = $('#remove')
   var $alta = $('#alta')
   var $openModal = $('#openModal')
+  var $btn_editar = $('#btn_editar')
+  var $alta_datos_iniciales = $('#alta_datos_iniciales')
   var selections = []
 
   function getIdSelections() {
@@ -315,7 +364,24 @@
       }
     )
 
+    $alta_datos_iniciales.click(function(){
+      var data = {
+        'carneros': $('#carneros_editable').val(),
+        'corderos': $('#corderos_editable').val(),
+        'ovejas': $('#ovejas_editable').val()
+      }
+      var url = 'campo/'+campo_id+'/diaria/'
+      var dbRef = ref(db, url);
+      update(dbRef, data)
+      $('#modalAltaDatosIniciales').modal('hide')
+    })
 
+    $btn_editar.click(function(){
+      $('#corderos_editable').val($('#diaria_corderos').html())
+      $('#carneros_editable').val($('#diaria_carneros').html())
+      $('#ovejas_editable').val($('#diaria_ovejas').html())
+      $('#modalAltaDatosIniciales').modal('show')
+    })
 
 
     $remove.click(function () {
@@ -360,7 +426,8 @@
         carneros = $('#carneros').val()
       }
       if (!fecha){
-        alert("debe ingresar un periodo")
+        $('#alert-body').html("Debe ingresar al menos una fecha")
+        $('.alert').addClass('show')
       }
       else{
         var data = {
@@ -377,6 +444,7 @@
         var url = 'campo/'+campo_id+'/historico/'+fecha
         var dbRef = ref(db, url);
         update(dbRef, data)
+        $('#modalAltaDatos').modal('hide')
         }
       }
     )
