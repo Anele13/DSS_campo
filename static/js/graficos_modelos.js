@@ -1,5 +1,5 @@
 
-function crear_grafico_lineas_lana(anios){
+function crear_grafico_lineas_lana(anios, real, prediccion){
     console.log('Holaaa');
     var ctx = document.getElementById("canvas");
 

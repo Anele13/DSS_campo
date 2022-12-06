@@ -55,8 +55,8 @@ def predecir(request,query='lana'):
     contexto["label_estimacion"] = label_estimacion
     contexto["flag_filtro"] = flag_filtro
     contexto["anios"] = anios
-    contexto["y_predición_kg"] = y_predición_kg
-    contexto["y_real_kg"] = y_real_kg
+    contexto["y_predicion_kg"] = y_predición_kg.tolist()
+    contexto["y_real_kg"] = y_real_kg.tolist()
     return render(request, "prediccion.html", contexto)
 
 '''

@@ -69,8 +69,16 @@
     </div>
   </div>
 </div>
+<script src="{% static 'js/graficos_modelos.js' %}"></script>
 <script>
-    var anios = {{anios|safe}}
-    crear_grafico_lineas_lana(anios)
+    var anios = "{{anios|safe}}"
+    var y_predicion_kg = JSON.parse("{{y_predicion_kg|safe}}")
+    var y_real_kg = JSON.parse("{{y_real_kg|safe}}")
+
+    console.log(anios)
+    console.log(y_predicion_kg)
+    console.log(y_real_kg)
+
+    crear_grafico_lineas_lana(anios, y_real_kg, y_predicion_kg)
 </script>
 {% endblock %}
