@@ -1,37 +1,8 @@
 
-function crear_grafico_lineas_lana(anios, real, prediccion){
+function crear_grafico_lineas_lana(anios, real, prediccion, anios2){
     console.log('Holaaa');
+    console.log(anios2);
     var ctx = document.getElementById("canvas");
-
-    const numbers = [1,2,3,4,5,6,7]
-    const MONTHS = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-    ];
-    function months(config) {
-        var cfg = config || {};
-        var count = cfg.count || 12;
-        var section = cfg.section;
-        var values = [];
-        var i, value;
-
-        for (i = 0; i < count; ++i) {
-        value = MONTHS[Math.ceil(i) % 12];
-        values.push(value.substring(0, section));
-        }
-
-        return values;
-    }
     const CHART_COLORS = {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
@@ -41,21 +12,27 @@ function crear_grafico_lineas_lana(anios, real, prediccion){
         purple: 'rgb(153, 102, 255)',
         grey: 'rgb(201, 203, 207)'
     };
-    const labels = months({count: 7});;
+    let labels;
+    if(anios2){
+        console.log('Kio');
+        labels = [anios, anios2];
+        console.log(labels);
+    }else{
+        console.log('perro');
+        labels = anios;
+    }  
     const data = {
         labels: labels,
         datasets: [
         {
-            label: 'Dataset 1',
-            data: numbers,
-            borderColor: CHART_COLORS.red,
-            backgroundColor: CHART_COLORS.red,
+            label: 'Real',
+            data: real,
+            borderColor: CHART_COLORS.red, 
         },
         {
-            label: 'Dataset 2',
-            data: numbers,
+            label: 'Predicción',
+            data: prediccion,
             borderColor: CHART_COLORS.blue,
-            backgroundColor: CHART_COLORS.blue,
         }
         ]
     };
@@ -63,16 +40,16 @@ function crear_grafico_lineas_lana(anios, real, prediccion){
         type: 'line',
         data: data,
         options: {
-        responsive: true,
-        plugins: {
-            legend: {
-            position: 'top',
-            },
-            title: {
-            display: true,
-            text: 'Chart.js Line Chart'
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    },
+                title: {
+                    display: true,
+                    text: 'Chart.js Line Chart'
+                }
             }
-        }
         },
     };
     new Chart(ctx,config)

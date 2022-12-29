@@ -36,6 +36,7 @@
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{% url 'predecir' query='corderos' %}">Cantidad de corderos</a>
         <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'predecir' query='finura' %}">Finura</a>
       </div>
     </div>
   </div>
@@ -60,25 +61,29 @@
             </div>
           </div>
         </div>
-        <h6 class="m-0 font-weight-bold text-primary"> Modelo de Estimacion</h6>
+        <h6 class="m-0 font-weight-bold text-primary"> {{label_estimacion}} </h6>
       </div>
-      <div class="card-body">
-        <canvas id="canvas" style="display: block; width: 600px; height: 350px;"
-          class="chartjs-render-monitor"></canvas>
+      <div class="container-fluid">
+        <div class="card-body row">
+          <div class="col-9">
+              <canvas id="canvas" class="chartjs-render-monitor"></canvas>
+          </div>
+          <div class="col-3">
+              <span>Exactitud de la predicción: {{r2}}% </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <script src="{% static 'js/graficos_modelos.js' %}"></script>
 <script>
-    var anios = "{{anios|safe}}"
-    var y_predicion_kg = JSON.parse("{{y_predicion_kg|safe}}")
-    var y_real_kg = JSON.parse("{{y_real_kg|safe}}")
-
-    console.log(anios)
-    console.log(y_predicion_kg)
-    console.log(y_real_kg)
-
-    crear_grafico_lineas_lana(anios, y_real_kg, y_predicion_kg)
+    var anios = JSON.parse("{{label_datos|safe}}")
+    console.log(anios);
+    var anios_2 = JSON.parse("{{label_datos_2|safe}}")
+    console.log(anios_2);
+    var y_predicion = JSON.parse("{{y_predicion|safe}}")
+    var y_real = JSON.parse("{{y_real|safe}}")
+    crear_grafico_lineas_lana(anios, y_real, y_predicion,anios_2)
 </script>
 {% endblock %}
