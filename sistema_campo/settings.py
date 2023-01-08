@@ -27,9 +27,14 @@ SECRET_KEY = 'django-insecure-!4koscoro7z6y4627n-#=8hf9%*h8mh(&r5hhmqtrz24!xci8z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ENVIRONMENT = 'Local'
 
 ALLOWED_HOSTS = ['localhost','*']
+=======
+HEROKU_URL = 'morning-dawn-11160.herokuapp.com'
+ALLOWED_HOSTS = [HEROKU_URL,'localhost','*']
+>>>>>>> 3149d7f2302d222004bbec3d3bcb6e40cd8e9f8d
 
 
 # Application definition
