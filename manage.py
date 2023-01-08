@@ -11,7 +11,8 @@ fo = tempfile.NamedTemporaryFile()
 def read_production_url():
     url = fo.read().decode('latin-1')
     c = url.split(' ')[-1:][0].replace('/n','')
-    os.environ['TELEGRAM_LOGIN_REDIRECT_URL'] = f'/perfil'
+    print(".............")
+    print(c)    
     print(f'External url: {c}')
     from usuario.models import TelegramUrl
     if TelegramUrl.objects.all().count() == 0:
