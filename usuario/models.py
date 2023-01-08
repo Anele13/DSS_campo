@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+import os
 
 from django_telegram_login.widgets.constants import SMALL,MEDIUM, LARGE, DISABLE_USER_PHOTO
 from django_telegram_login.widgets.generator import create_redirect_login_widget
@@ -10,7 +10,6 @@ from django.conf import settings
 
 bot_name = settings.TELEGRAM_BOT_NAME
 bot_token = settings.TELEGRAM_BOT_TOKEN
-redirect_url = settings.TELEGRAM_LOGIN_REDIRECT_URL
 
 class Persona(models.Model):
     nombre = models.CharField(max_length=30, blank=True, null=True)
@@ -39,3 +38,7 @@ class TelegramUser(models.Model):
     photo_url=models.CharField(max_length=150, blank=True, null=True)
     auth_date=models.IntegerField(blank=True, null=True)
     hash=models.CharField(max_length=100, blank=True, null=True)
+
+
+class TelegramUrl(models.Model):
+    url=models.CharField(max_length=50, blank=True, null=True)
