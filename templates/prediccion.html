@@ -1,0 +1,89 @@
+{% extends 'site_content.html' %}
+{% load static %}
+
+<!-- Escribir en este bloque todo lo que haga falta-->
+{% block site_content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="container-fluid p-0">
+  <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+{% endif %}
+
+<div class="row">
+  <div class="col-xl-11 col-md-10 col-sm-12 col-xs-12">
+    <h2 class="m-0"> Estimación de {{flag_filtro}} </h2>
+  </div>
+  <div class="col-xs-12 offset-xs-1 col-xl-1 col-md-2 col-sm-12 offset-sm-9 offset-xl-0 offset-md-0">
+    <div class="dropdown mb-4 show">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="true">
+        Filtros
+      </button>
+      <div class="dropdown-menu animated--fade-in" aria-labelledby="dropdownMenuButton"
+        style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -105px, 0px);"
+        x-placement="top-start">
+        <div class="dropdown-header">PREDICCIÓN DE:</div>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'predecir' query='lana' %}">Kg de lana</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'predecir' query='corderos' %}">Cantidad de corderos</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{% url 'predecir' query='finura' %}">Finura</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-12 col-md-12 col-sm-12">
+    <div class="card shadow mb-4">
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+        <div aria-live="polite" aria-atomic="true" style="position: absolute; min-height: 200px; top: 0; right: 0;">
+          <div id="toast" class="toast" style="position: absolute; top: 0; right: 0; width: 200px;"
+            data-autohide="false">
+            <div class="toast-header">
+              <img id="img_prediccion" src="{% static 'img/lluvia.svg' %}" class="rounded mr-2" alt="...">
+              <strong class="mr-auto">Informacion</strong>
+              <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="toast-body">
+              <p id="info_estimacion">
+              </p>
+            </div>
+          </div>
+        </div>
+        <h6 class="m-0 font-weight-bold text-primary"> {{label_estimacion}} </h6>
+      </div>
+      <div class="container-fluid">
+        <div class="card-body row">
+          <div class="col-9">
+              <canvas id="canvas" class="chartjs-render-monitor"></canvas>
+          </div>
+          <div class="col-3">
+              <span>Exactitud de la predicción: {{r2}}% </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/graficos_modelos.js' %}"></script>
+<script>
+    var anios = JSON.parse("{{label_datos|safe}}")
+    console.log(anios);
+    var anios_2 = JSON.parse("{{label_datos_2|safe}}")
+    console.log(anios_2);
+    var y_predicion = JSON.parse("{{y_predicion|safe}}")
+    var y_real = JSON.parse("{{y_real|safe}}")
+    crear_grafico_lineas_lana(anios, y_real, y_predicion,anios_2)
+</script>
+{% endblock %}
