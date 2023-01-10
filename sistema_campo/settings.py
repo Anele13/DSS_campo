@@ -27,8 +27,9 @@ SECRET_KEY = 'django-insecure-!4koscoro7z6y4627n-#=8hf9%*h8mh(&r5hhmqtrz24!xci8z
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-HEROKU_URL = 'morning-dawn-11160.herokuapp.com'
-ALLOWED_HOSTS = [HEROKU_URL,'localhost','*']
+ENVIRONMENT = 'Local'
+
+ALLOWED_HOSTS = ['localhost','*']
 
 
 # Application definition
@@ -174,13 +175,6 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'b8d7fce3ff7d568f9be9a545125fa464s'
 
 TELEGRAM_BOT_NAME = 'VoiceNotesCampoBot'
 TELEGRAM_BOT_TOKEN = "5356687027:AAFH9gZwDWnpx_IK5r7fYN8AtDJMuib6pJQ"
-PUBLIC_URL=f'https://{HEROKU_URL}'
-TELEGRAM_LOGIN_REDIRECT_URL = f'{PUBLIC_URL}/perfil'
 
 
-"""
-# ie if Heroku server
-if 'DATABASE_URL' in os.environ:
-    import dj_database_url
-    DATABASES = {'default': dj_database_url.config()}
-"""
+
