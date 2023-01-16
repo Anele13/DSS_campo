@@ -81,6 +81,9 @@ def perfil_view(request):
     context['persona']=persona
     context['campo']=campo
     context['telegram_user']=persona.telegramuser_set.all().first()
+    context['telegram_url_chat']=f'https://t.me/{bot_name}'
+    
+    
 
     from usuario.models import TelegramUrl
     t = TelegramUrl.objects.first()
