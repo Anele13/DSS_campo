@@ -1,7 +1,8 @@
 
-function crear_grafico_lineas_lana(anios, real, prediccion, anios2){
+function crear_grafico_lineas_lana(anios, real, prediccion){
     console.log('Holaaa');
-    console.log(anios2);
+    //console.log(anios2);
+    //console.log('puta',anios2.length);
     var ctx = document.getElementById("canvas");
     const CHART_COLORS = {
         red: 'rgb(255, 99, 132)',
@@ -12,15 +13,12 @@ function crear_grafico_lineas_lana(anios, real, prediccion, anios2){
         purple: 'rgb(153, 102, 255)',
         grey: 'rgb(201, 203, 207)'
     };
-    let labels;
-    if(anios2){
+    let labels = anios;
+    /* if(anios2.length){
         console.log('Kio');
         labels = [anios, anios2];
         console.log(labels);
-    }else{
-        console.log('perro');
-        labels = anios;
-    }  
+    }   */
     const data = {
         labels: labels,
         datasets: [
