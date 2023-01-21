@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.staticfiles.storage import staticfiles_storage
 from statsmodels.iolib.smpickle import load_pickle
 import pandas as pd
+import json
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import r2_score
@@ -48,7 +49,17 @@ def predecir_lana():
     attr_y = ['kilos_lana']
     y_prediccion,y_real,r2 = scaler_data(data, modelo_lana, attrs_x, attr_y)
     anios = build_years(data['fecha'])
-    return anios, y_prediccion, y_real, r2
+    label_estimacion = "Modelo para Estimación de Corderos"
+    lana = {
+        "title": label_estimacion,
+        "metrica": r2,
+        "data": json.dumps( {
+            "label": anios,
+            "y_prediccion": y_prediccion,
+            "y_real": y_real,
+        })
+    }
+    return lana
 
 def predecir_corderos():
     path = staticfiles_storage.path('data/modelo_prediccion_corderos.pickle')
@@ -59,7 +70,17 @@ def predecir_corderos():
     attr_y = ['cordero/as']
     y_prediccion,y_real,r2 = scaler_data(data, modelo_lana, attrs_x, attr_y)
     anios = build_years(data['fecha'])
-    return anios, y_prediccion, y_real, r2
+    label_estimacion = 'Modelo para Estimación de Corderos'
+    corderos = {
+        "title": label_estimacion,
+        "metrica": r2,
+        "data": json.dumps( {
+            "label": anios,
+            "y_prediccion": y_prediccion,
+            "y_real": y_real,
+        })
+    }
+    return corderos
 
 def predecir_finura():
     path = staticfiles_storage.path('data/modelo_prediccion_lana_finura.pickle')
@@ -75,39 +96,58 @@ def predecir_finura():
     y_prediccion = data_prediccion.finura.tolist()
     y_real = data_finura.finura.tolist()
     r2 = str(round(r2_score(y_real[:3], y_prediccion),4) * 100)
-    return anios_real, anios_prediccion, y_prediccion, y_real, r2
+    label_estimacion = 'Modelo para Estimación de Finura'
+    finura = {
+        "title": label_estimacion,
+        "metrica": r2,
+        "data": json.dumps( {
+            "label_prediccion": anios_prediccion,
+            "label_real": anios_real,
+            "y_prediccion": y_prediccion,
+            "y_real": y_real,
+        })
+    }
+    return finura
 
-def predecir_por_filtro(filtro):
-    label_estimacion = None
-    label_datos = None
-    flag_filtro = None
-    label_datos_2 = []
-    if filtro == 'lana':
-        print('Lana')
-        label_datos, y_predicion, y_real, r2 = predecir_lana()
-        label_estimacion = 'Modelo para Estimación de Producción de lana'
-        flag_filtro = 'Kg de lana'
-    elif filtro == 'corderos':
-        print('Corderos')
-        label_datos, y_predicion, y_real, r2 = predecir_corderos()
-        label_estimacion = 'Modelo para Estimación de Corderos'
-        flag_filtro = 'Cantidad de corderos'
-    elif filtro == 'finura':
-        print('Finura')
-        label_datos, label_datos_2, y_predicion, y_real, r2 = predecir_finura()
-        label_estimacion = 'Modelo para Estimación de Finura'
-        flag_filtro = 'Finura'
-    return label_estimacion, label_datos, label_datos_2 , flag_filtro, y_predicion, y_real, r2
+def predecir_rinde():
+    path = staticfiles_storage.path('data/modelo_prediccion_lana_rinde.pickle')
+    path_csv = staticfiles_storage.path('datos/datos_completo_mirabueno.csv')
+    modelo_rinde = load_pickle(path)
+    data = pd.read_csv(path_csv)
+    data_rinde= data[['fecha', 'rinde']]
+    steps = 3
+    prediccion = modelo_rinde.predict(steps=steps)
+    data_prediccion = pd.DataFrame({'fecha':prediccion.index, 'rinde':prediccion.values})
+    anios_real = build_years(data_rinde['fecha'])
+    anios_prediccion = [2020,2021,2022]
+    y_prediccion = data_prediccion.rinde.tolist()
+    y_real = data_rinde.rinde.tolist()
+    r2 = str(round(r2_score(y_real[:3], y_prediccion),4) * 100)
+    label_estimacion = 'Modelo para Estimación de Rinde'
+    rinde = {
+        "title": label_estimacion,
+        "metrica": r2,
+        "data": json.dumps( {
+            "label_prediccion": anios_prediccion,
+            "label_real": anios_real,
+            "y_prediccion": y_prediccion,
+            "y_real": y_real,
+        })
+    }
+    return rinde
 
 @login_required(login_url='login')
-def predecir(request,query='lana'):
-    label_estimacion, label_datos, label_datos_2 ,flag_filtro, y_predicion, y_real, r2 = predecir_por_filtro(query)
+def predecir(request):
+    datos_lana = predecir_lana()
+    datos_corderos = predecir_corderos()
+    datos_finura = predecir_finura()
+    datos_rinde = predecir_rinde()
+    
     contexto = {}
-    contexto["label_datos"] = label_datos
-    contexto["label_datos_2"] = label_datos_2
-    contexto["label_estimacion"] = label_estimacion
-    contexto["flag_filtro"] = flag_filtro
-    contexto["y_predicion"] = y_predicion
-    contexto["y_real"] = y_real
-    contexto['r2'] = r2
+    
+    contexto["lana"] = datos_lana
+    contexto["corderos"] = datos_corderos
+    contexto["finura"] = datos_finura
+    contexto["rinde"] = datos_rinde
+
     return render(request, "prediccion.html", contexto)
