@@ -74,3 +74,8 @@ class Campo(models.Model):
         """
         data = {}
         return data
+
+    def create_in_firebase(self):
+        from django.conf import settings
+        data = settings.DIARIA
+        db.reference(f'campo/{self.id}/diaria/').set(data)

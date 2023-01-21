@@ -269,6 +269,11 @@
 
 
 <script type="module">
+
+  
+
+
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
   import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
   var firebaseConfig = {
@@ -280,7 +285,7 @@
     'messagingSenderId': '371707726278',
     'appId': '1:371707726278:web:6e7053e506f660139bcac7'
   };
-  var campo_id = '10'
+  var campo_id = '{{campo_id}}'
   const app = initializeApp(firebaseConfig);
   const db = getDatabase();
   const campoRef = ref(db, 'campo/'+campo_id);
@@ -330,7 +335,7 @@
                 {title: 'ovejas', field:'ovejas'},
                 {title: 'carneros', field:'carneros'},
                 {title: 'pariciones', field:'pariciones'},
-                {title: 'muertes_corderos', field:'muertes_corderos'},
+                {title: 'muertes', field:'muertes'},
                 {title: 'lana_producida', field:'lana_producida'},
                 {title: 'carne_producida', field:'carne_producida'},
                 {title: 'rinde_lana', field:'rinde_lana'},
@@ -354,7 +359,7 @@
         $('#ovejas').val($element.ovejas)
         $('#carneros').val($element.carneros)
         $('#pariciones').val($element.pariciones)
-        $('#muertes_corderos').val($element.muertes)
+        $('#muertes').val($element.muertes)
         $('#lana_producida').val($element.lana_producida)
         $('#carne_producida').val($element.carne_producida)
         $('#rinde_lana').val($element.rinde_lana)
@@ -405,7 +410,7 @@
       $('#ovejas').val(0)
       $('#carneros').val(0)
       $('#pariciones').val(0)
-      $('#muertes_corderos').val(0)
+      $('#muertes').val(0)
       $('#lana_producida').val(0)
       $('#carne_producida').val(0)
       $('#rinde_lana').val(0)
@@ -435,12 +440,18 @@
           'ovejas': ovejas,
           'carneros': carneros,
           'pariciones': $('#pariciones').val(),
-          'muertes_corderos': $('#muertes_corderos').val(),
+          'muertes': $('#muertes').val(),
           'lana_producida': $('#lana_producida').val(),
           'carne_producida': $('#carne_producida').val(),
           'rinde_lana': $('#rinde_lana').val(),
           'finura_lana': $('#finura_lana').val(),
         }
+        console.log(":.................")
+        console.log(data)
+        var c = "{{clima_actual_campo|safe}}"
+        console.log(c)
+        console.log(":.................")
+
         var url = 'campo/'+campo_id+'/historico/'+fecha
         var dbRef = ref(db, url);
         update(dbRef, data)
@@ -458,25 +469,32 @@
 
   
   onValue(campoRef, (snapshot) => {
-      const data_diaria = snapshot.child('diaria').val();
-      $('#diaria_corderos').html(data_diaria.corderos);
-      $('#diaria_ovejas').html(data_diaria.ovejas);
-      $('#diaria_carneros').html(data_diaria.carneros);
-
-
-      var data_list = []
-      const data_historico = snapshot.child('historico').val();
-      for(var key in data_historico) {
-        var data_dict = {}
-        data_dict['periodo'] = key
-        var dict2 = data_historico[key]
-        for(var dato in dict2) {
-          data_dict[dato] = dict2[dato]
+      if (snapshot.exists()){
+        const data_diaria = snapshot.child('diaria').val();
+        const data_historico = snapshot.child('historico').val();
+        $('#diaria_corderos').html(data_diaria.corderos);
+        $('#diaria_ovejas').html(data_diaria.ovejas);
+        $('#diaria_carneros').html(data_diaria.carneros);
+        var data_list = []
+        for(var key in data_historico) {
+          var data_dict = {}
+          data_dict['periodo'] = key
+          var dict2 = data_historico[key]
+          for(var dato in dict2) {
+            data_dict[dato] = dict2[dato]
+          }
+          data_list.push(data_dict)
         }
-        data_list.push(data_dict)
+        $table.bootstrapTable('load', data_list)
+        $table.bootstrapTable('hideLoading')
       }
-      $table.bootstrapTable('load', data_list)
-      $table.bootstrapTable('hideLoading')
+      else{
+        $('#diaria_corderos').html('-');
+        $('#diaria_ovejas').html('-');
+        $('#diaria_carneros').html('-');
+        $table.bootstrapTable('hideLoading')
+      }
+      
   });
 </script>
 

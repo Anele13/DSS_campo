@@ -177,5 +177,9 @@ SOCIAL_AUTH_FACEBOOK_SECRET = 'b8d7fce3ff7d568f9be9a545125fa464s'
 TELEGRAM_BOT_NAME = 'VoiceNotesCampoBot'
 TELEGRAM_BOT_TOKEN = "5356687027:AAFH9gZwDWnpx_IK5r7fYN8AtDJMuib6pJQ"
 
-
+DIARIA = {
+    'carneros': 0,
+    'corderos': 0,
+    'ovejas': 0
+}
 
