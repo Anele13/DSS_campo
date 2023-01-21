@@ -173,6 +173,8 @@ class RegisterForm(forms.Form):
             latitud=self.cleaned_data['latitud'],
             longitud=self.cleaned_data['longitud'],
         )
+
+        campo.create_in_firebase()
         return user, persona, campo
 
 

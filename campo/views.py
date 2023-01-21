@@ -151,7 +151,7 @@ def validar(valor):
 
 def datos_firebase(campo_id):
     #TODO no harcodear el id de campo!
-    campo_data = db.reference(f"campo/10/historico").get()
+    campo_data = db.reference(f"campo/{campo_id}/historico").get()
     resul = []
     for k, v in campo_data.items():
         v.update({'periodo': datetime.strptime(k, '%Y-%m-%d')})
@@ -172,6 +172,7 @@ def mi_campo(request, query='rinde'):
         messages.warning(request, "Debe cargar los datos climáticos de su campo.")
 
     else:
+        print(df)
         datos_produccion = df[['periodo','corderos','ovejas','carneros','pariciones','muertes','lana_producida','carne_producida','rinde_lana','finura_lana']]
         datos_climaticos = df[['periodo','temperatura_minima','temperatura_maxima','humedad','velocidad_viento','direccion_viento','mm_lluvia','localidad']]
 
@@ -191,34 +192,6 @@ def mi_campo(request, query='rinde'):
 
 
         meses = sorted(list(set([d for d in datos.periodo.dt.month])))
-
-
-        #renombre velocidad_max_viento por velocidad_viento
-        #falta temperatura_media 
-        # ovejas
-        # cantidad_corderos
-        # cantidad_carneros
-        # cantidad_lana_producida
-        # cantidad_carne_producida
-        """
-        d_1 = datos.values('periodo__month',
-                           'temperatura_minima',
-                           'mm_lluvia',
-                           'temperatura_media',
-                           'temperatura_maxima',
-                           'velocidad_viento',
-                           'humedad',
-                           'periodo__day')
-
-        d_2 = datos_prod.values('periodo__month',
-                                'ovejas',
-                                'corderos',
-                                'carneros',
-                                'lana_producida',
-                                'carne_producida',
-                                'rinde_lana',
-                                'finura_lana')
-        """
         d_1 = datos
         d_2 = datos_prod
         
@@ -276,11 +249,15 @@ def datos_cargados(request):
     'carneros',
     'pariciones']
     columnas2=[
-    'muertes_corderos',
+    'muertes',
     'lana_producida',
     'carne_producida',
     'rinde_lana',
     'finura_lana']
     contexto['columnas1'] = columnas1
     contexto['columnas2'] = columnas2
+    import json
+    contexto['clima_actual_campo'] = json.dumps({'cosa':'asdad'})
+
+    print(contexto)
     return render(request, "datos_cargados.html", contexto)
