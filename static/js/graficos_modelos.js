@@ -1,9 +1,19 @@
+function armar_labels(label_real,label_prediccion) {
+    const label = label_real.concat(label_prediccion)
+    return [... new Set(label)]
+}
 
-function crear_grafico_lineas_lana(anios, real, prediccion){
-    console.log('Holaaa');
-    //console.log(anios2);
-    //console.log('puta',anios2.length);
-    var ctx = document.getElementById("canvas");
+function completar_data(label_real, y_prediccion) {
+    const cantElementsLabelReal = label_real.length - 1
+    const listNull = []
+    for(let i=1; i<=cantElementsLabelReal; i++){
+      listNull.push(null)
+    }
+    return listNull.concat(y_prediccion)
+}
+
+function crear_grafico_lineas(anios, real, prediccion, idElement){
+    var ctx = document.getElementById(idElement);
     const CHART_COLORS = {
         red: 'rgb(255, 99, 132)',
         orange: 'rgb(255, 159, 64)',
@@ -14,11 +24,6 @@ function crear_grafico_lineas_lana(anios, real, prediccion){
         grey: 'rgb(201, 203, 207)'
     };
     let labels = anios;
-    /* if(anios2.length){
-        console.log('Kio');
-        labels = [anios, anios2];
-        console.log(labels);
-    }   */
     const data = {
         labels: labels,
         datasets: [
