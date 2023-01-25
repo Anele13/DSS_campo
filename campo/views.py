@@ -167,15 +167,11 @@ def mi_campo(request, query='rinde'):
     df = datos_firebase(campo.id)
     resultado = {}
     contexto = {}
-
     if (not campo) or (df.empty):
         messages.warning(request, "Debe cargar los datos climáticos de su campo.")
-
     else:
-        print(df)
         datos_produccion = df[['periodo','corderos','ovejas','carneros','pariciones','muertes','lana_producida','carne_producida','rinde_lana','finura_lana']]
         datos_climaticos = df[['periodo','temperatura_minima','temperatura_maxima','humedad','velocidad_viento','direccion_viento','mm_lluvia','localidad']]
-
 
         datos_climaticos['day'] = datos_climaticos.periodo.apply(lambda row:  row.day)
         datos_climaticos['month'] = datos_climaticos.periodo.apply(lambda row:  row.month)
@@ -189,7 +185,6 @@ def mi_campo(request, query='rinde'):
 
         datos = datos_climaticos[datos_climaticos.periodo.dt.year == mejor_año]
         datos_prod = datos_produccion[datos_produccion.periodo.dt.year == mejor_año]
-
 
         meses = sorted(list(set([d for d in datos.periodo.dt.month])))
         d_1 = datos
@@ -256,8 +251,4 @@ def datos_cargados(request):
     'finura_lana']
     contexto['columnas1'] = columnas1
     contexto['columnas2'] = columnas2
-    import json
-    contexto['clima_actual_campo'] = json.dumps({'cosa':'asdad'})
-
-    print(contexto)
     return render(request, "datos_cargados.html", contexto)

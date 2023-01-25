@@ -68,7 +68,9 @@ def registro(request):
             messages.warning(request,'Error:: '+str(e))        
     return render(request, 'registro.html', {'form': form})
 
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def perfil_view(request):
     user = request.user
     context={}
@@ -92,6 +94,7 @@ def perfil_view(request):
     return render(request, 'mi_perfil.html', context)
 
 
+@login_required(login_url='login')
 def editar_perfil_view(request):
     user = request.user
     datos = {}
@@ -115,6 +118,7 @@ def editar_perfil_view(request):
     return render(request, 'editar_perfil.html', {'form': form})
 
 
+@login_required(login_url='login')
 def telegram_users(request):
     context = {}
     user = request.user

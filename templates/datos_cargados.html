@@ -98,7 +98,7 @@
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <div class="form-group">
                   <label for="">Periodo</label>
-                  <input id="selector_periodo" type="date" class="form-control form-control-user">
+                  <input id="selector_periodo" type="date" name="date" class="form-control form-control-user" max='{% now "Y-m-d" %}'/>
                 </div>
                 {% for columna in columnas1 %}
                 <div class="form-group">
@@ -269,11 +269,6 @@
 
 
 <script type="module">
-
-  
-
-
-
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js";
   import { getDatabase, ref, set, child, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.8.2/firebase-database.js";
   var firebaseConfig = {
@@ -365,6 +360,7 @@
         $('#rinde_lana').val($element.rinde_lana)
         $('#finura_lana').val($element.finura_lana)
         $('#selector_periodo').val($element.periodo)
+        $('#selector_periodo').attr('disabled', true)
         $('#modalAltaDatos').modal('show')
       }
     )
@@ -404,6 +400,7 @@
     })
 
     $openModal.click(function () {
+      $('#selector_periodo').removeAttr('disabled')
       $('.modal-title').html('Alta de datos de produccion') 
       $('.modal-title').attr('action','alta') 
       $('#corderos').val(0)
@@ -445,13 +442,14 @@
           'carne_producida': $('#carne_producida').val(),
           'rinde_lana': $('#rinde_lana').val(),
           'finura_lana': $('#finura_lana').val(),
+          'temperatura_minima':0,
+          'temperatura_maxima':0,
+          'humedad':0,
+          'velocidad_viento':0,
+          'direccion_viento':0,
+          'mm_lluvia':0,
+          'localidad':'sin localidad',
         }
-        console.log(":.................")
-        console.log(data)
-        var c = "{{clima_actual_campo|safe}}"
-        console.log(c)
-        console.log(":.................")
-
         var url = 'campo/'+campo_id+'/historico/'+fecha
         var dbRef = ref(db, url);
         update(dbRef, data)

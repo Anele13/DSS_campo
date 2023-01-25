@@ -18,17 +18,6 @@
                         <form class="user" method='POST' action="{% url 'edicion' %}">
                             {% csrf_token %}
                             <h5 class="h6 text-gray-900 mb-6">Datos Personales</h5>
-
-                            <div class="form-group">
-                                {{form.documento}}
-                                {% if form.documento.errors %}
-                                {% for error in form.documento.errors %}
-                                <ul>
-                                    <li><span class="text-danger">{{ error }}</span></li>
-                                </ul>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
                             <div class="form-group">
                                 {{form.nombre}}
                                 {% if form.nombre.errors %}
@@ -49,17 +38,7 @@
                                 {% endfor %}
                                 {% endif %}
                             </div>
-                            <div class="form-group">
-                                {{form.fecha_nacimiento}}
-                                {% if form.fecha_nacimiento.errors %}
-                                {% for error in form.fecha_nacimiento.errors %}
-                                <ul>
-                                    <li><span class="text-danger">{{ error }}</span></li>
-                                </ul>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <br>
+                              <br>
                             <!-- Datos del CAMPO -->
                             <h5 class="h6 text-gray-900 mb-6">Datos del Campo</h5>
                             <div class="form-group">
