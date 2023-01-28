@@ -27,7 +27,8 @@ class Persona(models.Model):
                     telegram_user = TelegramUser.objects.create(**user_data)
                 else: 
                     telegram_user = TelegramUser.objects.get(id=result['id'])
-                    telegram_user.refresh_firebase_data()
+                
+                telegram_user.refresh_firebase_data()
         except TelegramDataIsOutdatedError:
             pass #return HttpResponse('Authentication was received more than a day ago.')
         except NotTelegramDataError:
