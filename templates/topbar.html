@@ -8,7 +8,28 @@
     </button>
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
-
+        {% if temperatura %}
+        <div 
+            class="mt-2"
+            data-toggle="tooltip" 
+            title='
+            <div class="d-flex flex-row">
+                <i class="fas fa-wind fa-fw" style="color: #868B94;"></i>
+                <span class="px-2"> {{viento}} m/s</span>
+            </div>
+            <div class="d-flex flex-row">
+                <i class="fas fa-tint fa-fw" style="color: #868B94;"></i> 
+                <span class="px-2"> {{humedad}}% </span>
+            </div>
+            '
+            data-html="true"
+        >
+            <h5 class="mb-0 font-weight-bold" style="color: #1C2331;"> 
+                {{temperatura}}°C 
+            </h5>
+            <h6 class="flex-grow-1">{{localidad}}</h6>
+        </div>
+        {% endif %}
         <div class="topbar-divider d-none d-sm-block"></div>
 
         <!-- Nav Item - User Information -->
@@ -33,4 +54,11 @@
         </li>
     </ul>
 </nav>
+<script>
+
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+</script>
 <!-- End of Topbar -->

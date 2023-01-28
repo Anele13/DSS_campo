@@ -27,16 +27,16 @@ function crear_grafico_lineas(anios, real, prediccion, idElement){
     const data = {
         labels: labels,
         datasets: [
-        {
-            label: 'Real',
-            data: real,
-            borderColor: CHART_COLORS.red, 
-        },
-        {
-            label: 'Predicción',
-            data: prediccion,
-            borderColor: CHART_COLORS.blue,
-        }
+            {
+                label: 'Real',
+                data: real,
+                borderColor: CHART_COLORS.red, 
+            },
+            {
+                label: 'Predicción',
+                data: prediccion,
+                borderColor: CHART_COLORS.blue,
+            }
         ]
     };
     const config = {
