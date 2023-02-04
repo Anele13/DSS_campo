@@ -23,51 +23,6 @@
 {% endif %}
 
 
-<!-- Page Heading -->
-<div class="row py-4">
-    <div class="col-md-3 col-lg-6 col-xl-4">
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Hola {{user}}</h1>
-        </div>
-    </div>
-    <!-- <div class="col-md-8 col-lg-6 col-xl-4 .offset-md-3">
-        <div class="d-flex justify-content-center align-items-center h-100">
-            <div class="card" style="color: #4B515D; border-radius: 35px;">
-                <div class="card-body p-4 row">
-                    <div class="d-flex flex-column text-center mt-5 mb-4 col">
-                           
-                        <h6>{{timestamp}}</h6>
-
-                        <h5 class="mb-0 font-weight-bold" style="color: #1C2331;"> 
-                            {{temperatura}}°C 
-                        </h5>
-                        <span class="small" style="color: #868B94">Stormy</span>
-                    </div>
-                    <div class="d-flex align-items-center col">
-                        <div class="flex-grow-1" style="font-size: 1rem;">
-                            <h6 class="flex-grow-1">{{localidad}}</h6>
-                            <div>
-                                <i class="fas fa-wind fa-fw" style="color: #868B94;"></i> 
-                                <span class="ms-1"> {{viento}} m/s</span>
-                            </div>
-                            <div>
-                                <i class="fas fa-tint fa-fw" style="color: #868B94;"></i> 
-                                <span class="ms-1"> {{humedad}}% </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
-</div>
-
-<div class="row">
-    <div class="col-md 12 d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h5 mb-0 text-gray-800">Infomación del último registro</h1>
-    </div>
-</div>
-
 <!-- Content Row -->
 <div class="row">
     <!-- Earnings (Monthly) Card Example -->
@@ -128,7 +83,25 @@
 
 <!-- GRAFICOS LLUVIA Y CAMPO OCUPADO -->
 <div class="row">
-    <div class="col-xl-8 col-lg-7">
+    <div class="col-xl-4 col-lg-5">
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Mi ubicacion</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+               <!--MAPAA-->
+                <div id="map" style="width: 300px; height: 300px;" width="300"
+                height="300"></div>
+
+
+
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4 col-lg-5">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -191,8 +164,7 @@
 <script src="{% static 'js/Chart.BarFunnel.js' %}"></script>
 
 <script>
-
-    var nombre_meses = JSON.parse('{{nombres_meses|safe}}');
+    var nombre_meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
     var lluvias = JSON.parse("{{lluvias_mensuales|safe}}");
 
     var barChartData = {
@@ -341,6 +313,38 @@
         $('#div_nacimientos').html(data.NACIMIENTOS);
         $('#div_ventas').html(data.VENTAS);
     });
+  </script>
+
+
+<script>
+     //Creo un mapa
+     var lat = '{{campo.latitud}}'
+     var lon = '{{campo.longitud}}'
+     var nombre_campo = '{{campo.nombre}}'
+     lat = parseFloat(lat.replace(",", "."))
+     lon = parseFloat(lon.replace(",", "."))
+  
+     var redIcon = new L.Icon({
+      iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+      });
+  
+  
+     var map = L.map('map').setView([lat, lon], 6);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      
+      marker = L.marker([lat, lon],{icon: redIcon})
+      marker.addTo(map)
+      .bindPopup('<div> Campo: <b>' + nombre_campo + '</b>'
+                  + '<br> Latitud: <b>' + lat + '</b>'
+                  + '<br> Longitud: <b>' + lon + '</b>'
+                  + '</div>')
   </script>
 
 {% endblock %}

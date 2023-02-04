@@ -1,4 +1,5 @@
 {% load static %}
+{% load clima_actual %}
 
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -7,8 +8,11 @@
         <i class="fa fa-bars"></i>
     </button>
     <!-- Topbar Navbar -->
+    <div>
+        {% clima_actual user as clima_dict %}
+    </div>
     <ul class="navbar-nav ml-auto">
-        {% if temperatura %}
+        {% if clima_dict.temperatura %}
         <div 
             class="mt-2"
             data-toggle="tooltip" 
@@ -25,9 +29,9 @@
             data-html="true"
         >
             <h5 class="mb-0 font-weight-bold" style="color: #1C2331;"> 
-                {{temperatura}}°C 
+                {{clima_dict.temperatura}}°C 
             </h5>
-            <h6 class="flex-grow-1">{{localidad}}</h6>
+            <h6 class="flex-grow-1">{{clima_dict.localidad}}</h6>
         </div>
         {% endif %}
         <div class="topbar-divider d-none d-sm-block"></div>

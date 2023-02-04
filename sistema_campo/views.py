@@ -54,10 +54,12 @@ def calcular_ocupacion_campo(campo):
     return porcentaje_ha_ocupadas, porcentaje_ha_libres, cantidad_ha_faltante
 
 
-def devolver_lluvias_mensuales(campo, datos_produccion, datos_climaticos):
+def devolver_lluvias_mensuales(campo=None, datos_produccion=None, datos_climaticos=None):
 
     nombres_meses = []
     lluvias_mensuales = []
+
+    return ['Enero','Febrero'], [10, 15,32, 34, 1, 23, 5, 5]
 
     anio_actual = datos_produccion.values(
         'periodo__year').order_by('-periodo')[0]['periodo__year']
@@ -90,6 +92,7 @@ def inicio(request):
     campo = Campo.objects.get(persona=request.user.persona)
     datos_climaticos = campo.clima_actual()
     ha_ocupadas, ha_libres, ha_excedidas = calcular_ocupacion_campo(campo)
+    nombres_meses, lluvias_mensuales = devolver_lluvias_mensuales()
     contexto={
         'campo_id': campo.id, 
         'localidad': datos_climaticos.get('localidad'),
@@ -100,6 +103,9 @@ def inicio(request):
         'ha_ocupadas': ha_ocupadas,
         'ha_libres': ha_libres, 
         'ha_excedidas': ha_excedidas,
+        'campo': campo,
+        'nombres_meses': nombres_meses,
+        'lluvias_mensuales': lluvias_mensuales,
     }
     #print(datos_climaticos)
     return render(request, "bienvenido.html", contexto)
