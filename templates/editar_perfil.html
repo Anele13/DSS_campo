@@ -3,9 +3,28 @@
 
 
 {% block site_content %}
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Elija su ubicacion</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <!--MAPAA-->
+            <div id="map" style="height: 500px;"></div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 <div class="container">
-
     <div class="card o-hidden border-0 shadow-lg my-5">
         <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
@@ -61,25 +80,36 @@
                                 {% endfor %}
                                 {% endif %}
                             </div>
-                            <div class="form-group">
-                                {{form.latitud}}
-                                {% if form.latitud.errors %}
-                                {% for error in form.latitud.errors %}
-                                <ul>
-                                    <li><span class="text-danger">{{ error }}</span></li>
-                                </ul>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="form-group">
-                                {{form.longitud}}
-                                {% if form.longitud.errors %}
-                                {% for error in form.longitud.errors %}
-                                <ul>
-                                    <li><span class="text-danger">{{ error }}</span></li>
-                                </ul>
-                                {% endfor %}
-                                {% endif %}
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{form.latitud}}
+                                        {% if form.latitud.errors %}
+                                        {% for error in form.latitud.errors %}
+                                        <ul>
+                                            <li><span class="text-danger">{{ error }}</span></li>
+                                        </ul>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        {{form.longitud}}
+                                        {% if form.longitud.errors %}
+                                        {% for error in form.longitud.errors %}
+                                        <ul>
+                                            <li><span class="text-danger">{{ error }}</span></li>
+                                        </ul>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="button" class="btn btn-primary btn-sm btn-user"  data-toggle="modal" data-target="#exampleModal">
+                                        Ver Mapa    
+                                    </button>
+                                </div>
                             </div>
                             <br>
                             <button class="btn btn-primary btn-user btn-block">
@@ -92,6 +122,23 @@
             </div>
         </div>
     </div>
-
 </div>
+<!--Mapas-->
+<script>
+    $('#exampleModal').on('shown.bs.modal', function(event) {
+        var map = L.map('map').setView([-43.36, -68.58], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        map.on('click', function(e){
+            var coord = e.latlng;
+            var lat = coord.lat;
+            var lng = coord.lng;
+            $('#id_latitud').val(lat.toFixed(3))
+            $('#id_longitud').val(lng.toFixed(3))
+            $('#exampleModal').modal('hide')
+        });
+    });
+</script>
 {% endblock %}
