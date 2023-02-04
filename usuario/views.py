@@ -89,7 +89,9 @@ def perfil_view(request):
 
     from usuario.models import TelegramUrl
     t = TelegramUrl.objects.first()
-    redirect_url = t.url 
+    redirect_url = None
+    if t:
+        redirect_url = t.url 
     context['telegram_login_widget']=create_redirect_login_widget(redirect_url, bot_name, size=MEDIUM, user_photo=DISABLE_USER_PHOTO)
     return render(request, 'mi_perfil.html', context)
 
