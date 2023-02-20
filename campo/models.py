@@ -25,26 +25,29 @@ class Campo(models.Model):
         Retorna el clima actual del campo en el
         momento de la solicitud
         """
-        app_id = '439d4b804bc8187953eb36d2a8c26a02'
-        url = f'https://openweathermap.org/data/2.5/weather?lat={self.latitud}&lon={self.longitud}&units=metric&appid={app_id}'
-        cache_key = f'{self.latitud}{self.longitud}'
-        cache_time = 86400 # time in seconds for cache to be valid
-        data = cache.get(cache_key, {}) 
-        if not data: 
-            response = requests.get(url).json()
-            base_info = response.get('main',{})
-            rain_info = response.get('rain',{})
-            wind_info = response.get('wind',{})
-            data['temperatura_minima'] = base_info.get('temp_min',0)
-            data['temperatura_maxima'] = base_info.get('temp_max',0)
-            data['temperatura'] = base_info.get('temp',0)
-            data['humedad'] = base_info.get('humidity',0)
-            data['velocidad_viento'] = wind_info.get('speed',0)
-            data['direccion_viento'] = wind_info.get('deg',0)
-            data['mm_lluvia'] = rain_info.get('1h',0)
-            data['localidad'] = response.get('name',None)
-            cache.set(cache_key, data, cache_time)
-        return data 
+        try:
+            app_id = '439d4b804bc8187953eb36d2a8c26a02'
+            url = f'https://openweathermap.org/data/2.5/weather?lat={self.latitud}&lon={self.longitud}&units=metric&appid={app_id}'
+            cache_key = f'{self.latitud}{self.longitud}'
+            cache_time = 86400 # time in seconds for cache to be valid
+            data = cache.get(cache_key, {}) 
+            if not data: 
+                response = requests.get(url).json()
+                base_info = response.get('main',{})
+                rain_info = response.get('rain',{})
+                wind_info = response.get('wind',{})
+                data['temperatura_minima'] = base_info.get('temp_min',0)
+                data['temperatura_maxima'] = base_info.get('temp_max',0)
+                data['temperatura'] = base_info.get('temp',0)
+                data['humedad'] = base_info.get('humidity',0)
+                data['velocidad_viento'] = wind_info.get('speed',0)
+                data['direccion_viento'] = wind_info.get('deg',0)
+                data['mm_lluvia'] = rain_info.get('1h',0)
+                data['localidad'] = response.get('name',None)
+                cache.set(cache_key, data, cache_time)
+            return data 
+        except Exception: #connection refused
+            return {}
 
     def ultimo_registro_produccion(self):
         """

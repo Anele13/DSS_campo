@@ -153,12 +153,13 @@ def datos_firebase(campo_id):
     #TODO no harcodear el id de campo!
     campo_data = db.reference(f"campo/{campo_id}/historico").get()
     resul = []
-    for k, v in campo_data.items():
-        v.update({'periodo': datetime.strptime(k, '%Y-%m-%d')})
-        resul.append(v)
-    if resul:
-        return pd.DataFrame(resul)
-    return None 
+    if campo_data:
+        for k, v in campo_data.items():
+            v.update({'periodo': datetime.strptime(k, '%Y-%m-%d')})
+            resul.append(v)
+        if resul:
+            return pd.DataFrame(resul)
+    return pd.DataFrame() 
 
 
 @login_required(login_url='login')
