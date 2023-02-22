@@ -1,5 +1,6 @@
 {% extends 'site_content.html' %}
 {% load static %}
+{% load clima_actual %}
 
 <!-- Escribir en este bloque todo lo que haga falta-->
 {% block chart %}
@@ -8,6 +9,7 @@
 
 
 {% block site_content %}
+{% clima_actual user as clima_dict %}
 
 {% if messages %}
     {% for message in messages %}
@@ -22,7 +24,12 @@
     {% endfor %}
 {% endif %}
 
-
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Hola, {{user}}</h1>
+</div>
+<p class="mb-4">{% now "d/m" %}  | Información actualizada de tu campo: <span class="badge badge-primary">"{{campo.nombre}}"</span></p>
+<hr class="sidebar-divider my-0">
+<br>
 <!-- Content Row -->
 <div class="row">
     <!-- Earnings (Monthly) Card Example -->
@@ -31,12 +38,17 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Muertes</div>
-                        <div id="div_muertes" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Corderos 
+                        </div>
+                        <div id="diaria_corderos" class="h5 mb-0 font-weight-bold text-gray-800">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
                     </div>
                     <div class="col-auto">
-                        <img src="{% static 'img/muerte.png' %}" class="img-responsive" width="55" height="55" alt="">
+                      <img src="{% static 'img/cordero.png' %}" class="img-responsive" width="55" height="55" alt="">
                     </div>
                 </div>
             </div>
@@ -45,16 +57,20 @@
 
     <!-- Earnings (Annual) Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Nacimientos</div>
-                        <div id="div_nacimientos" class="h5 mb-0 font-weight-bold text-gray-800">0</div>
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Carneros</div>
+                        <div id="diaria_carneros" class="h5 mb-0 font-weight-bold text-gray-800">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                      <img src="{% static 'img/carnero.png' %}" class="img-responsive" width="55" height="55" alt="">
                     </div>
                 </div>
             </div>
@@ -63,16 +79,43 @@
 
      <!-- Pending Requests Card Example -->
      <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                            Ventas</div>
-                        <div id='div_ventas' class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Ovejas</div>
+                        
+                        <div id="diaria_ovejas" class="h5 mb-0 font-weight-bold text-gray-800">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-comments fa-2x text-gray-300"></i>
+                      <img src="{% static 'img/oveja.png' %}" class="img-responsive" width="55" height="55" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Kg. Lana acumulados</div>
+                        <div id="historico_lana" class="h5 mb-0 font-weight-bold text-gray-800">
+                          <div class="spinner-border text-success" role="status">
+                            <span class="sr-only">Loading...</span>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                      <img src="{% static 'img/oveja.png' %}" class="img-responsive" width="55" height="55" alt="">
                     </div>
                 </div>
             </div>
@@ -80,6 +123,10 @@
     </div>
 
 </div>
+
+<hr class="sidebar-divider my-0">
+<br>
+
 
 <!-- GRAFICOS LLUVIA Y CAMPO OCUPADO -->
 <div class="row">
@@ -92,12 +139,38 @@
             <!-- Card Body -->
             <div class="card-body">
                <!--MAPAA-->
-                <div id="map" style="width: 300px; height: 300px;" width="300"
-                height="300"></div>
-
-
-
-                
+               <div class="row">
+                <div class="col-md-8">
+                    <div id="map" style="width: 300px; height: 300px;" width="500" height="300"></div>
+               </div>
+               <div class="col-md-4">
+                    <a href="#" class="btn btn-sm btn-primary btn-icon-split" data-toggle="tooltip" data-placement="right" title="Localidad">
+                        <span class="icon">
+                            <i class="fas fa-map-marker-alt fa-fw"></i>
+                        </span>
+                        <span class="text">{{clima_dict.localidad}}</span>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-light btn-icon-split" data-toggle="tooltip" data-placement="right" title="Temperatura actual">
+                        <span class="icon text-gray-600">
+                            <i class="fas fa-temperature-low fa-fw"></i>
+                        </span>
+                        <span class="text"> {{clima_dict.temperatura}}° C</span>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-light btn-icon-split" data-toggle="tooltip" data-placement="right" title="Velocidad viento">
+                        <span class="icon text-gray-600">
+                            <i class="fas fa-wind fa-fw"></i>
+                        </span>
+                        <span class="text"> {{clima_dict.velocidad_viento}} m/s</span>
+                    </a>
+                    <a href="#" class="btn btn-sm btn-light btn-icon-split" data-toggle="tooltip" data-placement="right" title="Humedad">
+                        <span class="icon text-gray-600">
+                            <i class="fas fa-tint fa-fw"></i> 
+                        </span>
+                        <span class="text"> {{clima_dict.humedad}} %</span>
+                    </a>
+               </div>
+               </div>
+               
             </div>
         </div>
     </div>
@@ -160,6 +233,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="{% static 'js/Chart.BarFunnel.js' %}"></script>
 
@@ -307,14 +381,26 @@
     console.log(campo_id)
     const campoRef = ref(db, 'campo/'+campo_id+'/'+fecha);
     onValue(campoRef, (snapshot) => {
-
-        const data = snapshot.val();
-        $('#div_muertes').html(data.MUERTES);
-        $('#div_nacimientos').html(data.NACIMIENTOS);
-        $('#div_ventas').html(data.VENTAS);
+    if (snapshot.exists()){
+        const data_diaria = snapshot.child('diaria').val();
+        const data_historico = snapshot.child('historico').val();
+        $('#diaria_corderos').html(data_diaria.corderos);
+        $('#diaria_ovejas').html(data_diaria.ovejas);
+        $('#diaria_carneros').html(data_diaria.carneros);
+        var cant_lana = 0
+        for(var key in data_historico) {
+            var dict2 = data_historico[key]
+            cant_lana = cant_lana + parseInt(dict2['lana_producida'])
+        }
+        $('#historico_lana').html(cant_lana);
+      }
+      else{
+        $('#diaria_corderos').html('-');
+        $('#diaria_ovejas').html('-');
+        $('#diaria_carneros').html('-');
+      }
     });
-  </script>
-
+</script>
 
 <script>
      //Creo un mapa
@@ -334,7 +420,7 @@
       });
   
   
-     var map = L.map('map').setView([lat, lon], 6);
+     var map = L.map('map').setView([lat, lon], 5);
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
@@ -346,5 +432,11 @@
                   + '<br> Longitud: <b>' + lon + '</b>'
                   + '</div>')
   </script>
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
 
 {% endblock %}
