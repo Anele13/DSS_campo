@@ -49,7 +49,7 @@ def predecir_lana():
     attr_y = ['kilos_lana']
     y_prediccion,y_real,r2 = scaler_data(data, modelo_lana, attrs_x, attr_y)
     anios = build_years(data['fecha'])
-    label_estimacion = "Modelo para Estimación de Corderos"
+    label_estimacion = "Modelo para Estimación de Kg de Lana"
     lana = {
         "title": label_estimacion,
         "metrica": r2,

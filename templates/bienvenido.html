@@ -27,7 +27,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Hola, {{user}}</h1>
 </div>
-<p class="mb-4">{% now "d/m" %}  | Información actualizada de tu campo: <span class="badge badge-primary">"{{campo.nombre}}"</span></p>
+<p class="mb-4">{% now "d/m" %}  | Información actualizada de tu campo: <span class="badge badge-secondary">"{{campo.nombre}}"</span></p>
 <hr class="sidebar-divider my-0">
 <br>
 <!-- Content Row -->
@@ -38,11 +38,11 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Corderos 
                         </div>
                         <div id="diaria_corderos" class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="spinner-border text-primary" role="status">
+                          <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
                           </div>
                         </div>
@@ -61,10 +61,10 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Carneros</div>
                         <div id="diaria_carneros" class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="spinner-border text-primary" role="status">
+                          <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
                           </div>
                         </div>
@@ -83,11 +83,11 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Ovejas</div>
                         
                         <div id="diaria_ovejas" class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="spinner-border text-primary" role="status">
+                          <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
                           </div>
                         </div>
@@ -102,14 +102,14 @@
 
     <!-- Pending Requests Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-success shadow h-100 py-2">
+        <div class="card border-left-primary shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Kg. Lana acumulados</div>
                         <div id="historico_lana" class="h5 mb-0 font-weight-bold text-gray-800">
-                          <div class="spinner-border text-success" role="status">
+                          <div class="spinner-border" role="status">
                             <span class="sr-only">Loading...</span>
                           </div>
                         </div>
@@ -201,8 +201,10 @@
     <div class="col-xl-4 col-lg-5">
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Ocupación del campo (Hectáreas)</h6>
+            <div class="card-header py-3 d-flex flex-row justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Animales y Hectáreas
+                </h6>
+                <span id="span_ocupacion_campo" class="badge"></span>
             </div>
             <!-- Card Body -->
             <div class="card-body">
@@ -221,12 +223,13 @@
                 <div class="mt-4 text-center small">
                     {% if ha_excedidas == 0 %}
                     <span class="mr-2">
-                        <i class=""></i>
+                        Hectáreas ocupadas: {{hectareas_ocupadas}} de {{campo.cant_hectareas}}
                     </span>
                     {% else %}
-                    <span class="mr-2">
-                        <i class="fas fa-circle text-danger"></i> Le faltan {{ha_excedidas}} Ha para sus animales
-                    </span>
+                    <div class="spinner-grow spinner-grow-sm text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    Le faltan {{ha_excedidas}} Ha para sus animales
                     {% endif %}
                 </div>
             </div>
@@ -238,9 +241,8 @@
 <script src="{% static 'js/Chart.BarFunnel.js' %}"></script>
 
 <script>
-    var nombre_meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
-    var lluvias = JSON.parse("{{lluvias_mensuales|safe}}");
-
+    var nombre_meses = {{nombres_meses|safe}}
+    var lluvias = {{lluvias_mensuales|safe}}
     var barChartData = {
         labels: nombre_meses,
         datasets: [
@@ -268,7 +270,7 @@
                         borderColor: '#1b222f',
                         borderSkipped: 'bottom',
                         stepLabel: {
-                            display: true,
+                            display: false, //descomentar esto si mostramos el porcentaje de lluvia
                             fontSize: 13,
                             color: "black"
                         },
@@ -285,7 +287,11 @@
                 scales: {
                     yAxes: [{
                         ticks: {
-                            beginAtZero: true
+                            min: 0,
+                            max: 20,
+                            maxTicksLimit: 40,
+                            beginAtZero: true,
+                            padding: 2,
                         }
                     }]
                 },
@@ -299,17 +305,38 @@
 </script>
 
 <script>
+    var porc_ha_libres = "{{porc_ha_libres|safe}}"
+    var porc_ha_ocupadas = "{{porc_ha_ocupadas|safe}}"
+    var hectareas_ocupadas = "{{hectareas_ocupadas|safe}}"
+    var hectareas_libres = "{{hectareas_libres|safe}}"
 
-    var datos = ["{{ha_ocupadas|safe}}", "{{ha_libres|safe}}"]
-    var nombres = ['% Ha Ocupadas', '% Ha Libres']
+    var datos = [hectareas_ocupadas, hectareas_libres]
+    var nombres = ['Hectáreas ocupadas', 'Hectáreas libres']
+    color = '#1cc88a'
 
+    if (porc_ha_ocupadas <=25){
+        $('#span_ocupacion_campo').addClass('badge-success')
+    }
+    if (porc_ha_ocupadas > 25 & porc_ha_ocupadas <=50){
+        color = '#4e73df'
+        $('#span_ocupacion_campo').addClass('badge-primary')
+    }
+    if (porc_ha_ocupadas >50  & porc_ha_ocupadas <= 75){
+        color = '#f6c23e'
+        $('#span_ocupacion_campo').addClass('badge-warning')
+    }
+    if (porc_ha_ocupadas >75 ){
+        color = '#e74a3b'
+        $('#span_ocupacion_campo').addClass('badge-danger')
+    }
+    $('#span_ocupacion_campo').html('Ocupación al ' +porc_ha_ocupadas+'%')
     const data = {
         labels: nombres,
         datasets: [
             {
                 label: 'Dataset 1',
                 data: datos,
-                backgroundColor: ['#49678d', '#2271b3'],
+                backgroundColor: [color], //'#49678d'],
             }
         ]
     };
@@ -350,6 +377,7 @@
                 borderDash: [2],
                 zeroLineBorderDash: [2]
             },
+            
         },
 
     };
@@ -398,6 +426,7 @@
         $('#diaria_corderos').html('-');
         $('#diaria_ovejas').html('-');
         $('#diaria_carneros').html('-');
+        $('#historico_lana').html('-');
       }
     });
 </script>

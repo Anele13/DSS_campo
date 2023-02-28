@@ -141,38 +141,25 @@ def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
 
     return mejor_año
 
-
-def validar(valor):
-    if valor is None:
-        return 0
-    else:
-        return valor
-
-
-def datos_firebase(campo_id):
-    #TODO no harcodear el id de campo!
-    campo_data = db.reference(f"campo/{campo_id}/historico").get()
-    resul = []
-    if campo_data:
-        for k, v in campo_data.items():
-            v.update({'periodo': datetime.strptime(k, '%Y-%m-%d')})
-            resul.append(v)
-        if resul:
-            return pd.DataFrame(resul)
-    return pd.DataFrame() 
+def df_is_valid(df, prod_colums, clima_columns):
+    """
+    Valida que el dataframe tenga todas las columnas 
+    de produccion y de clima
+    """
+    return all(item in df.columns for item in prod_colums+clima_columns)
 
 
 @login_required(login_url='login')
 def mi_campo(request, query='rinde'):
+    prod_columns = ['periodo','corderos','ovejas','carneros','pariciones','muertes','lana_producida','carne_producida','rinde_lana','finura_lana']
+    clima_columns = ['periodo','temperatura_minima','temperatura_maxima','humedad','velocidad_viento','direccion_viento','mm_lluvia','localidad']
     campo = Campo.objects.get(persona=request.user.persona)
-    df = datos_firebase(campo.id)
+    df = campo.get_firebase_data()
     resultado = {}
     contexto = {}
-    if (not campo) or (df.empty):
-        messages.warning(request, "Debe cargar los datos climáticos de su campo.")
-    else:
-        datos_produccion = df[['periodo','corderos','ovejas','carneros','pariciones','muertes','lana_producida','carne_producida','rinde_lana','finura_lana']]
-        datos_climaticos = df[['periodo','temperatura_minima','temperatura_maxima','humedad','velocidad_viento','direccion_viento','mm_lluvia','localidad']]
+    if campo and not df.empty and df_is_valid(df, prod_columns, clima_columns):
+        datos_produccion = df[prod_columns]
+        datos_climaticos = df[clima_columns]
 
         datos_climaticos['day'] = datos_climaticos.periodo.apply(lambda row:  row.day)
         datos_climaticos['month'] = datos_climaticos.periodo.apply(lambda row:  row.month)
@@ -190,22 +177,18 @@ def mi_campo(request, query='rinde'):
         meses = sorted(list(set([d for d in datos.periodo.dt.month])))
         d_1 = datos
         d_2 = datos_prod
-        
-        # TODO chequear cuando no tenes datos que mandas!! por ejemplo los viento y humedad
-        for mes in meses:  # dejo solo los meses que tengan datos
-            #d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
+        for mes in meses: 
             d2 = d_1[d_1.month == mes]
             nombre_mes = get_nombre_mes(mes)
             resultado[nombre_mes] = {'dias': list(d2.day.to_list()),
-                                     'temperatura_minima': min(d2.temperatura_minima.to_list()), #min([d['temperatura_minima'] if d['temperatura_minima'] is not None else 0 for d in d2]),
-                                     'lluvia': list(d2.mm_lluvia.to_list()), #[d['mm_lluvia'] if d['mm_lluvia'] is not None else 0 for d in d2],
-                                     'temperatura': list(d2.temperatura_minima.to_list()), #[d['temperatura_media'] if d['temperatura_media'] is not None else 0 for d in d2],
-                                     'temperatura_maxima': max(list(d2.temperatura_maxima.to_list())), #max([d['temperatura_maxima'] if d['temperatura_maxima'] is not None else 0 for d in d2]),
-                                     'viento_promedio': round(statistics.mean(list(d2.velocidad_viento.to_list()))), #round(statistics.mean([d['velocidad_max_viento'] if d['velocidad_max_viento'] is not None else 0 for d in d2]), 2),
-                                     'humedad_promedio': round(statistics.mean(list(d2.humedad.to_list())))} #round(statistics.mean([d['humedad'] if d['humedad'] is not None else 0 for d in d2]), 2)}
-
-
-            #d3 = list(filter(lambda d: d['periodo__month'] == mes, d_2))
+                                     'temperatura_minima': min(d2.temperatura_minima.to_list()),
+                                     'lluvia': list(d2.mm_lluvia.to_list()),
+                                     'temperatura': d2.temperatura_minima.to_list(),
+                                     'temperatura_maxima_list': d2.temperatura_maxima.to_list(),
+                                     'temperatura_minima_list': d2.temperatura_minima.to_list(),
+                                     'temperatura_maxima': max(d2.temperatura_maxima.to_list()),
+                                     'viento_promedio': round(statistics.mean(list(d2.velocidad_viento.to_list()))),
+                                     'humedad_promedio': round(statistics.mean(list(d2.humedad.to_list())))}
             d3 = d_2[d_2.month == mes]
             d3.ovejas = d3.ovejas.astype(int)
             d3.corderos = d3.corderos.astype(int)
@@ -230,6 +213,9 @@ def mi_campo(request, query='rinde'):
         contexto['resultado'] = resultado
         contexto['año'] = mejor_año
         contexto['query'] = query
+        contexto['campo'] = campo
+    else:
+        messages.warning(request, "Debe cargar los datos climáticos de su campo.")
     return render(request, "mi_campo.html", contexto)
 
 

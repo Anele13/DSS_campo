@@ -6,7 +6,7 @@ import firebase_admin
 from firebase_admin import db
 from datetime import datetime
 from django.core.cache import cache
-
+from sistema_campo.celery import app
 
 DATABASE_URL = 'https://dss-campo-default-rtdb.firebaseio.com/'
 CREDENTIALS = 'dss-campo-firebase-adminsdk-3mpy4-19ac4df912.json'
@@ -65,7 +65,7 @@ class Campo(models.Model):
             data['ventas'] = response.get('ventas',0)
             data['compras'] = response.get('compras',0)
         return data
-
+    
     def historico_datos_climaticoss(self):
         """
         Obtiene desde firebase el historico de 
@@ -86,3 +86,78 @@ class Campo(models.Model):
         from django.conf import settings
         data = settings.DIARIA
         db.reference(f'campo/{self.id}/diaria/').set(data)
+
+
+    def get_firebase_data(self):
+        """
+        Devuelve toda la informacion de un campo especifico
+        """
+        import pandas as pd
+        campo_data = db.reference(f"campo/{self.id}/historico").get()
+        resul = []
+        if campo_data:
+            for k, v in campo_data.items():
+                v.update({'periodo': datetime.strptime(k, '%Y-%m-%d')})
+                resul.append(v)
+            if resul:
+                return pd.DataFrame(resul)
+        return pd.DataFrame() 
+
+
+    def get_diaria_data(self):
+        """
+        Devuelve toda la informacion diaria de un campo
+        """
+        d = {}
+        _diaria_data = db.reference(f"campo/{self.id}/diaria/").get()
+        if _diaria_data:
+            for k, v in _diaria_data.items():
+                valor = 0
+                try:
+                    valor = int(v)
+                except:
+                    pass 
+                d[k] = valor
+        return d
+
+    @app.task
+    def registrar_info_climatica():
+        now = datetime.now().date().strftime('%Y-%m-%d')
+        for campo in Campo.objects.all():
+            data = campo.clima_actual()
+            if data:
+                data.pop('temperatura') #Usado porque el campo temperatura no sirve, es la media
+                _url = f"campo/{campo.id}/historico/{now}"
+                _historico_data = db.reference(_url).get()
+                if _historico_data:
+                    _historico_data.update(data)
+                    db.reference(_url).set(_historico_data)
+                else: 
+                    _info_produccion = {}
+                    
+                    _diaria_data = db.reference(f"campo/{campo.id}/diaria/").get()
+                    if _diaria_data:
+                        for k, v in _diaria_data.items():
+                            valor = 0
+                            try:
+                                valor = int(v)
+                            except:
+                                pass 
+                            _info_produccion[k] = valor
+                    else:
+                        _info_produccion['corderos'] = 0
+                        _info_produccion['ovejas'] = 0
+                        _info_produccion['carneros'] = 0
+                   
+                    _info_produccion['finura_lana'] = 0
+                    _info_produccion['lana_producida'] = 0
+                    _info_produccion['carne_producida'] = 0
+                    _info_produccion['muertes'] = 0
+                    _info_produccion['pariciones'] = 0
+                    _info_produccion['rinde_lana'] = 0
+                    _info_produccion.update(data)
+                    db.reference(_url).set(_info_produccion)
+                    
+
+
+

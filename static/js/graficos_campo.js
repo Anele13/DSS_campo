@@ -30,10 +30,10 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
 
 function agregar_info_tabla_lateral(mes, temp_min, temp_max, humedad, viento) {
-  $('#temperatura_min_' + mes).html(temp_min)
-  $('#temperatura_max_' + mes).html(temp_max)
-  $('#humedad_' + mes).html(humedad)
-  $('#viento_' + mes).html(viento)
+  $('#temperatura_min_' + mes).html(temp_min + ' °')
+  $('#temperatura_max_' + mes).html(temp_max + ' °')
+  $('#humedad_' + mes).html(humedad + ' %')
+  $('#viento_' + mes).html(viento + ' m/s')
 }
 
 
@@ -123,8 +123,8 @@ function crear_grafico_baras(mes, dias, lluvia) {
         }],
         yAxes: [{
           ticks: {
-            min: 1,
-            max: 40,
+            min: 0,
+            max: 20,
             maxTicksLimit: 40,
             padding: 2,
             // Include a dollar sign in the ticks
@@ -167,35 +167,48 @@ function crear_grafico_baras(mes, dias, lluvia) {
   });
 }
 
+const CHART_COLORS = {
+  red: 'rgb(255, 99, 132)',
+  orange: 'rgb(255, 159, 64)',
+  yellow: 'rgb(255, 205, 86)',
+  green: 'rgb(75, 192, 192)',
+  blue: 'rgb(54, 162, 235)',
+  purple: 'rgb(153, 102, 255)',
+  grey: 'rgb(201, 203, 207)'
+};
 
-function crear_grafico_lineas(mes, dias, temperaturas) {
+function crear_grafico_lineas(mes, dias, temperaturas_min, temperaturas_max) {
   var datos = []
   for (let index = 0; index < dias.length; index++) {
     const element = dias[index];
-    datos.push('Dia: ' + element)
+    datos.push(element + ' de ' + mes)
 
   }
   var ctx = document.getElementById("myAreaChart_" + mes);
   var myLineChart = new Chart(ctx, {
     type: 'line',
-    data: {
+
+
+    data:  {
       labels: datos,
-      datasets: [{
-        label: "Temperatura",
-        lineTension: 0.3,
-        backgroundColor: "rgba(78, 115, 223, 0.09)",
-        borderColor: "#49678d",
-        pointRadius: 3,
-        pointBackgroundColor: "rgba(78, 115, 223, 1)",
-        pointBorderColor: "#49678d",
-        pointHoverRadius: 3,
-        pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
-        pointHoverBorderColor: "#49678d",
-        pointHitRadius: 10,
-        pointBorderWidth: 2,
-        data: temperaturas,
-      }],
-    },
+      datasets: [
+
+          {
+              label: 'Maxima',
+              data: temperaturas_max,
+              borderColor: CHART_COLORS.blue,
+   
+          },
+          {
+            label: 'Minima',
+            data: temperaturas_min,
+            borderColor: CHART_COLORS.red,
+        },
+      ]
+  },
+
+
+    
     options: {
       maintainAspectRatio: false,
       layout: {
@@ -221,11 +234,13 @@ function crear_grafico_lineas(mes, dias, temperaturas) {
         }],
         yAxes: [{
           ticks: {
-            maxTicksLimit: 5,
+            min: 0,
+            max: 40,
+            maxTicksLimit: 20,
             padding: 10,
             // Include a dollar sign in the ticks
             callback: function (value, index, values) {
-              return number_format(value) + '°';
+              return value + '°';
             }
           },
           gridLines: {
@@ -257,7 +272,7 @@ function crear_grafico_lineas(mes, dias, temperaturas) {
         callbacks: {
           label: function (tooltipItem, chart) {
             var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-            return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + '°';
+            return datasetLabel + ': ' + tooltipItem.yLabel + '°';
           }
         }
       }

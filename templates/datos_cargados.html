@@ -128,7 +128,12 @@
 
 
 
-
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+  <h1 class="h3 mb-0 text-gray-800">Datos cargados</h1>
+</div>
+<p class="mb-4">Información actual e histórica almacenada de su campo</p>
+<hr class="sidebar-divider my-0">
+<br>
 
 <div class="card border-left-info shadow h-100 py-2">
   <div class="card-body">
@@ -245,6 +250,7 @@
           data-show-columns="true"
           data-show-columns-toggle-all="true"
           data-show-export="true"
+          data-export-data-type="true"
           data-detail-formatter="detailFormatter"
           data-minimum-count-columns="2"
           data-show-pagination-switch="true"
@@ -322,6 +328,7 @@
 
   function initTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
+      //exportDataType: 'all',
       height: 550,
       locale: 'es-AR',
       columns: [{title: 'state', field:'state', checkbox: 'true',  formatter: checkboxFormatter},
@@ -442,13 +449,6 @@
           'carne_producida': $('#carne_producida').val(),
           'rinde_lana': $('#rinde_lana').val(),
           'finura_lana': $('#finura_lana').val(),
-          'temperatura_minima':0,
-          'temperatura_maxima':0,
-          'humedad':0,
-          'velocidad_viento':0,
-          'direccion_viento':0,
-          'mm_lluvia':0,
-          'localidad':'sin localidad',
         }
         var url = 'campo/'+campo_id+'/historico/'+fecha
         var dbRef = ref(db, url);
@@ -482,6 +482,8 @@
             data_dict[dato] = dict2[dato]
           }
           data_list.push(data_dict)
+          console.log("asdasdasdasdasdasdasdasd")
+          console.log(data_list)
         }
         $table.bootstrapTable('load', data_list)
         $table.bootstrapTable('hideLoading')

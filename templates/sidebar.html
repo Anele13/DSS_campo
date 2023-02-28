@@ -22,19 +22,7 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Heading -->
-    <div class="sidebar-heading"><br>Carga de datos</div>
-
-    <!-- Nav Item - Novedades Carga de Datos -->
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'datos_cargados' %}">
-            <i class="fas fa-fw fa-cloud-upload-alt"></i>
-            <span>Datos cargados</span>
-        </a>
-    </li>
-
-    <!-- Divider -->
-    <hr class="sidebar-divider my-0">
+   
     <!-- Heading -->
     <div class="sidebar-heading"><br>Mi campo</div>
 
@@ -45,7 +33,18 @@
             <span>¿Cómo está mi campo?</span>
         </a>
     </li>
+    <hr class="sidebar-divider my-0">
+     <!-- Heading -->
+     <div class="sidebar-heading"><br>Carga de datos</div>
 
+     <!-- Nav Item - Novedades Carga de Datos -->
+     <li class="nav-item">
+         <a class="nav-link" href="{% url 'datos_cargados' %}">
+             <i class="fas fa-fw fa-cloud-upload-alt"></i>
+             <span>Datos cargados</span>
+         </a>
+     </li>
+ 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
     <!-- Heading -->
@@ -53,17 +52,21 @@
     <!-- Nav Item - Novedades Mi campo -->
     <li class="nav-item">
         <a class="nav-link" href="{% url 'predecir' %}">
-            <i class="fas fa-fw fa-cloud-sun"></i>
-            <span>Predicción</span>
+            <i class="fas fa-fw fa-robot"></i>
+            <span>Estimaciones ML</span>
         </a>
     </li>
 
     <hr class="sidebar-divider my-0">
 
-
-    <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+    <div class="sidebar-heading text-center d-none d-md-inline">
+        <br>
+        <div class="text-center d-none d-md-inline">
+            <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        </div>
     </div>
+
+    
 
 </ul>
 <!-- End of Sidebar -->

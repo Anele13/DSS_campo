@@ -19,7 +19,6 @@ def get_nombre_mes(numero_mes):
     return meses[numero_mes-1]
 
 def devolver_hacienda(datos_produccion):
-
     ultimo_registro = datos_produccion.order_by('-periodo')[0]
     return ultimo_registro.cantidad_ovejas, ultimo_registro.cantidad_carneros, ultimo_registro.cantidad_corderos, ultimo_registro.cantidad_muertes_corderos
 
@@ -34,14 +33,14 @@ def calcular_exceso(animales_ideales, animales_reales):
   return round(abs(cantidad_ha_faltante))
 
 def calcular_ocupacion_campo(campo):
-
-    #ultimo_registro = datos_produccion.order_by('-periodo')[0]
-    #animales_reales = ultimo_registro.cantidad_corderos + \
-    #ultimo_registro.cantidad_ovejas+ultimo_registro.cantidad_carneros
-    
     ha_campo = campo.cant_hectareas
     animales_ideales = ha_campo * CANT_ANIMALES_HA
-    animales_reales = 5680
+    diaria = campo.get_diaria_data()
+    animales_reales = 0
+    if diaria:
+        animales_reales = sum([v for k, v in diaria.items() if k in ['carneros', 'corderos', 'ovejas']])
+
+    hectareas_ocupadas = round(animales_reales / CANT_ANIMALES_HA)
     porcentaje_ha_libres = calcular_porcentaje_libre(animales_ideales, animales_reales)
     porcentaje_ha_ocupadas = 100 - porcentaje_ha_libres
     cantidad_ha_faltante = 0
@@ -50,37 +49,23 @@ def calcular_ocupacion_campo(campo):
         cantidad_ha_faltante = calcular_exceso(animales_ideales, animales_reales)
         porcentaje_ha_libres = 0
         porcentaje_ha_ocupadas = 100
+    try:
+        return round(porcentaje_ha_ocupadas,2), round(porcentaje_ha_libres,2), round(cantidad_ha_faltante,2), hectareas_ocupadas
+    except:
+        return 0,0,0
 
-    return porcentaje_ha_ocupadas, porcentaje_ha_libres, cantidad_ha_faltante
-
-
-def devolver_lluvias_mensuales(campo=None, datos_produccion=None, datos_climaticos=None):
-
+def devolver_lluvias_mensuales(campo=None):
+    import locale
+    locale.setlocale(locale.LC_ALL, ("es_ES", "UTF-8"))
     nombres_meses = []
     lluvias_mensuales = []
-
-    return ['Enero','Febrero'], [10, 15,32, 34, 1, 23, 5, 5]
-
-    anio_actual = datos_produccion.values(
-        'periodo__year').order_by('-periodo')[0]['periodo__year']
-    datos_climaticos_anio_actual = datos_climaticos.filter(
-        periodo__year=anio_actual).order_by('periodo')
-    datos_climaticos_meses = sorted(datos_climaticos_anio_actual.annotate(month=ExtractMonth(
-        'periodo')).values_list('month', flat=True).distinct())
-
-    d_1 = datos_climaticos_anio_actual.values('periodo__month', 'mm_lluvia',)
-
-    for mes in list(set(datos_climaticos_meses)):
-        d2 = list(filter(lambda d: d['periodo__month'] == mes, d_1))
-        nombres_meses.append(get_nombre_mes(mes))
-        lluvia_acumulada = round(sum([d['mm_lluvia'] for d in d2]), 2)
-        lluvias_mensuales.append(lluvia_acumulada)
-
-    join = list(zip(nombres_meses, lluvias_mensuales))
-    join.sort(key=lambda tup: tup[1], reverse=True)
-    lluvias_mensuales = [tup[1] for tup in join]
-    nombres_meses = [tup[0] for tup in join]
-
+    df = campo.get_firebase_data()
+    if not df.empty and all(item in df.columns for item in ['periodo', 'mm_lluvia']):
+        año_actual = df.periodo.max().year
+        df = df[df.periodo.dt.year == año_actual].groupby(df.periodo.dt.month)['mm_lluvia'].sum().reset_index()
+        df.periodo = df.periodo.apply(lambda mes: datetime.strptime(str(mes), '%m').strftime("%B").capitalize())
+        nombres_meses = df.periodo.to_list()
+        lluvias_mensuales = df.mm_lluvia.to_list()
     return nombres_meses, lluvias_mensuales
 
 
@@ -91,8 +76,10 @@ def inicio(request):
     """
     campo = Campo.objects.get(persona=request.user.persona)
     datos_climaticos = campo.clima_actual()
-    ha_ocupadas, ha_libres, ha_excedidas = calcular_ocupacion_campo(campo)
-    nombres_meses, lluvias_mensuales = devolver_lluvias_mensuales()
+    porc_ha_ocupadas, porc_ha_libres, ha_excedidas, hectareas_ocupadas = calcular_ocupacion_campo(campo)
+    nombres_meses, lluvias_mensuales = devolver_lluvias_mensuales(campo)
+    hectareas_libres = campo.cant_hectareas - hectareas_ocupadas
+    hectareas_libres = hectareas_libres if hectareas_libres >=0 else 0
     contexto={
         'campo_id': campo.id, 
         'localidad': datos_climaticos.get('localidad'),
@@ -100,11 +87,14 @@ def inicio(request):
         'viento': datos_climaticos.get('velocidad_viento'),
         'humedad': datos_climaticos.get('humedad'),
         'timestamp': str(datetime.now().strftime('%H:%M')),
-        'ha_ocupadas': ha_ocupadas,
-        'ha_libres': ha_libres, 
+        'porc_ha_ocupadas': porc_ha_ocupadas,
+        'porc_ha_libres': porc_ha_libres, 
         'ha_excedidas': ha_excedidas,
+        'hectareas_ocupadas': hectareas_ocupadas,
+        'hectareas_ocupadas': hectareas_ocupadas,
+        'hectareas_libres': hectareas_libres,
         'campo': campo,
-        'nombres_meses': nombres_meses,
+        'nombres_meses': json.dumps(nombres_meses),
         'lluvias_mensuales': lluvias_mensuales,
     }
     #print(datos_climaticos)
