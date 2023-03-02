@@ -222,14 +222,16 @@
                 </div>
                 <div class="mt-4 text-center small">
                     {% if ha_excedidas == 0 %}
-                    <span class="mr-2">
-                        Hectáreas ocupadas: {{hectareas_ocupadas}} de {{campo.cant_hectareas}}
-                    </span>
+                        <span id="span_hectareas_ocupadas" class="mr-2">
+                            Hectáreas ocupadas: {{hectareas_ocupadas}} de {{campo.cant_hectareas}}
+                        </span>
                     {% else %}
-                    <div class="spinner-grow spinner-grow-sm text-danger" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                    Le faltan {{ha_excedidas}} Ha para sus animales
+                        <span id="span_hectareas_ocupadas" class="mr-2">
+                            <div class="spinner-grow spinner-grow-sm text-danger" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            Le faltan {{ha_excedidas}} Ha para sus animales
+                        </span>
                     {% endif %}
                 </div>
             </div>
@@ -305,7 +307,59 @@
 </script>
 
 <script>
-    var porc_ha_libres = "{{porc_ha_libres|safe}}"
+    function update_grafico_ocupacion(animales_reales){
+        var ha_campo = "{{campo.cant_hectareas}}"
+        var CANT_ANIMALES_HA = 15
+        var animales_ideales = ha_campo * CANT_ANIMALES_HA
+        var hectareas_ocupadas = Math.round(animales_reales / CANT_ANIMALES_HA)
+        var porcentaje_ha_libres = Math.round((animales_ideales - animales_reales)/animales_ideales * 100) //round a todo
+        var porcentaje_ha_ocupadas = 100 - porcentaje_ha_libres
+        var cantidad_ha_faltante = 0
+
+        if (porcentaje_ha_ocupadas >= 100){
+            cantidad_ha_faltante = Math.round(Math.abs((animales_ideales - animales_reales)/CANT_ANIMALES_HA)) // round + asb
+            porcentaje_ha_libres = 0
+            porcentaje_ha_ocupadas = 100
+        }
+        var _hectareas_libres = ha_campo - hectareas_ocupadas
+        var hectareas_libres = _hectareas_libres >= 0? _hectareas_libres : 0
+        color = '#1cc88a'
+        $('#span_ocupacion_campo').removeClass()
+        if (porcentaje_ha_ocupadas <=25){
+            $('#span_ocupacion_campo').addClass('badge badge-success')
+        }
+        if (porcentaje_ha_ocupadas > 25 & porcentaje_ha_ocupadas <=50){
+            color = '#4e73df'
+            $('#span_ocupacion_campo').addClass('badge badge-primary')
+        }
+        if (porcentaje_ha_ocupadas >50  & porcentaje_ha_ocupadas <= 75){
+            color = '#f6c23e'
+            $('#span_ocupacion_campo').addClass('badge badge-warning')
+        }
+        if (porcentaje_ha_ocupadas >75 ){
+            color = '#e74a3b'
+            $('#span_ocupacion_campo').addClass('badge badge-danger')
+        }
+        if (cantidad_ha_faltante == 0){
+            $('#span_hectareas_ocupadas').html('')
+            $('#span_hectareas_ocupadas').html('Hectáreas ocupadas: ' + hectareas_ocupadas + ' de ' + ha_campo)
+        }
+        else{
+            var str = `  
+            <div class="spinner-grow spinner-grow-sm text-danger" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+            Le faltan `+ cantidad_ha_faltante + ` Ha para sus animales`
+            $('#span_hectareas_ocupadas').html('')
+            $('#span_hectareas_ocupadas').html(str)       
+        }
+        $('#span_ocupacion_campo').html('')
+        $('#span_ocupacion_campo').html('Ocupación al ' +porcentaje_ha_ocupadas+'%')
+        window.myDoughnut.data.datasets[0] = {label: 'Dataset 1', data: [hectareas_ocupadas, hectareas_libres],backgroundColor: [color]}
+        window.myDoughnut.update()
+    }
+</script>
+<script>
     var porc_ha_ocupadas = "{{porc_ha_ocupadas|safe}}"
     var hectareas_ocupadas = "{{hectareas_ocupadas|safe}}"
     var hectareas_libres = "{{hectareas_libres|safe}}"
@@ -330,6 +384,7 @@
         $('#span_ocupacion_campo').addClass('badge-danger')
     }
     $('#span_ocupacion_campo').html('Ocupación al ' +porc_ha_ocupadas+'%')
+
     const data = {
         labels: nombres,
         datasets: [
@@ -408,6 +463,7 @@
     console.log(fecha)
     console.log(campo_id)
     const campoRef = ref(db, 'campo/'+campo_id+'/'+fecha);
+    var contador = 0
     onValue(campoRef, (snapshot) => {
     if (snapshot.exists()){
         const data_diaria = snapshot.child('diaria').val();
@@ -421,6 +477,12 @@
             cant_lana = cant_lana + parseInt(dict2['lana_producida'])
         }
         $('#historico_lana').html(cant_lana);
+        console.log(data_diaria)
+        var animales_reales = parseInt(data_diaria.corderos) + parseInt(data_diaria.ovejas) + parseInt(data_diaria.carneros)
+        if (contador > 0){
+            update_grafico_ocupacion(animales_reales)
+        }
+        contador = contador + 1
       }
       else{
         $('#diaria_corderos').html('-');
@@ -428,6 +490,7 @@
         $('#diaria_carneros').html('-');
         $('#historico_lana').html('-');
       }
+      
     });
 </script>
 
