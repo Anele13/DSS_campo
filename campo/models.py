@@ -7,6 +7,14 @@ from firebase_admin import db
 from datetime import datetime
 from django.core.cache import cache
 from sistema_campo.celery import app
+from django.contrib.staticfiles.storage import staticfiles_storage
+import os 
+from sklearn.ensemble import RandomForestRegressor
+from skforecast.ForecasterAutoreg import ForecasterAutoreg
+from sklearn import linear_model
+from statsmodels.iolib.smpickle import save_pickle
+import pandas as pd 
+
 
 DATABASE_URL = 'https://dss-campo-default-rtdb.firebaseio.com/'
 CREDENTIALS = 'dss-campo-firebase-adminsdk-3mpy4-19ac4df912.json'
@@ -157,7 +165,94 @@ class Campo(models.Model):
                     _info_produccion['rinde_lana'] = 0
                     _info_produccion.update(data)
                     db.reference(_url).set(_info_produccion)
-                    
+
+    def create_and_update_ml_models(self):
+        """
+        Actualiza la informacion de un campo
+        sobre sus respectivos modelos. Si no existen
+        los modelos, los crea.
+        """
+        model_columns = ['periodo',"mm_lluvia",'lana_producida','ovejas','corderos','carneros','finura_lana', 'rinde_lana']
+        df = self.get_firebase_data()
+        if not df.empty and all(c in df.columns.to_list() for c in model_columns):
+            df = df.fillna(0)
+            df = df[model_columns]
+            df['total_ovinos'] = df.apply(lambda row: int(row.ovejas) + int(row.carneros) + int(row.corderos), axis=1)
+            df.mm_lluvia = df.mm_lluvia.astype('float')
+            df.finura_lana = df.finura_lana.astype('float')
+            df.rinde_lana = df.rinde_lana.astype('float')
+            df.total_ovinos = df.total_ovinos.astype('int64')
+            df.lana_producida = df.lana_producida.astype('int64')
+            df.total_ovinos = df.total_ovinos.astype('int64')
+            df.ovejas = df.ovejas.astype('int64')
+            df.corderos = df.corderos.astype('int64')
+        
+            if not self.modelos_ml.all(): #Si no existen los modelos los creo.
+                MLModel.objects.create(campo=self, tipo=MLModel.RINDE)
+                MLModel.objects.create(campo=self, tipo=MLModel.FINURA)
+                MLModel.objects.create(campo=self, tipo=MLModel.CORDEROS)
+                MLModel.objects.create(campo=self, tipo=MLModel.LANA)
+
+            for modelo in self.modelos_ml.all():
+                modelo.update_model_data(df)
+        
+    @app.task
+    def actualizar_modelos_ml():
+        """
+        Actualiza los modelos de ML con los ultimos
+        datos existentes del campo en firebase
+        """
+        qs_campo = Campo.objects.all()
+        if qs_campo:
+            for campo in qs_campo:
+                campo.create_and_update_ml_models()
+
+class MLModel(models.Model):
+    LANA = 'lana'
+    CORDEROS = 'corderos'
+    FINURA = 'finura'
+    RINDE = 'rinde'
+
+    tipo_choices = (
+        (LANA, LANA),
+        (CORDEROS, CORDEROS),
+        (FINURA, FINURA),
+        (RINDE, RINDE),
+    )
+    created_time = models.DateTimeField(auto_now_add=True)
+    updated_time = models.DateTimeField(auto_now=True)
+    campo = models.ForeignKey(Campo, related_name='modelos_ml', on_delete=models.CASCADE)
+    file_path = models.FilePathField(path=staticfiles_storage.path('data/'))
+    tipo = models.CharField(choices=tipo_choices, max_length=10)
 
 
+    def __str__(self):
+        return f'modelo_{self.tipo}_campo_{self.campo.id}'
+    
 
+    def update_model_data(self, dataset):
+        """
+        Actualiza los modelos ML del campo asociado 
+        con los nuevos datos provenientes desde firebase
+        """
+        model = None 
+        _lags = 1
+        name = staticfiles_storage.path(f'data/{self.__str__()}.pickle')   
+
+        if self.tipo == MLModel.LANA or self.tipo == MLModel.CORDEROS:
+            model = linear_model.LinearRegression()
+            if self.tipo == MLModel.LANA:
+                model.fit(dataset[["mm_lluvia", "total_ovinos"]], dataset[['lana_producida']])
+            else:
+                model.fit(dataset[["mm_lluvia", "ovejas"]], dataset[['corderos']])
+        
+        if self.tipo == MLModel.RINDE or self.tipo == MLModel.FINURA:
+            model = ForecasterAutoreg(regressor=RandomForestRegressor(random_state=123), lags=_lags)
+            if self.tipo == MLModel.FINURA:
+                model.fit(y=dataset['finura_lana'])
+            else:
+                model.fit(y=dataset['rinde_lana'])
+
+        save_pickle(model, name)
+        self.file_path = name
+        self.save()
