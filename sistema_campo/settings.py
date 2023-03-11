@@ -187,7 +187,13 @@ TELEGRAM_BOT_TOKEN = "5356687027:AAFH9gZwDWnpx_IK5r7fYN8AtDJMuib6pJQ"
 DIARIA = {
     'carneros': 0,
     'corderos': 0,
-    'ovejas': 0
+    'ovejas': 0,
+    'carne_producida': 0,
+    'finura_lana': 0,
+    'lana_producida': 0,
+    'muertes': 0,
+    'pariciones': 0,
+    'rinde_lana': 0,
 }
 
 CELERY_BROKER_URL = 'redis://localhost:6379'

@@ -68,6 +68,7 @@ def get_mejor_año_por_condicion(query, datos_produccion, datos_climaticos):
             values[0]
 
     if query == 'temperatura':
+        datos_climaticos = datos_climaticos[datos_climaticos.month.isin([1,2,3])]
         datos_climaticos.temperatura_maxima = datos_climaticos.temperatura_maxima.astype(int)
         mejor_año = datos_climaticos[['year','temperatura_maxima']].\
             groupby("year").\
@@ -158,6 +159,7 @@ def mi_campo(request, query='rinde'):
     resultado = {}
     contexto = {}
     if campo and not df.empty and df_is_valid(df, prod_columns, clima_columns):
+        df = df.fillna(0)
         datos_produccion = df[prod_columns]
         datos_climaticos = df[clima_columns]
 
