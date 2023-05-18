@@ -11,4 +11,5 @@ urlpatterns = [
     path('perfil', perfil_view, name="perfil"),
     path('edicion', editar_perfil_view, name="edicion"),
     path('telegram_users', telegram_users, name="telegram_users"),
+    path('desvincular_usuario', desvincular_user_telegram, name="desvincular_usuario"),
     ]

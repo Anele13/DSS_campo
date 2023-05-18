@@ -134,3 +134,14 @@ def telegram_users(request):
     else:
         context['telegram_users'] = user.persona.telegramuser_set.all()
     return render(request, 'telegram_users.html', context)
+
+
+@login_required(login_url='login')
+def desvincular_user_telegram(request):
+    user = request.user
+    telegram_users = user.persona.telegramuser_set.all()
+    if request.method == 'GET':
+        for t in telegram_users:
+            t.delete_from_firebase()
+            t.delete()
+    return redirect('perfil')

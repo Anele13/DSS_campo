@@ -1,6 +1,6 @@
 {% extends 'site_content.html' %}
 {% load static %}
-
+{% load clima_actual %}
 
 <!-- Escribir en este bloque todo lo que haga falta-->
 {% block site_content %}
@@ -39,7 +39,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" action="alta" id="modalAltaDatosInicialesLabel"></h5>
+        <h5 class="modal-title" action="alta" id="modalAltaDatosInicialesLabel">Actualizacion de datos diarios</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -49,19 +49,37 @@
         <div class="form-group">
           <div class="form-group row">
             
-          <div class="col-sm-4 mb-4 mb-sm-0">
-            <label for="">Corderos</label>
-            <input type="number" value=0 name="ovejas" id="corderos_editable" class="form-control">
+            <div class="col-sm-6 mb-6 mb-sm-0">
+              <label for="">Corderos</label>
+              <input type="number" value=0 name="ovejas" id="corderos_editable" class="form-control">
+
+              <label for="">Ovejas</label>
+              <input type="number" value=0 name="ovejas" id="ovejas_editable" class="form-control">
+              
+              <label for="">Carneros</label>
+              <input type="number" value=0 name="ovejas" id="carneros_editable" class="form-control">
+
+              <label for="">Muertes</label>
+              <input type="number" value=0 name="ovejas" id="muertes_editable" class="form-control">
+
+              <label for="">Pariciones</label>
+              <input type="number" value=0 name="ovejas" id="pariciones_editable" class="form-control">
+
+            </div>
+            <div class="col-sm-6 mb-6 mb-sm-0">
+              <label for="">Rinde Lana</label>
+              <input type="number" value=0 name="ovejas" id="rinde_lana_editable" class="form-control">
+
+              <label for="">Finura Lana</label>
+              <input type="number" value=0 name="ovejas" id="finura_lana_editable" class="form-control">
+
+              <label for="">Kg Carne</label>
+              <input type="number" value=0 name="ovejas" id="carne_editable" class="form-control">
+
+              <label for="">Kg Lana</label>
+              <input type="number" value=0 name="ovejas" id="lana_producida_editable" class="form-control">
+            </div>
           </div>
-          <div class="col-sm-4 mb-4 mb-sm-0">
-            <label for="">Carneros</label>
-            <input type="number" value=0 name="ovejas" id="carneros_editable" class="form-control">
-          </div>
-          <div class="col-sm-4 mb-4 mb-sm-0">
-            <label for="">Ovejas</label>
-            <input type="number" value=0 name="ovejas" id="ovejas_editable" class="form-control">
-          </div>
-        </div>
 
         </div>
 
@@ -98,7 +116,7 @@
               <div class="col-sm-6 mb-3 mb-sm-0">
                 <div class="form-group">
                   <label for="">Periodo</label>
-                  <input id="selector_periodo" type="date" name="date" class="form-control form-control-user" max='{% now "Y-m-d" %}'/>
+                  <input id="selector_periodo" type="date" name="date" class="form-control form-control-user" max='{% yesterday %}'/>
                 </div>
                 {% for columna in columnas1 %}
                 <div class="form-group">
@@ -144,7 +162,7 @@
                 
                 <div class="row align-items-center">
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-2 col-md-2 mb-2">
                           <div class="card  shadow h-100 py-2">
                               <div class="card-body">
                                   <div class="row no-gutters align-items-center">
@@ -158,16 +176,13 @@
                                             </div>
                                           </div>
                                       </div>
-                                      <div class="col-auto">
-                                        <img src="{% static 'img/cordero.png' %}" class="img-responsive" width="55" height="55" alt="">
-                                      </div>
                                   </div>
                               </div>
                           </div>
                       </div>
 
                       <!-- Earnings (Monthly) Card Example -->
-                      <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="col-xl-2 col-md-2 mb-2">
                           <div class="card  shadow h-100 py-2">
                               <div class="card-body">
                                   <div class="row no-gutters align-items-center">
@@ -180,9 +195,6 @@
                                             </div>
                                           </div>
                                       </div>
-                                      <div class="col-auto">
-                                        <img src="{% static 'img/carnero.png' %}" class="img-responsive" width="55" height="55" alt="">
-                                      </div>
                                   </div>
                               </div>
                           </div>
@@ -190,7 +202,7 @@
 
 
                       <!-- Pending Requests Card Example -->
-                      <div class="col-xl-3 col-md-6 mb-4">
+                      <div class="col-xl-2 col-md-2 mb-2">
                           <div class="card  shadow h-100 py-2">
                               <div class="card-body">
                                   <div class="row no-gutters align-items-center">
@@ -204,21 +216,133 @@
                                             </div>
                                           </div>
                                       </div>
-                                      <div class="col-auto">
-                                        <img src="{% static 'img/oveja.png' %}" class="img-responsive" width="55" height="55" alt="">
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  <!----------------------------------------------------------------------->
+
+                    <div class="col-xl-2 col-md-2 mb-2">
+                      <div class="card  shadow h-100 py-2">
+                          <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                  <div class="col mr-2">
+                                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                          Kg Carne</div>
+                                      
+                                      <div id="diaria_carne_producida" class="h5 mb-0 font-weight-bold text-gray-800">
+                                        <div class="spinner-border" role="status">
+                                          <span class="sr-only">Loading...</span>
+                                        </div>
                                       </div>
                                   </div>
                               </div>
                           </div>
                       </div>
-                  
+                  </div>
+                  <div class="col-xl-2 col-md-2 mb-2">
+                    <div class="card  shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Finura Lana</div>
+                                    
+                                    <div id="diaria_finura_lana" class="h5 mb-0 font-weight-bold text-gray-800">
+                                      <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-2 col-md-2 mb-2">
+                  <div class="card  shadow h-100 py-2">
+                      <div class="card-body">
+                          <div class="row no-gutters align-items-center">
+                              <div class="col mr-2">
+                                  <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                      Kg Lana</div>
+                                  
+                                  <div id="diaria_lana_producida" class="h5 mb-0 font-weight-bold text-gray-800">
+                                    <div class="spinner-border" role="status">
+                                      <span class="sr-only">Loading...</span>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+
+
+              </div>
+              <div class="row align-items-center">
+                  <div class="col-xl-2 col-md-2 mb-2">
+                    <div class="card  shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Muertes</div>
+                                    
+                                    <div id="diaria_muertes" class="h5 mb-0 font-weight-bold text-gray-800">
+                                      <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-md-2 mb-2">
+                    <div class="card  shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Nacimientos</div>
+                                    
+                                    <div id="diaria_pariciones" class="h5 mb-0 font-weight-bold text-gray-800">
+                                      <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-2 col-md-2 mb-2">
+                    <div class="card  shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                        Rinde</div>
+                                    
+                                    <div id="diaria_rinde_lana" class="h5 mb-0 font-weight-bold text-gray-800">
+                                      <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
 
 
               </div>
           </div>
           <div class="col-auto">
-              <button id="btn_editar" class="pull-right btn btn-sm btn-secondary">
+              <button id="btn_editar" class="pull-right btn btn-sm btn-primary">
                 <i class="fas fa-edit"></i>
+                Editar
               </button>
           </div>
       </div>
@@ -256,7 +380,6 @@
           data-show-pagination-switch="true"
           data-pagination="true"
           data-page-list="[10, 25, 50, 100, all]"
-          data-show-footer="true"
           data-response-handler="responseHandler"
           class= 'table table-striped'
           data-show-checkbox="true"
@@ -355,8 +478,8 @@
 
     $table.on('click-row.bs.table',
       function(row, $element, field){
-        $('.modal-title').html('Actualice sus datos') 
-        $('.modal-title').attr('action','actualizar') 
+        $('#modalAltaDatosLabel').html('Actualice sus datos') 
+        $('#modalAltaDatosLabel').attr('action','actualizar') 
         $('#corderos').val($element.corderos)
         $('#ovejas').val($element.ovejas)
         $('#carneros').val($element.carneros)
@@ -374,9 +497,15 @@
 
     $alta_datos_iniciales.click(function(){
       var data = {
-        'carneros': $('#carneros_editable').val(),
-        'corderos': $('#corderos_editable').val(),
-        'ovejas': $('#ovejas_editable').val()
+        'carneros': parseInt($('#carneros_editable').val())>= 0?parseInt($('#carneros_editable').val()):0,
+        'corderos': parseInt($('#corderos_editable').val())>= 0?parseInt($('#corderos_editable').val()):0,
+        'ovejas': parseInt($('#ovejas_editable').val())>= 0?parseInt($('#ovejas_editable').val()):0,
+        'muertes': parseInt($("#muertes_editable").val())>= 0?parseInt($("#muertes_editable").val()):0,
+        'pariciones': parseInt($("#pariciones_editable").val())>= 0?parseInt($("#pariciones_editable").val()):0,
+        'rinde_lana': parseInt($("#rinde_lana_editable").val())>= 0?parseInt($("#rinde_lana_editable").val()):0,
+        'finura_lana': parseInt($("#finura_lana_editable").val())>= 0?parseInt($("#finura_lana_editable").val()):0,
+        'carne_producida': parseInt($("#carne_editable").val())>= 0?parseInt($("#carne_editable").val()):0,
+        'lana_producida': parseInt($("#lana_producida_editable").val())>= 0?parseInt($("#lana_producida_editable").val()):0,
       }
       var url = 'campo/'+campo_id+'/diaria/'
       var dbRef = ref(db, url);
@@ -388,6 +517,14 @@
       $('#corderos_editable').val($('#diaria_corderos').html())
       $('#carneros_editable').val($('#diaria_carneros').html())
       $('#ovejas_editable').val($('#diaria_ovejas').html())
+      
+      $("#muertes_editable").val($("#diaria_muertes").html());
+      $("#pariciones_editable").val($("#diaria_pariciones").html());
+      $("#rinde_lana_editable").val($("#diaria_rinde_lana").html());
+      $("#finura_lana_editable").val($("#diaria_finura_lana").html());
+      $("#carne_editable").val($("#diaria_carne_producida").html());
+      $("#lana_producida_editable").val($("#diaria_lana_producida").html());
+
       $('#modalAltaDatosIniciales').modal('show')
     })
 
@@ -408,8 +545,8 @@
 
     $openModal.click(function () {
       $('#selector_periodo').removeAttr('disabled')
-      $('.modal-title').html('Alta de datos de produccion') 
-      $('.modal-title').attr('action','alta') 
+      $('#modalAltaDatosLabel').html('Alta de datos de produccion') 
+      $('#modalAltaDatosLabel').attr('action','alta') 
       $('#corderos').val(0)
       $('#ovejas').val(0)
       $('#carneros').val(0)
@@ -425,30 +562,30 @@
 
 
     $alta.click(function () {
-      var corderos = $('#diaria_corderos').html()
-      var ovejas = $('#diaria_ovejas').html()
-      var carneros = $('#diaria_carneros').html()
+      //var corderos = $('#diaria_corderos').html()
+      //var ovejas = $('#diaria_ovejas').html()
+      //var carneros = $('#diaria_carneros').html()
       var fecha = $('#selector_periodo').val()
-      if ($('.modal-title').attr('action') == 'actualizar'){
-        corderos = $('#corderos').val()
-        ovejas = $('#ovejas').val()
-        carneros = $('#carneros').val()
-      }
+      //if ($('.modal-title').attr('action') = 'actualizar'){
+      // corderos = $('#corderos').val()
+      //  ovejas = $('#ovejas').val()
+      //  carneros = $('#carneros').val()
+      //}
       if (!fecha){
         $('#alert-body').html("Debe ingresar al menos una fecha")
         $('.alert').addClass('show')
       }
       else{
         var data = {
-          'corderos': corderos,
-          'ovejas': ovejas,
-          'carneros': carneros,
-          'pariciones': $('#pariciones').val(),
-          'muertes': $('#muertes').val(),
-          'lana_producida': $('#lana_producida').val(),
-          'carne_producida': $('#carne_producida').val(),
-          'rinde_lana': $('#rinde_lana').val(),
-          'finura_lana': $('#finura_lana').val(),
+          'corderos': parseInt($('#corderos').val())>=0? parseInt($('#corderos').val()): 0,
+          'ovejas': parseInt($('#ovejas').val())>=0? parseInt($('#ovejas').val()): 0,
+          'carneros': parseInt($('#carneros').val())>=0? parseInt($('#carneros').val()): 0,
+          'pariciones': parseInt($('#pariciones').val())>=0? parseInt($('#pariciones').val()): 0,
+          'muertes': parseInt($('#muertes').val())>=0? parseInt($('#muertes').val()): 0,
+          'lana_producida': parseInt($('#lana_producida').val())>=0? parseInt($('#lana_producida').val()): 0,
+          'carne_producida': parseInt($('#carne_producida').val())>=0? parseInt($('#carne_producida').val()): 0,
+          'rinde_lana': parseInt($('#rinde_lana').val())>=0? parseInt($('#rinde_lana').val()): 0,
+          'finura_lana': parseInt($('#finura_lana').val())>=0? parseInt($('#finura_lana').val()): 0,
         }
         var url = 'campo/'+campo_id+'/historico/'+fecha
         var dbRef = ref(db, url);
@@ -473,6 +610,14 @@
         $('#diaria_corderos').html(data_diaria.corderos);
         $('#diaria_ovejas').html(data_diaria.ovejas);
         $('#diaria_carneros').html(data_diaria.carneros);
+
+        $("#diaria_carne_producida").html(data_diaria.carne_producida);
+        $("#diaria_finura_lana").html(data_diaria.finura_lana);
+        $("#diaria_lana_producida").html(data_diaria.lana_producida);
+        $("#diaria_muertes").html(data_diaria.muertes);
+        $("#diaria_pariciones").html(data_diaria.pariciones);
+        $("#diaria_rinde_lana").html(data_diaria.rinde_lana);
+
         var data_list = []
         for(var key in data_historico) {
           var data_dict = {}
@@ -490,6 +635,14 @@
         $('#diaria_corderos').html('-');
         $('#diaria_ovejas').html('-');
         $('#diaria_carneros').html('-');
+        $("#diaria_carne_producida").html('-');
+        $("#diaria_finura_lana").html('-');
+        $("#diaria_lana_producida").html('-');
+        $("#diaria_muertes").html('-');
+        $("#diaria_pariciones").html('-');
+        $("#diaria_rinde_lana").html('-');
+
+
         $table.bootstrapTable('hideLoading')
       }
       

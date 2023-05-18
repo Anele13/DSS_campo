@@ -36,7 +36,7 @@
               <canvas id="canvasLana" class="chartjs-render-monitor"></canvas>
           </div>
           <div class="col-12 py-3">
-              <span>Exactitud de la predicción: {{lana.metrica}} % </span>
+              <span>{{lana.metrica}} </span>
           </div>
         </div>
       </div>
@@ -53,7 +53,7 @@
               <canvas id="canvasCordero" class="chartjs-render-monitor"></canvas>
           </div>
           <div class="col-12 py-3">
-              <span>Exactitud de la predicción: {{corderos.metrica}}% </span>
+              <span>{{corderos.metrica}}</span>
           </div>
         </div>
       </div>
@@ -70,7 +70,7 @@
               <canvas id="canvasFinura" class="chartjs-render-monitor"></canvas>
           </div>
           <div class="col-12 py-3">
-              <span>Exactitud de la predicción: {{finura.metrica}}% </span>
+              <span>{{finura.metrica}} </span>
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@
               <canvas id="canvasRinde" class="chartjs-render-monitor"></canvas>
           </div>
           <div class="col-12 py-3">
-              <span>Exactitud de la predicción: {{rinde.metrica}}% </span>
+              <span>{{rinde.metrica}}</span>
           </div>
         </div>
       </div>
@@ -105,6 +105,7 @@
     var finura = JSON.parse('{{finura.data|safe}}') 
     const y_prediccion_finura = completar_data(finura.label_real, finura.y_prediccion)
     const label_finura = armar_labels(finura.label_real,finura.label_prediccion)
+
     crear_grafico_lineas(label_finura, finura.y_real, y_prediccion_finura, "canvasFinura")
 
     var rinde = JSON.parse('{{rinde.data|safe}}') 

@@ -217,7 +217,7 @@ def mi_campo(request, query='rinde'):
         contexto['query'] = query
         contexto['campo'] = campo
     else:
-        messages.warning(request, "Debe cargar los datos climáticos de su campo.")
+        messages.warning(request, "Debe cargar los datos climáticos y productivos de su campo.")
     return render(request, "mi_campo.html", contexto)
 
 

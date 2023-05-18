@@ -4,7 +4,7 @@ function armar_labels(label_real,label_prediccion) {
 }
 
 function completar_data(label_real, y_prediccion) {
-    const cantElementsLabelReal = label_real.length - 1
+    const cantElementsLabelReal = label_real.length
     const listNull = []
     for(let i=1; i<=cantElementsLabelReal; i++){
       listNull.push(null)

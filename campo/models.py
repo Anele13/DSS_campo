@@ -28,6 +28,18 @@ class Campo(models.Model):
     latitud = models.FloatField(blank=True, null=True)
     longitud = models.FloatField(blank=True, null=True)
 
+    def get_temperature(self):
+        app_id = '439d4b804bc8187953eb36d2a8c26a02'
+        url = f'https://openweathermap.org/data/2.5/onecall?lat={self.latitud}&lon={self.longitud}&units=metric&appid={app_id}'
+        response = requests.get(url).json()
+        daily_list = response.get('daily',[])
+        if daily_list:
+            day_0_temp = daily_list[0]
+            data = day_0_temp.get('temp',{})
+            return data.get('min',0), data.get('max',0)
+        return 0,0
+    
+    
     def clima_actual(self):
         """
         Retorna el clima actual del campo en el
@@ -37,22 +49,32 @@ class Campo(models.Model):
             app_id = '439d4b804bc8187953eb36d2a8c26a02'
             url = f'https://openweathermap.org/data/2.5/weather?lat={self.latitud}&lon={self.longitud}&units=metric&appid={app_id}'
             cache_key = f'{self.latitud}{self.longitud}'
-            cache_time = 86400 # time in seconds for cache to be valid
+            cache_time = 36000
             data = cache.get(cache_key, {}) 
             if not data: 
                 response = requests.get(url).json()
                 base_info = response.get('main',{})
                 rain_info = response.get('rain',{})
                 wind_info = response.get('wind',{})
-                data['temperatura_minima'] = base_info.get('temp_min',0)
-                data['temperatura_maxima'] = base_info.get('temp_max',0)
+                temp_min = base_info.get('temp_min',0)
+                temp_max = base_info.get('temp_max',0)
+                if temp_min == temp_max:
+                    temp_min, temp_max = self.get_temperature()
                 data['temperatura'] = base_info.get('temp',0)
                 data['humedad'] = base_info.get('humidity',0)
                 data['velocidad_viento'] = wind_info.get('speed',0)
                 data['direccion_viento'] = wind_info.get('deg',0)
                 data['mm_lluvia'] = rain_info.get('1h',0)
                 data['localidad'] = response.get('name',None)
+                data['temperatura_minima'] = temp_min
+                data['temperatura_maxima'] = temp_max
                 cache.set(cache_key, data, cache_time)
+                #Ademas se renuevan los datos climaticos del campo
+                if data:
+                    _url = f'campo/{self.id}/diaria/'
+                    diaria_data = self.get_diaria_data()
+                    diaria_data.update(data)
+                    db.reference(_url).set(diaria_data)
             return data 
         except Exception: #connection refused
             return {}
@@ -74,23 +96,25 @@ class Campo(models.Model):
             data['compras'] = response.get('compras',0)
         return data
     
-    def historico_datos_climaticoss(self):
+    
+    def actualizar_diaria_clima(self):
         """
-        Obtiene desde firebase el historico de 
-        datos climaticos registrados
+        Actualiza la informacion climatica del campo 
+        diaria
         """
-        data = {}
-        return data
-
-    def historico_datos_produccion(self):
-        """
-        Obtiene desde firebase el historico de 
-        datos de produccion registrados
-        """
-        data = {}
-        return data
+        _url = f'campo/{self.id}/diaria/'
+        diaria_data = self.get_diaria_data()
+        data = self.clima_actual()
+        if data:
+            data.pop('temperatura') 
+            diaria_data.update(data)
+            db.reference(_url).set(diaria_data)
 
     def create_in_firebase(self):
+        """
+        Crea el primer registro de los datos diarios
+        dentro del campo del usuario.
+        """
         from django.conf import settings
         data = settings.DIARIA
         db.reference(f'campo/{self.id}/diaria/').set(data)
@@ -130,6 +154,11 @@ class Campo(models.Model):
 
     @app.task
     def registrar_info_climatica():
+        """
+        Toma la informacion climatica y la informacion diaria
+        del campo y crea un registro historico con la informacion del campo
+        al cierre del dia.
+        """
         now = datetime.now().date().strftime('%Y-%m-%d')
         for campo in Campo.objects.all():
             data = campo.clima_actual()
@@ -141,8 +170,8 @@ class Campo(models.Model):
                     _historico_data.update(data)
                     db.reference(_url).set(_historico_data)
                 else: 
-                    _info_produccion = {}
-                    
+                    from django.conf import settings
+                    _info_produccion = settings.DIARIA
                     _diaria_data = db.reference(f"campo/{campo.id}/diaria/").get()
                     if _diaria_data:
                         for k, v in _diaria_data.items():
@@ -152,17 +181,6 @@ class Campo(models.Model):
                             except:
                                 pass 
                             _info_produccion[k] = valor
-                    else:
-                        _info_produccion['corderos'] = 0
-                        _info_produccion['ovejas'] = 0
-                        _info_produccion['carneros'] = 0
-                   
-                    _info_produccion['finura_lana'] = 0
-                    _info_produccion['lana_producida'] = 0
-                    _info_produccion['carne_producida'] = 0
-                    _info_produccion['muertes'] = 0
-                    _info_produccion['pariciones'] = 0
-                    _info_produccion['rinde_lana'] = 0
                     _info_produccion.update(data)
                     db.reference(_url).set(_info_produccion)
 

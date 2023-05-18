@@ -44,6 +44,11 @@ class TelegramUser(models.Model):
     auth_date=models.IntegerField(blank=True, null=True)
     hash=models.CharField(max_length=100, blank=True, null=True)
 
+    def delete_from_firebase(self):
+        from firebase_admin import db
+        db.reference(f'user/{self.id}/').delete()
+
+
     def refresh_firebase_data(self):
         from firebase_admin import db
         data = {

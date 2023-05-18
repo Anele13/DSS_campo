@@ -80,8 +80,8 @@
                                                     <div class="input-group-append">
                                                         {{form.password}}
                                                         <span class="input-group-text" onclick="password_show_hide();">
-                                                          <i class="fas fa-eye" id="show_eye"></i>
-                                                          <i class="fas fa-eye-slash d-none" id="hide_eye"></i>
+                                                          <i class="fas fa-eye" id="show_eye" data-toggle="tooltip" data-placement="top" title="Ver contraseña" ></i>
+                                                          <i class="fas fa-eye-slash d-none" id="hide_eye" data-toggle="tooltip" data-placement="top" title="Ocultar contraseña"></i>
                                                         </span>
                                                     </div>
                                                     {% if form.password.errors %}
@@ -95,13 +95,9 @@
                                             </div>
                                         </div>
                                         <br>
+                                        <br>
+                                        <br>
                                         <button class="btn btn-primary btn-user btn-block"> Ingresar </button>
-
-                                        <hr>
-                                        <a href="{% url 'social:begin' 'google-oauth2' %}"
-                                            class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Ingresa con Google
-                                        </a>
                                     </form>
                                     <hr>
                                     <div class="text-center">
