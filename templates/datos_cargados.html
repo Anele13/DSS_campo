@@ -157,7 +157,7 @@
   <div class="card-body">
       <div class="row no-gutters">
           <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Informacion Actual: {{fecha}}</div>
+              <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Información Actual: {{fecha}}</div>
                 
                 
                 <div class="row align-items-center">
@@ -357,12 +357,12 @@
 <div class="card border-left-secondary shadow h-100 py-2">
   <div class="card-body">
           
-        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Informacion Historica</div>
+        <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Información Histórica</div>
         <div id="toolbar">
           <button id="remove" class="btn btn-sm btn-danger" disabled>
             <i class="fa fa-trash"></i> Borrar
           </button>
-          <button id="openModal" class="btn btn-sm btn-primary" data-toggle="modal" >Nuevo registro</button>
+          <button id="openModal" class="btn btn-sm btn-primary" data-toggle="modal">Nuevo registro</button>
         </div>
         <table
           id="table"
@@ -545,7 +545,7 @@
 
     $openModal.click(function () {
       $('#selector_periodo').removeAttr('disabled')
-      $('#modalAltaDatosLabel').html('Alta de datos de produccion') 
+      $('#modalAltaDatosLabel').html('Alta de datos de producción') 
       $('#modalAltaDatosLabel').attr('action','alta') 
       $('#corderos').val(0)
       $('#ovejas').val(0)

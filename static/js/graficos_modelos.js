@@ -24,6 +24,20 @@ function crear_grafico_lineas(anios, real, prediccion, idElement){
         grey: 'rgb(201, 203, 207)'
     };
     let labels = anios;
+    // Lista para almacenar los valores según las condiciones
+    var listaFinal = [];
+    // Iterar sobre los elementos
+    for (var i = 0; i < prediccion.length; i++) {
+        var elemento = prediccion[i];
+        // Verificar el tipo de elemento y agregarlo a la listaFinal
+        if (elemento === null) {
+            listaFinal.push(elemento);
+        } else if (typeof elemento === 'number') {
+            listaFinal.push(elemento);
+        } else if (Array.isArray(elemento)) {
+            listaFinal.push(elemento[0]);
+        }
+    }
     const data = {
         labels: labels,
         datasets: [
@@ -34,7 +48,7 @@ function crear_grafico_lineas(anios, real, prediccion, idElement){
             },
             {
                 label: 'Predicción',
-                data: prediccion,
+                data: listaFinal,
                 borderColor: CHART_COLORS.blue,
             }
         ]
