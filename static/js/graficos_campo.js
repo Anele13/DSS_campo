@@ -196,13 +196,13 @@ function crear_grafico_lineas(mes, dias, temperaturas_min, temperaturas_max) {
           {
               label: 'Maxima',
               data: temperaturas_max,
-              borderColor: CHART_COLORS.blue,
+              borderColor: CHART_COLORS.red,
    
           },
           {
             label: 'Minima',
             data: temperaturas_min,
-            borderColor: CHART_COLORS.red,
+            borderColor: CHART_COLORS.blue,
         },
       ]
   },
