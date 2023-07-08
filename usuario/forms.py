@@ -220,17 +220,19 @@ class UpdateForm(forms.Form):
                                    )
 
     latitud =  forms.FloatField(label='Latitud',
+                                required=False,
                                 widget=forms.NumberInput(attrs={
                                                             "class": "form-control form-control-user",
                                                             "placeholder":"Latitud",
-                                                            "required":'required'
+                                                            "required":'false'
                                                             })) 
 
     longitud = forms.FloatField(label='Longitud',
+                                required=False,
                                 widget=forms.NumberInput(attrs={
                                                             "class": "form-control form-control-user",
                                                             "placeholder":"Latitud",
-                                                            "required":'required'
+                                                            "required":'false'
                                                             })) 
 
     def clean_cant_hectareas(self):

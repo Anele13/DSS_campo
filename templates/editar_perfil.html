@@ -80,37 +80,6 @@
                                 {% endfor %}
                                 {% endif %}
                             </div>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {{form.latitud}}
-                                        {% if form.latitud.errors %}
-                                        {% for error in form.latitud.errors %}
-                                        <ul>
-                                            <li><span class="text-danger">{{ error }}</span></li>
-                                        </ul>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        {{form.longitud}}
-                                        {% if form.longitud.errors %}
-                                        {% for error in form.longitud.errors %}
-                                        <ul>
-                                            <li><span class="text-danger">{{ error }}</span></li>
-                                        </ul>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <button type="button" class="btn btn-primary btn-sm btn-user"  data-toggle="modal" data-target="#exampleModal">
-                                        Ver Mapa    
-                                    </button>
-                                </div>
-                            </div>
                             <br>
                             <button class="btn btn-primary btn-user btn-block">
                                 Guardar
