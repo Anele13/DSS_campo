@@ -272,8 +272,8 @@ class UpdateForm(forms.Form):
             campo.cant_hectareas=self.cleaned_data['cant_hectareas']
             data1 = self.cleaned_data['latitud']
             data2 = self.cleaned_data['longitud']
-            campo.latitud=data1
-            campo.longitud=data2
+            #campo.latitud=data1
+            #campo.longitud=data2
             campo.save()
         else:
             campo = Campo.objects.create(
