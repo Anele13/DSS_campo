@@ -114,8 +114,6 @@ def editar_perfil_view(request):
         if campo:
             datos['nombre_campo']=campo.nombre
             datos['cant_hectareas']=campo.cant_hectareas
-            datos['latitud']=campo.latitud
-            datos['longitud']=campo.longitud
         form = UpdateForm(initial=datos)
     return render(request, 'editar_perfil.html', {'form': form})
 
